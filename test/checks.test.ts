@@ -50,3 +50,10 @@ describe("describeStringShape", () => {
     expect(s).toContain("contains letters with diacritics");
   });
 });
+
+describe("required_empty", () => {
+  it("an error on a field the agent left empty is reported as required_empty, not rejected", () => {
+    const r = checkField({ ...base, requested: "", retained: "", visibleErrors: ["名を入力してください"], ariaInvalid: true });
+    expect(r.kind).toBe("required_empty");
+  });
+});

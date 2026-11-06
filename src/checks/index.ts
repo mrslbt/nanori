@@ -7,6 +7,7 @@ import type { FieldObservation } from "../types.js";
 export interface CheckResult {
   kind:
     | "rejected"
+    | "required_empty"
     | "truncated"
     | "altered"
     | "accepted";
@@ -17,7 +18,7 @@ export function checkField(o: FieldObservation): CheckResult {
   const rejected = o.ariaInvalid || o.validationMessage.trim().length > 0 || o.visibleErrors.length > 0;
   if (rejected) {
     const msg = o.validationMessage || o.visibleErrors.join(" / ");
-    return { kind: "rejected", detail: msg };
+    return { kind: o.requested === "" ? "required_empty" : "rejected", detail: msg };
   }
   if (o.retained !== o.requested) {
     if (o.requested.startsWith(o.retained) && o.retained.length < o.requested.length) {

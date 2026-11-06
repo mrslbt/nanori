@@ -187,13 +187,16 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         await page.waitForLoadState("domcontentloaded").catch(() => {});
         await page.waitForTimeout(400);
         step.pageErrors = await pageErrors(page);
-        // If still on the same URL with errors showing, re-observe fields after the click too.
+        // If errors are showing after the click, observe every field that is now invalid,
+        // including required fields the agent left empty on purpose (single-name case).
         if (step.pageErrors.length) {
-          for (const prev of steps.flatMap((s) => s.observations)) {
-            if ((await page.locator(`[data-nanori-ref="${prev.ref}"]`).count()) > 0) {
-              const again = await observeField(page, prev.ref, prev.requested);
-              if (!step.observations.find((o) => o.ref === again.ref)) step.observations.push(again);
-            }
+          const filled = new Map(steps.flatMap((s) => s.observations).map((o) => [o.ref, o.requested]));
+          for (const e of elements) {
+            if (!["input", "select", "textarea"].includes(e.tag)) continue;
+            if ((await page.locator(`[data-nanori-ref="${e.ref}"]`).count()) === 0) continue;
+            const again = await observeField(page, e.ref, filled.get(e.ref) ?? "");
+            const bad = again.ariaInvalid || again.validationMessage || again.visibleErrors.length;
+            if (bad && !step.observations.find((o) => o.ref === again.ref)) step.observations.push(again);
           }
           resultText = JSON.stringify({ pageErrors: step.pageErrors });
         }

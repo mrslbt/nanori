@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
+import { loadEnv } from "./env.js";
+loadEnv();
 import fs from "node:fs";
 import path from "node:path";
 import { runAll } from "./run.js";
