@@ -4,3 +4,4 @@ dist
 runs/
 *.log
 .DS_Store
+.nanori-rerun.lock

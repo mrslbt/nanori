@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>さくら内科クリニック 予約 - 確認</title>
+<link rel="stylesheet" href="style.css"></head>
+<body>
+<header><h1>さくら内科クリニック オンライン予約</h1></header>
+<main>
+<h2>3. 入力内容の確認</h2>
+<table id="review"></table>
+<p>内容をご確認のうえ、予約を確定してください。</p>
+<button id="submit" type="button">予約を確定する</button>
+<script>
+const d = JSON.parse(sessionStorage.getItem('booking')||'{}');
+const rows = [['希望日時', (d.date||'')+' '+(d.time||'')],['お名前', (d.sei||'')+' '+(d.mei||'')],['フリガナ',(d.seikana||'')+' '+(d.meikana||'')],['電話番号',d.tel||''],['メール',d.email||'']];
+document.getElementById('review').innerHTML = rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join('');
+document.getElementById('submit').addEventListener('click',()=>alert('FIXTURE: submit is disabled'));
+</script>
+</main>
+<footer>FIXTURE: this is a local test form, not a real clinic.</footer>
+</body></html>
