@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { runAll } from "./run.js";
 import { battery } from "./battery.js";
+import { scan } from "./scan.js";
 
 const program = new Command();
 program.name("nanori").description("Test a Japanese web form with the names of real residents, not just Japanese test data.").version("0.1.0");
@@ -32,6 +33,18 @@ program.command("rerun")
     const cases = prev.cases.map((c: any) => c.identity.id);
     const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", runId: `${runId}-rerun-${Date.now().toString(36)}` });
     console.log(`\nBefore: runs/${runId}/report.html\nAfter:  ${path.join(dir, "report.html")}`);
+  });
+
+program.command("scan")
+  .argument("<file>", "text file with one form URL per line")
+  .option("-c, --cases <ids>", "comma-separated case ids (default: all)", (v) => v.split(","))
+  .option("--headless", "run without a visible browser", false)
+  .option("--out <dir>", "output directory", `runs/scan-${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}`)
+  .description("probe the name fields of many forms, no model in the loop, nothing submitted")
+  .action(async (file, o) => {
+    const urls = fs.readFileSync(file, "utf8").split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("#"));
+    await scan(urls, { outDir: o.out, cases: o.cases, headless: o.headless });
+    console.log(`\nopen ${path.join(o.out, "scan.html")}`);
   });
 
 program.command("cases").description("list the name-format test cases").action(() => {
