@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>さくら内科クリニック 予約 - お客様情報</title>
+<link rel="stylesheet" href="style.css"></head>
+<body>
+<header><h1>さくら内科クリニック オンライン予約</h1></header>
+<main>
+<h2>2. お客様情報の入力</h2>
+<form id="step2" novalidate>
+  <div class="row">
+    <label for="sei">姓 <span class="req">必須</span></label>
+    <input id="sei" name="sei" maxlength="10" required placeholder="例）山田">
+    <div class="err" id="err-sei"></div>
+  </div>
+  <div class="row">
+    <label for="mei">名 <span class="req">必須</span></label>
+    <input id="mei" name="mei" maxlength="10" required placeholder="例）太郎">
+    <div class="err" id="err-mei"></div>
+  </div>
+  <div class="row">
+    <label for="seikana">セイ（全角カタカナ） <span class="req">必須</span></label>
+    <input id="seikana" name="seikana" required placeholder="例）ヤマダ">
+    <div class="err" id="err-seikana"></div>
+  </div>
+  <div class="row">
+    <label for="meikana">メイ（全角カタカナ） <span class="req">必須</span></label>
+    <input id="meikana" name="meikana" required placeholder="例）タロウ">
+    <div class="err" id="err-meikana"></div>
+  </div>
+  <div class="row">
+    <label for="tel">電話番号（半角数字） <span class="req">必須</span></label>
+    <input id="tel" name="tel" required placeholder="例）09012345678">
+    <div class="err" id="err-tel"></div>
+  </div>
+  <div class="row">
+    <label for="email">メールアドレス <span class="req">必須</span></label>
+    <input id="email" name="email" type="email" required placeholder="例）taro@example.com">
+    <div class="err" id="err-email"></div>
+  </div>
+  <button type="submit">確認画面へ</button>
+</form>
+<script>
+const KANA = /^[ァ-ヶー]+$/;
+const TEL = /^[0-9]{10,11}$/;
+function v(id, test, msg){ const el=document.getElementById(id); const e=document.getElementById('err-'+id); const ok=test(el.value); e.textContent = ok?'':msg; el.setAttribute('aria-invalid', ok?'false':'true'); return ok; }
+function validate(){
+  let ok = true;
+  ok &= v('sei', x=>x.trim().length>0, '姓を入力してください');
+  ok &= v('mei', x=>x.trim().length>0, '名を入力してください');
+  ok &= v('seikana', x=>KANA.test(x), 'セイは全角カタカナで入力してください');
+  ok &= v('meikana', x=>KANA.test(x), 'メイは全角カタカナで入力してください');
+  ok &= v('tel', x=>TEL.test(x), '電話番号は半角数字で入力してください');
+  ok &= v('email', x=>/^[^@\s]+@[^@\s]+$/.test(x), 'メールアドレスの形式が正しくありません');
+  return !!ok;
+}
+document.getElementById('step2').addEventListener('submit', ev=>{
+  ev.preventDefault();
+  if(!validate()) return;
+  const data = {};
+  for (const el of document.querySelectorAll('input')) data[el.name]=el.value;
+  const q = new URLSearchParams(location.search);
+  data.date=q.get('date'); data.time=q.get('time');
+  sessionStorage.setItem('booking', JSON.stringify(data));
+  location.href='confirm.html';
+});
+for (const el of document.querySelectorAll('input')) el.addEventListener('blur', ()=>validate());
+</script>
+</main>
+<footer>FIXTURE: this is a local test form, not a real clinic.</footer>
+</body></html>

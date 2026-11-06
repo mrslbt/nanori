@@ -1,0 +1,31 @@
+{
+  "name": "nanori",
+  "version": "0.1.0",
+  "description": "Test Japanese web forms with the names of real residents, not just Japanese test data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "fixture": "tsx src/fixture-server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "nanori": "./dist/cli.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "commander": "^15.0.0",
+    "playwright": "^1.65.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}
