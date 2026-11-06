@@ -52,14 +52,21 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
 
   log(`\nDiagnosing with ${process.env.NANORI_DIAG_MODEL ?? "claude-opus-5-5"}...`);
   const findings = await diagnose(baselineRun, cases, opts.url, opts.goal);
+  let before: RunBundle["before"];
+  if (opts.comparedTo) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(path.join(runsDir, opts.comparedTo, "report.json"), "utf8")) as RunBundle;
+      before = { id: prev.id, target: prev.target, outcomes: Object.fromEntries([prev.baseline, ...prev.cases].map((r) => [r.identity.id, r.outcome])) };
+    } catch { /* compared run missing: report without before/after */ }
+  }
   const bundle: RunBundle = {
     id, url: opts.url, goal: opts.goal, createdAt: new Date().toISOString(), target: opts.target ?? "public",
-    repairState: opts.repairState, comparedTo: opts.comparedTo,
+    repairState: opts.repairState, comparedTo: opts.comparedTo, before,
     baseline: baselineRun, cases, findings,
     summary: `${cases.filter((c) => c.outcome === "stopped_before_checkpoint").length} of ${cases.length} name cases stopped before the checkpoint; baseline ${baselineRun.outcome}.`,
   };
   fs.writeFileSync(path.join(dir, "report.json"), JSON.stringify(bundle, null, 2));
-  fs.writeFileSync(path.join(dir, "report.html"), renderHtml(bundle, dir));
+  fs.writeFileSync(path.join(dir, "report.html"), renderHtml(bundle));
   log(`\nReport: ${path.join(dir, "report.html")}`);
   return { bundle, dir };
 }

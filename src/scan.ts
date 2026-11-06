@@ -213,28 +213,50 @@ const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&
 export function renderScan(results: ProbeResult[]): string {
   const urls = [...new Set(results.map((r) => r.url))];
   const ids = [...new Set(results.map((r) => r.identity))];
-  const probedUrls = urls.filter((u) => results.some((r) => r.url === u && r.status === "probed"));
-  const baselineOk = (u: string) => results.find((r) => r.url === u && r.identity === "baseline")?.worst === "accepted";
-  const concluded = (u: string) => results.some((r) => r.url === u && (r.advanced || r.fields.some((f) => ["rejected", "truncated", "altered"].includes(f.afterAdvance ?? f.afterBlur))));
-  const concludedUrls = probedUrls.filter((u) => baselineOk(u) && concluded(u));
-  const rejecting = concludedUrls.filter((u) => results.some((r) => r.url === u && r.identity !== "baseline" && ["rejected", "truncated", "altered"].includes(r.worst)));
+  const byUrl = (u: string) => results.filter((r) => r.url === u);
+  const flaggedKinds = ["rejected", "truncated", "altered"];
+  // Categories (each form lands in exactly one):
+  // A. no name fields detected / error.  B. confirmed comparable journey: baseline advanced to a confirmation screen with the name shown,
+  // and every case either advanced or showed a name-field error.  C. field-level observation only: some name-field result was recorded
+  // but completion was not established for every case.  D. incomplete: nothing conclusive.
+  const cat = (u: string): "A" | "B" | "C" | "D" => {
+    const rows = byUrl(u); const base = rows.find((r) => r.identity === "baseline");
+    if (!base || base.status !== "probed") return "A";
+    const concluded = (r: ProbeResult) => r.advanced || r.fields.some((f) => flaggedKinds.includes(f.afterAdvance ?? f.afterBlur));
+    if (base.advanced && base.worst === "accepted" && rows.every(concluded)) return "B";
+    if (rows.some((r) => r.fields.some((f) => flaggedKinds.includes(f.afterAdvance ?? f.afterBlur)))) return "C";
+    return "D";
+  };
+  const cats = Object.fromEntries(urls.map((u) => [u, cat(u)]));
+  const count = (c: string) => urls.filter((u) => cats[u] === c).length;
+  const flagged = (u: string) => byUrl(u).some((r) => r.identity !== "baseline" && flaggedKinds.includes(r.worst));
+  const flaggedB = urls.filter((u) => cats[u] === "B" && flagged(u)).length;
+  const flaggedC = urls.filter((u) => cats[u] === "C" && flagged(u)).length;
+  const CAT_LABEL = { A: "no name fields detected", B: "confirmed comparable journey", C: "field-level observation only", D: "incomplete" };
   const rows = urls.map((u) => {
     const cells = ids.map((id) => {
-      const r = results.find((x) => x.url === u && x.identity === id);
+      const r = byUrl(u).find((x) => x.identity === id);
       const w = r?.status === "probed" ? r.worst : r?.status ?? "";
-      const title = r ? r.fields.map((f) => `${f.role}: ${f.afterAdvance ?? f.afterBlur}${f.error ? " (" + f.error + ")" : ""}`).join("\n") + (r.note ? "\n" + r.note : "") : "";
+      const title = r ? r.fields.map((f) => `${f.role}: ${f.afterAdvance ?? f.afterBlur}${f.error ? " (" + f.error + ")" : ""}`).join("\n") + (r.note ? "\n" + r.note : "") + (r.clicked ? `\nclicked "${r.clicked}" → ${r.advanced ? "advanced" : "stayed"}` : "") : "";
       return `<td class="${esc(w)}" title="${esc(title)}">${esc(w)}</td>`;
     }).join("");
-    return `<tr><th><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></th>${cells}</tr>`;
+    return `<tr><th><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></th><td class="cat">${CAT_LABEL[cats[u]]}</td>${cells}</tr>`;
   }).join("");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>nanori scan</title>
 <style>body{font:14px/1.5 -apple-system,"Hiragino Sans",system-ui,sans-serif;margin:32px;color:#1b1f2a;background:#fbfaf7}
-table{border-collapse:collapse}th,td{border:1px solid #e6e2d8;padding:6px 10px;text-align:left;background:#fff}th{font-weight:500;max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-td.accepted{background:#e6f4ec;color:#1f7a4d}td.rejected,td.truncated,td.altered{background:#fbe9e7;color:#b3261e}td.unknown,td.no_name_fields,td.error,td.blocked{color:#6b7280}
-.verdict{font-size:20px;margin:8px 0 20px}.muted{color:#6b7280}</style></head><body>
+table{border-collapse:collapse}th,td{border:1px solid #e6e2d8;padding:6px 10px;text-align:left;background:#fff}th{font-weight:500;max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+td.accepted{background:#e6f4ec;color:#1f7a4d}td.rejected,td.truncated,td.altered{background:#fbe9e7;color:#b3261e}td.unknown,td.no_name_fields,td.error,td.blocked{color:#6b7280}td.cat{color:#6b7280;white-space:nowrap}
+.verdict{font-size:20px;margin:8px 0 12px}.muted{color:#6b7280}ul{margin:0 0 16px}</style></head><body>
 <h1>nanori scan</h1>
-<div class="verdict">${rejecting.length} of ${concludedUrls.length} tested forms rejected, cut, or altered at least one name-format test input under this probe.</div>
-<p class="muted">${urls.length} forms attempted: ${probedUrls.length} had name fields the probe could fill, ${concludedUrls.length} of those reached a confirmation screen or showed a name-field error with the Japanese baseline accepted (the only ones counted), ${probedUrls.length - concludedUrls.length} stayed on the input page without a name error (other required fields incomplete; not counted), ${urls.length - probedUrls.length} could not be probed. Probe only: name fields filled, validation triggered, confirmation attempted, nothing submitted. Our sample, not a statistic. Hover a cell for field detail. Recorded ${esc(new Date().toISOString())}.</p>
-<table><thead><tr><th>Form</th>${ids.map((i) => `<th>${esc(i)}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
+<div class="verdict">Flagged observations pending review: ${flaggedB + flaggedC} forms (${flaggedB} in confirmed comparable journeys, ${flaggedC} field-level only).</div>
+<ul class="muted">
+<li>${urls.length} forms attempted.</li>
+<li>${urls.length - count("A")} had name fields the probe could fill; ${count("A")} did not (or errored).</li>
+<li>${count("B")} confirmed comparable journeys: the Japanese baseline reached a confirmation screen with the name shown, and every test case either reached it or showed a name-field error. ${flaggedB} of these flagged at least one test input.</li>
+<li>${count("C")} field-level observations only: a name field reacted, but completion was not established for every case (other required fields incomplete). ${flaggedC} flagged.</li>
+<li>${count("D")} incomplete: no conclusive name-field result.</li>
+</ul>
+<p class="muted">A flag is an observation (rejected, cut, or altered input), not a proven exclusion: each needs human review for documented alternatives. Probe only: name fields filled, validation triggered, a confirmation button attempted, nothing submitted. Our sample, not a statistic. Hover a cell for field detail. Recorded ${esc(new Date().toISOString())}.</p>
+<table><thead><tr><th>Form</th><th>Category</th>${ids.map((i) => `<th>${esc(i)}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
 </body></html>`;
 }

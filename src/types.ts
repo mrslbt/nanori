@@ -128,6 +128,8 @@ export interface RunBundle {
   repairState?: "before" | "after";
   /** For reruns: the run this one is compared against. */
   comparedTo?: string;
+  /** Summary of the compared run, copied at rerun time so the report is self-contained. */
+  before?: { id: string; target: string; outcomes: Record<string, Outcome> };
   baseline: RunResult;
   cases: RunResult[];
   findings: Finding[];
