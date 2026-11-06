@@ -135,7 +135,7 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <div class="verdict">${esc(verdictText)}</div>
 
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same non-name choices (date, time, options, message, contact details). Only the name and its reading change between rows. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">${b.scenario ? "Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected." : "Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows; see the run log."} Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table><thead><tr><th>Name</th><th>Outcome</th><th>First measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody>${rows}</tbody></table>
 
 <h2>Evidence</h2>

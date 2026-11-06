@@ -2,7 +2,7 @@ import { chromium } from "playwright";
 import fs from "node:fs";
 import path from "node:path";
 import type { Identity, RunBundle, RunResult } from "./types.js";
-import { baseline, battery } from "./battery.js";
+import { baseline, battery, scenario } from "./battery.js";
 import { runLoop } from "./agent/loop.js";
 import { diagnose } from "./diagnose.js";
 import { renderHtml } from "./report/html.js";
@@ -61,7 +61,7 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
   }
   const bundle: RunBundle = {
     id, url: opts.url, goal: opts.goal, createdAt: new Date().toISOString(), target: opts.target ?? "public",
-    repairState: opts.repairState, comparedTo: opts.comparedTo, before,
+    repairState: opts.repairState, comparedTo: opts.comparedTo, before, scenario,
     baseline: baselineRun, cases, findings,
     summary: `${cases.filter((c) => c.outcome === "stopped_before_checkpoint").length} of ${cases.length} name cases stopped before the checkpoint; baseline ${baselineRun.outcome}.`,
   };
