@@ -5,6 +5,7 @@ import type { ElementInfo, Identity } from "./types.js";
 import { baseline, battery } from "./battery.js";
 import { snapshotElements, observeField } from "./agent/page.js";
 import { checkField } from "./checks/index.js";
+import { toHiragana } from "./kana.js";
 
 /**
  * nanori scan: a name-field probe with no model in the loop.
@@ -25,9 +26,7 @@ const FORBIDDEN = /(送信|確定|申し?込|予約する|予約を確定|決済
 type Role = "family" | "given" | "full" | "kana_family" | "kana_given" | "kana_full";
 type Script = "katakana" | "hiragana";
 
-export function toHiragana(s: string): string {
-  return s.replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60));
-}
+export { toHiragana };
 
 /** Which kana script the field asks for. Convention: ふりがな/ひらがな → hiragana, フリガナ/カタカナ → katakana. */
 export function kanaScript(e: ElementInfo, rowText = ""): Script {
@@ -150,6 +149,9 @@ async function probeOne(page: Page, url: string, id: Identity, outDir: string, i
           if (!f.requested || f.afterBlur === "fill failed") continue;
           const req = norm(f.requested);
           if (text.includes(req)) { f.afterAdvance = "accepted"; continue; }
+          // Review screen printing HTML entities (e.g. &#7877; for ễ): the name was escaped twice and is shown corrupted.
+          const entity = req.replace(/[^\x00-\x7F]/g, (c) => `&#${c.codePointAt(0)};`);
+          if (entity !== req && text.includes(entity)) { f.afterAdvance = "altered"; f.error = "review screen shows the name as HTML entities (double-escaped), e.g. " + entity.slice(0, 40); f.retained = entity; continue; }
           const compact = req.replace(/ /g, "");
           if (text.replace(/ /g, "").includes(compact)) { f.afterAdvance = "altered"; f.error = "shown without spaces on review screen"; continue; }
           let cut = 0;
@@ -213,7 +215,9 @@ export function renderScan(results: ProbeResult[]): string {
   const ids = [...new Set(results.map((r) => r.identity))];
   const probedUrls = urls.filter((u) => results.some((r) => r.url === u && r.status === "probed"));
   const baselineOk = (u: string) => results.find((r) => r.url === u && r.identity === "baseline")?.worst === "accepted";
-  const rejecting = probedUrls.filter((u) => baselineOk(u) && results.some((r) => r.url === u && r.identity !== "baseline" && ["rejected", "truncated", "altered"].includes(r.worst)));
+  const concluded = (u: string) => results.some((r) => r.url === u && (r.advanced || r.fields.some((f) => ["rejected", "truncated", "altered"].includes(f.afterAdvance ?? f.afterBlur))));
+  const concludedUrls = probedUrls.filter((u) => baselineOk(u) && concluded(u));
+  const rejecting = concludedUrls.filter((u) => results.some((r) => r.url === u && r.identity !== "baseline" && ["rejected", "truncated", "altered"].includes(r.worst)));
   const rows = urls.map((u) => {
     const cells = ids.map((id) => {
       const r = results.find((x) => x.url === u && x.identity === id);
@@ -229,8 +233,8 @@ table{border-collapse:collapse}th,td{border:1px solid #e6e2d8;padding:6px 10px;t
 td.accepted{background:#e6f4ec;color:#1f7a4d}td.rejected,td.truncated,td.altered{background:#fbe9e7;color:#b3261e}td.unknown,td.no_name_fields,td.error,td.blocked{color:#6b7280}
 .verdict{font-size:20px;margin:8px 0 20px}.muted{color:#6b7280}</style></head><body>
 <h1>nanori scan</h1>
-<div class="verdict">${rejecting.length} of ${probedUrls.length} probed forms rejected, cut, or altered at least one name-format test input. ${urls.length - probedUrls.length} forms could not be probed.</div>
-<p class="muted">Probe only: name fields filled, validation triggered, confirmation attempted, nothing submitted. Our sample, not a statistic. A form counts only if the Japanese baseline name was accepted. Hover a cell for field detail. Unique forms, recorded ${esc(new Date().toISOString())}.</p>
+<div class="verdict">${rejecting.length} of ${concludedUrls.length} tested forms rejected, cut, or altered at least one name-format test input under this probe.</div>
+<p class="muted">${urls.length} forms attempted: ${probedUrls.length} had name fields the probe could fill, ${concludedUrls.length} of those reached a confirmation screen or showed a name-field error with the Japanese baseline accepted (the only ones counted), ${probedUrls.length - concludedUrls.length} stayed on the input page without a name error (other required fields incomplete; not counted), ${urls.length - probedUrls.length} could not be probed. Probe only: name fields filled, validation triggered, confirmation attempted, nothing submitted. Our sample, not a statistic. Hover a cell for field detail. Recorded ${esc(new Date().toISOString())}.</p>
 <table><thead><tr><th>Form</th>${ids.map((i) => `<th>${esc(i)}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
 </body></html>`;
 }

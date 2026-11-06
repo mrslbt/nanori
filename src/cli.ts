@@ -16,7 +16,7 @@ program.command("run")
   .argument("<goal>", "what counts as done, e.g. \"reach the reservation review screen\"")
   .option("-c, --cases <ids>", "comma-separated case ids (default: all)", (v) => v.split(","))
   .option("--headless", "run without a visible browser", false)
-  .option("--max-steps <n>", "agent step budget per case", (v) => Number(v), 25)
+  .option("--max-steps <n>", "agent step budget per case", (v) => Number(v), 40)
   .option("--local", "mark this run as a local reproduction (repair verification)", false)
   .option("--run-id <id>", "fixed run id (default: timestamp)")
   .action(async (url, goal, o) => {

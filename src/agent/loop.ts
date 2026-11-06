@@ -5,6 +5,7 @@ import path from "node:path";
 import type { BrowserContext, Page } from "playwright";
 import type { Action, Identity, RunResult, Step, FieldObservation, Outcome } from "../types.js";
 import { snapshotElements, observeField, pageErrors, visibleText } from "./page.js";
+import { toHiragana } from "../kana.js";
 
 const ActionSchema = z.object({
   action: z.enum(["click", "fill", "select", "done", "stuck"]),
@@ -54,7 +55,8 @@ Stop when the goal screen is visible (usually a review or confirmation screen th
 
 The person you are:
 - Full name: ${identity.fullName} (${name})
-- Katakana reading of the name: ${identity.kanaFull}${identity.kanaFamily ? ` (family ${identity.kanaFamily}, given ${identity.kanaGiven})` : ""}
+- Reading of the name in katakana: ${identity.kanaFull}${identity.kanaFamily ? ` (family ${identity.kanaFamily}, given ${identity.kanaGiven})` : ""}
+- The same reading in hiragana: ${toHiragana(identity.kanaFull)}${identity.kanaFamily ? ` (family ${toHiragana(identity.kanaFamily)}, given ${toHiragana(identity.kanaGiven ?? "")})` : ""}
 - Email: ${identity.email}
 - Mobile phone: ${identity.phone}
 - Postal code: ${identity.postal}
@@ -62,7 +64,7 @@ The person you are:
 
 Rules:
 - Enter the name exactly as written above. Do not shorten, transliterate into kanji, remove spaces, or invent a family name. If a field demands something this person does not have (for example a family name when they have only one name), enter the full name in that field once and leave the other name field empty, and say so in the reason.
-- For furigana / kana fields, enter the katakana reading above, keeping spaces where the name has spaces.
+- For reading fields, use the script the field asks for: a field labelled ふりがな or ひらがな (or with a hiragana example) gets the hiragana reading; a field labelled フリガナ, カナ or カタカナ (or with a katakana example) gets the katakana reading. Keep spaces where the name has spaces. Never substitute the other script to get past an error: if the field rejects the correct-script reading, that is the finding.
 - For phone and postal fields, enter the digits given, half-width.
 - Choose any available date or time. Pick the first valid option.
 - Fill one field per action. After filling all required fields on a page, click the button that goes to the next step (次へ, 確認, 確認画面へ, Next).
@@ -73,7 +75,7 @@ Rules:
 export async function runLoop(context: BrowserContext, opts: LoopOptions): Promise<RunResult> {
   const client = new Anthropic();
   const model = opts.model ?? process.env.NANORI_NAV_MODEL ?? "claude-sonnet-5-5";
-  const maxSteps = opts.maxSteps ?? 25;
+  const maxSteps = opts.maxSteps ?? 40;
   const log = opts.log ?? (() => {});
   const startedAt = new Date().toISOString();
   fs.mkdirSync(opts.outDir, { recursive: true });
@@ -155,10 +157,13 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
       if (!el) throw new Error(`unknown ref ${action.ref}`);
       const locator = page.locator(`[data-nanori-ref="${action.ref}"]`);
       if (action.action === "fill") {
+        // Errors already showing before the fill (from an earlier submit) are stale, not a reaction to this value.
+        const before = await observeField(page, action.ref!, action.value ?? "", { name: el.name, id: el.id });
         await locator.fill(action.value ?? "");
         await locator.dispatchEvent("blur").catch(() => {});
         await page.waitForTimeout(150);
-        const obs: FieldObservation = await observeField(page, action.ref!, action.value ?? "");
+        const obs: FieldObservation = await observeField(page, action.ref!, action.value ?? "", { name: el.name, id: el.id });
+        if (before.visibleErrors.length && before.visibleErrors.join("|") === obs.visibleErrors.join("|")) { obs.visibleErrors = []; obs.ariaInvalid = obs.ariaInvalid && before.ariaInvalid ? false : obs.ariaInvalid; }
         step.observations.push(obs);
         resultText = JSON.stringify({ retained: obs.retained, validationMessage: obs.validationMessage, visibleErrors: obs.visibleErrors });
       } else if (action.action === "select") {
@@ -178,10 +183,8 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         }
         // Re-observe every filled field before leaving the page, so blur-time errors are captured.
         for (const prev of steps.flatMap((s) => s.observations)) {
-          if (prev.ref && (await page.locator(`[data-nanori-ref="${prev.ref}"]`).count()) > 0) {
-            const again = await observeField(page, prev.ref, prev.requested);
-            if (again.visibleErrors.length || again.ariaInvalid || again.validationMessage) step.observations.push(again);
-          }
+          const again = await observeField(page, prev.ref, prev.requested, { name: prev.name, id: prev.id });
+          if (again.visibleErrors.length || again.ariaInvalid || again.validationMessage) step.observations.push(again);
         }
         await locator.click({ timeout: 5000 });
         await page.waitForLoadState("domcontentloaded").catch(() => {});
@@ -190,13 +193,15 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         // If errors are showing after the click, observe every field that is now invalid,
         // including required fields the agent left empty on purpose (single-name case).
         if (step.pageErrors.length) {
-          const filled = new Map(steps.flatMap((s) => s.observations).map((o) => [o.ref, o.requested]));
-          for (const e of elements) {
+          // The page may have re-rendered (refs gone). Re-snapshot and match previously filled fields by name/id.
+          const fresh = await snapshotElements(page);
+          const prevObs = steps.flatMap((s) => s.observations);
+          const requestedFor = (e: typeof fresh[number]) => prevObs.find((o) => (o.name && o.name === e.name) || (o.id && o.id === e.id))?.requested ?? "";
+          for (const e of fresh) {
             if (!["input", "select", "textarea"].includes(e.tag)) continue;
-            if ((await page.locator(`[data-nanori-ref="${e.ref}"]`).count()) === 0) continue;
-            const again = await observeField(page, e.ref, filled.get(e.ref) ?? "");
+            const again = await observeField(page, e.ref, requestedFor(e), { name: e.name, id: e.id });
             const bad = again.ariaInvalid || again.validationMessage || again.visibleErrors.length;
-            if (bad && !step.observations.find((o) => o.ref === again.ref)) step.observations.push(again);
+            if (bad && !step.observations.find((o) => (o.name && o.name === again.name) || o.ref === again.ref)) step.observations.push(again);
           }
           resultText = JSON.stringify({ pageErrors: step.pageErrors });
         }

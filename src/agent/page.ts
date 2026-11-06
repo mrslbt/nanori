@@ -69,7 +69,7 @@ export async function observeField(page: Page, ref: string, requested: string, k
       if (!el && key?.id) el = document.getElementById(key.id) as HTMLInputElement | null;
       if (!el && key?.name) el = document.querySelector<HTMLInputElement>(`[name="${CSS.escape(key.name)}"]`);
       if (!el) {
-        return { ref, label: null, name: null, requested, retained: "", maxlength: null, pattern: null, required: false, validationMessage: "element gone", ariaInvalid: false, visibleErrors: [] };
+        return { ref, label: null, name: key?.name ?? null, id: key?.id ?? null, requested, retained: "", maxlength: null, pattern: null, required: false, validationMessage: "", ariaInvalid: false, visibleErrors: [] };
       }
       const id = el.getAttribute("id");
       let label: string | null = null;
@@ -91,6 +91,7 @@ export async function observeField(page: Page, ref: string, requested: string, k
         ref,
         label,
         name: el.getAttribute("name"),
+        id: el.getAttribute("id"),
         requested,
         retained: el.value ?? "",
         maxlength: el.hasAttribute("maxlength") ? Number(el.getAttribute("maxlength")) : null,

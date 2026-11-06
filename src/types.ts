@@ -39,6 +39,7 @@ export interface FieldObservation {
   ref: string;
   label: string | null;
   name: string | null;
+  id: string | null;
   requested: string;
   retained: string;
   maxlength: number | null;

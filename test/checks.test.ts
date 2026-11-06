@@ -3,7 +3,7 @@ import { checkField, patternRejects, describeStringShape } from "../src/checks/i
 import type { FieldObservation } from "../src/types.js";
 
 const base: FieldObservation = {
-  ref: "n1", label: "セイ", name: "seikana", requested: "マリア クララ", retained: "マリア クララ",
+  ref: "n1", label: "セイ", name: "seikana", id: "seikana", requested: "マリア クララ", retained: "マリア クララ",
   maxlength: null, pattern: null, required: true, validationMessage: "", ariaInvalid: false, visibleErrors: [],
 };
 
