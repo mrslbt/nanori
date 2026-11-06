@@ -1,0 +1,119 @@
+{
+  "url": "https://yotsuya-haisya.com/contact/",
+  "field": "flname",
+  "confirmButton": "確認画面へ進む",
+  "measuredAt": "2026-11-06T10:46:53.217Z",
+  "method": "same page, same non-name values from scenario.json, only the name length varies; accepted = checkpoint reached with the value shown and no field error; rejected = field error shown and checkpoint not reached",
+  "scenario": {
+    "fills": {
+      "日付": "2026年11月20日",
+      "shoujyou": "歯が痛いです。",
+      "furik": "やまだ たろう",
+      "telno": "09012345678"
+    },
+    "selects": {
+      "時間": "10:00 ～",
+      "menulist": "虫歯"
+    },
+    "radios": {
+      "naiyou": "初めてのご予約"
+    }
+  },
+  "attempts": [
+    {
+      "n": 10,
+      "value": "Maria Clar",
+      "clicked": true,
+      "retained": "Maria Clar",
+      "fieldErrors": [],
+      "allErrors": [],
+      "checkpointReached": true,
+      "valueShownOnPage": true,
+      "screenshot": "len-10.jpg"
+    },
+    {
+      "n": 40,
+      "value": "Maria Clara Santos Dela Cruz Garcia Lope",
+      "clicked": true,
+      "retained": "Maria Clara Santos Dela Cruz Garcia Lope",
+      "fieldErrors": [
+        "文字数が正しくありません。"
+      ],
+      "allErrors": [
+        "文字数が正しくありません。"
+      ],
+      "checkpointReached": false,
+      "valueShownOnPage": false,
+      "screenshot": "len-40.jpg"
+    },
+    {
+      "n": 25,
+      "value": "Maria Clara Santos Dela C",
+      "clicked": true,
+      "retained": "Maria Clara Santos Dela C",
+      "fieldErrors": [
+        "文字数が正しくありません。"
+      ],
+      "allErrors": [
+        "文字数が正しくありません。"
+      ],
+      "checkpointReached": false,
+      "valueShownOnPage": false,
+      "screenshot": "len-25.jpg"
+    },
+    {
+      "n": 17,
+      "value": "Maria Clara Santo",
+      "clicked": true,
+      "retained": "Maria Clara Santo",
+      "fieldErrors": [],
+      "allErrors": [],
+      "checkpointReached": true,
+      "valueShownOnPage": true,
+      "screenshot": "len-17.jpg"
+    },
+    {
+      "n": 21,
+      "value": "Maria Clara Santos De",
+      "clicked": true,
+      "retained": "Maria Clara Santos De",
+      "fieldErrors": [
+        "文字数が正しくありません。"
+      ],
+      "allErrors": [
+        "文字数が正しくありません。"
+      ],
+      "checkpointReached": false,
+      "valueShownOnPage": false,
+      "screenshot": "len-21.jpg"
+    },
+    {
+      "n": 19,
+      "value": "Maria Clara Santos",
+      "clicked": true,
+      "retained": "Maria Clara Santos",
+      "fieldErrors": [],
+      "allErrors": [],
+      "checkpointReached": true,
+      "valueShownOnPage": true,
+      "screenshot": "len-19.jpg"
+    },
+    {
+      "n": 20,
+      "value": "Maria Clara Santos D",
+      "clicked": true,
+      "retained": "Maria Clara Santos D",
+      "fieldErrors": [],
+      "allErrors": [],
+      "checkpointReached": true,
+      "valueShownOnPage": true,
+      "screenshot": "len-20.jpg"
+    }
+  ],
+  "result": {
+    "status": "bracketed",
+    "accepted": 20,
+    "rejected": 21,
+    "wording": "Observed boundary for the tested strings: 20 accepted; 21 rejected. The server implementation was not inspected."
+  }
+}

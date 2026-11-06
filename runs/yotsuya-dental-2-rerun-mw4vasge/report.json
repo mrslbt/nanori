@@ -1,0 +1,1868 @@
+{
+  "id": "yotsuya-dental-2-rerun-mw4vasge",
+  "url": "http://localhost:4313/",
+  "goal": "reach the confirmation screen (入力内容の確認)",
+  "createdAt": "2026-11-06T11:07:50.063Z",
+  "target": "local_reproduction",
+  "repairState": "after",
+  "comparedTo": "yotsuya-dental-2",
+  "before": {
+    "id": "yotsuya-dental-2",
+    "target": "public",
+    "outcomes": {
+      "baseline": "reached_checkpoint",
+      "latin-own": "reached_checkpoint",
+      "long-name-spaces": "stopped_before_checkpoint",
+      "single-name": "reached_checkpoint",
+      "diacritics": "reached_checkpoint",
+      "hyphen-compound": "reached_checkpoint"
+    }
+  },
+  "scenario": {
+    "dateRule": "the first selectable date, and if a date must be typed, 2026年11月20日",
+    "timeRule": "the first available time option",
+    "choiceRule": "the first non-empty option in every select, and the first radio in every radio group",
+    "treatment": "虫歯",
+    "symptom": "歯が痛いです。",
+    "message": "nanori による自動入力テストです。送信はしません。",
+    "optionalFields": "fill optional email and address fields with the contact data above; leave other optional fields empty",
+    "age": "35",
+    "birthDate": "1990年1月1日"
+  },
+  "baseline": {
+    "identity": {
+      "id": "baseline",
+      "tests": "Japanese name, kanji with katakana reading",
+      "fullName": "山田 太郎",
+      "familyName": "山田",
+      "givenName": "太郎",
+      "kanaFamily": "ヤマダ",
+      "kanaGiven": "タロウ",
+      "kanaFull": "ヤマダ タロウ",
+      "guidance": "n/a (control case)",
+      "email": "test@example.com",
+      "phone": "09012345678",
+      "postal": "1500001",
+      "address": "東京都渋谷区神宮前1-1-1"
+    },
+    "outcome": "reached_checkpoint",
+    "stopReason": "Confirmation screen reached; safe checkpoint, not submitting.",
+    "steps": [
+      {
+        "index": 1,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "click",
+          "ref": "n1",
+          "value": "",
+          "reason": "First radio option"
+        },
+        "ok": true,
+        "screenshot": "step-01.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-01-after.jpg"
+      },
+      {
+        "index": 2,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "fill",
+          "ref": "n3",
+          "value": "2026年11月09日",
+          "reason": "First selectable date (placeholder)"
+        },
+        "ok": true,
+        "screenshot": "step-02.jpg",
+        "observations": [
+          {
+            "ref": "n3",
+            "label": "必須仮予約希望日",
+            "name": "date",
+            "id": null,
+            "requested": "2026年11月09日",
+            "retained": "2026年11月09日",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-02-after.jpg"
+      },
+      {
+        "index": 3,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "select",
+          "ref": "n4",
+          "value": "10:00 〜",
+          "reason": "First time option"
+        },
+        "ok": true,
+        "screenshot": "step-03.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-03-after.jpg"
+      },
+      {
+        "index": 4,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "select",
+          "ref": "n5",
+          "value": "虫歯",
+          "reason": "Treatment 虫歯"
+        },
+        "ok": true,
+        "screenshot": "step-04.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-04-after.jpg"
+      },
+      {
+        "index": 5,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "fill",
+          "ref": "n6",
+          "value": "歯が痛いです。",
+          "reason": "Symptoms"
+        },
+        "ok": true,
+        "screenshot": "step-05.jpg",
+        "observations": [
+          {
+            "ref": "n6",
+            "label": "必須どんな症状ですか？",
+            "name": "symptom",
+            "id": null,
+            "requested": "歯が痛いです。",
+            "retained": "歯が痛いです。",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-05-after.jpg"
+      },
+      {
+        "index": 6,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "fill",
+          "ref": "n7",
+          "value": "山田 太郎",
+          "reason": "Full name"
+        },
+        "ok": true,
+        "screenshot": "step-06.jpg",
+        "observations": [
+          {
+            "ref": "n7",
+            "label": "必須お名前",
+            "name": "flname",
+            "id": null,
+            "requested": "山田 太郎",
+            "retained": "山田 太郎",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-06-after.jpg"
+      },
+      {
+        "index": 7,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "fill",
+          "ref": "n8",
+          "value": "やまだ たろう",
+          "reason": "Hiragana reading for ふりがな"
+        },
+        "ok": true,
+        "screenshot": "step-07.jpg",
+        "observations": [
+          {
+            "ref": "n8",
+            "label": "必須ふりがな",
+            "name": "furigana",
+            "id": null,
+            "requested": "やまだ たろう",
+            "retained": "やまだ たろう",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-07-after.jpg"
+      },
+      {
+        "index": 8,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "fill",
+          "ref": "n9",
+          "value": "09012345678",
+          "reason": "Phone"
+        },
+        "ok": true,
+        "screenshot": "step-08.jpg",
+        "observations": [
+          {
+            "ref": "n9",
+            "label": "必須電話番号",
+            "name": "tel",
+            "id": null,
+            "requested": "09012345678",
+            "retained": "09012345678",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-08-after.jpg"
+      },
+      {
+        "index": 9,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "fill",
+          "ref": "n10",
+          "value": "test@example.com",
+          "reason": "Optional email"
+        },
+        "ok": true,
+        "screenshot": "step-09.jpg",
+        "observations": [
+          {
+            "ref": "n10",
+            "label": "メール",
+            "name": "email",
+            "id": null,
+            "requested": "test@example.com",
+            "retained": "test@example.com",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-09-after.jpg"
+      },
+      {
+        "index": 10,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "click",
+          "ref": "n11",
+          "value": "",
+          "reason": "Go to confirmation"
+        },
+        "ok": true,
+        "screenshot": "step-10.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-10-after.jpg"
+      },
+      {
+        "index": 11,
+        "url": "http://localhost:4313/",
+        "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+        "action": {
+          "action": "done",
+          "ref": "n1",
+          "value": "",
+          "reason": "Confirmation screen reached; safe checkpoint, not submitting."
+        },
+        "ok": true,
+        "screenshot": "step-11.jpg",
+        "observations": [
+          {
+            "ref": "n6@checkpoint",
+            "label": "必須どんな症状ですか？ (as shown on checkpoint screen)",
+            "name": "symptom",
+            "id": null,
+            "requested": "歯が痛いです。",
+            "retained": "",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": [],
+            "diagnostic": {
+              "kind": "checkpoint_missing",
+              "note": "this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)"
+            }
+          }
+        ],
+        "pageErrors": []
+      }
+    ],
+    "startedAt": "2026-11-06T11:04:41.715Z",
+    "endedAt": "2026-11-06T11:05:15.336Z",
+    "model": "claude-sonnet-5-5"
+  },
+  "cases": [
+    {
+      "identity": {
+        "id": "latin-own",
+        "tests": "Latin letters only, no kanji, space between given and family name",
+        "fullName": "Marsel Bait",
+        "familyName": "Bait",
+        "givenName": "Marsel",
+        "kanaFamily": "バイト",
+        "kanaGiven": "マーセル",
+        "kanaFull": "マーセル バイト",
+        "guidance": "p.27: name fields accept multiple scripts incl. Latin letters",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen reached with the name accepted; safe checkpoint, not submitting.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n1",
+            "value": "",
+            "reason": "First radio"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "2026年11月09日",
+            "reason": "First selectable date (placeholder)"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "必須仮予約希望日",
+              "name": "date",
+              "id": null,
+              "requested": "2026年11月09日",
+              "retained": "2026年11月09日",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n4",
+            "value": "10:00 〜",
+            "reason": "first time"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n5",
+            "value": "虫歯",
+            "reason": "treatment"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "歯が痛いです。",
+            "reason": "symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "必須どんな症状ですか？",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n7",
+            "value": "Marsel Bait",
+            "reason": "single full-name field"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n7",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Marsel Bait",
+              "retained": "Marsel Bait",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n8",
+            "value": "まーせる ばいと",
+            "reason": "hiragana reading"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n8",
+              "label": "必須ふりがな",
+              "name": "furigana",
+              "id": null,
+              "requested": "まーせる ばいと",
+              "retained": "まーせる ばいと",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n9",
+            "value": "09012345678",
+            "reason": "phone"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n9",
+              "label": "必須電話番号",
+              "name": "tel",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n10",
+            "value": "test@example.com",
+            "reason": "optional email"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n10",
+              "label": "メール",
+              "name": "email",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n11",
+            "value": "",
+            "reason": "go to confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "done",
+            "ref": "n1",
+            "value": "",
+            "reason": "Confirmation screen reached with the name accepted; safe checkpoint, not submitting."
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n6@checkpoint",
+              "label": "必須どんな症状ですか？ (as shown on checkpoint screen)",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [],
+              "diagnostic": {
+                "kind": "checkpoint_missing",
+                "note": "this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)"
+              }
+            }
+          ],
+          "pageErrors": []
+        }
+      ],
+      "startedAt": "2026-11-06T11:05:15.375Z",
+      "endedAt": "2026-11-06T11:05:45.437Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "long-name-spaces",
+        "tests": "Long name with two middle names and spaces",
+        "fullName": "Maria Clara Santos Dela Cruz",
+        "familyName": "Dela Cruz",
+        "givenName": "Maria Clara Santos",
+        "kanaFamily": "デラ クルス",
+        "kanaGiven": "マリア クララ サントス",
+        "kanaFull": "マリア クララ サントス デラ クルス",
+        "guidance": "p.27: sufficient max length; middle and compound names fit in one field",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen reached with the full name accepted; safe checkpoint, not submitting.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n1",
+            "value": "",
+            "reason": "First radio option"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "2026年11月09日",
+            "reason": "First selectable date (placeholder)"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "必須仮予約希望日",
+              "name": "date",
+              "id": null,
+              "requested": "2026年11月09日",
+              "retained": "2026年11月09日",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n4",
+            "value": "10:00 〜",
+            "reason": "first time option"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n5",
+            "value": "虫歯",
+            "reason": "treatment"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "歯が痛いです。",
+            "reason": "symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "必須どんな症状ですか？",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n7",
+            "value": "Maria Clara Santos Dela Cruz",
+            "reason": "Full name in single name field"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n7",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Maria Clara Santos Dela Cruz",
+              "retained": "Maria Clara Santos Dela Cruz",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n8",
+            "value": "まりあ くらら さんとす でら くるす",
+            "reason": "hiragana reading"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n8",
+              "label": "必須ふりがな",
+              "name": "furigana",
+              "id": null,
+              "requested": "まりあ くらら さんとす でら くるす",
+              "retained": "まりあ くらら さんとす でら くるす",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n9",
+            "value": "09012345678",
+            "reason": "phone"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n9",
+              "label": "必須電話番号",
+              "name": "tel",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n10",
+            "value": "test@example.com",
+            "reason": "optional email"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n10",
+              "label": "メール",
+              "name": "email",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n11",
+            "value": "",
+            "reason": "go to confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "done",
+            "ref": "n1",
+            "value": "",
+            "reason": "Confirmation screen reached with the full name accepted; safe checkpoint, not submitting."
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n6@checkpoint",
+              "label": "必須どんな症状ですか？ (as shown on checkpoint screen)",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [],
+              "diagnostic": {
+                "kind": "checkpoint_missing",
+                "note": "this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)"
+              }
+            }
+          ],
+          "pageErrors": []
+        }
+      ],
+      "startedAt": "2026-11-06T11:05:45.473Z",
+      "endedAt": "2026-11-06T11:06:17.493Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "single-name",
+        "tests": "Single name, no family name at all",
+        "fullName": "Sukarno",
+        "familyName": null,
+        "givenName": "Sukarno",
+        "kanaFamily": null,
+        "kanaGiven": "スカルノ",
+        "kanaFull": "スカルノ",
+        "guidance": "p.27: single full-name field accommodates names without a surname",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen reached; the name \"Sukarno\" was entered in the single name field with no family name.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n1",
+            "value": "",
+            "reason": "First radio option"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "2026年11月09日",
+            "reason": "First selectable date (placeholder)"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "必須仮予約希望日",
+              "name": "date",
+              "id": null,
+              "requested": "2026年11月09日",
+              "retained": "2026年11月09日",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n4",
+            "value": "10:00 〜",
+            "reason": "first time option"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n5",
+            "value": "虫歯",
+            "reason": "treatment"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "歯が痛いです。",
+            "reason": "symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "必須どんな症状ですか？",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n7",
+            "value": "Sukarno",
+            "reason": "Single name goes in full name field; no family name exists"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n7",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Sukarno",
+              "retained": "Sukarno",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n8",
+            "value": "すかるの",
+            "reason": "hiragana reading"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n8",
+              "label": "必須ふりがな",
+              "name": "furigana",
+              "id": null,
+              "requested": "すかるの",
+              "retained": "すかるの",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n9",
+            "value": "09012345678",
+            "reason": "phone"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n9",
+              "label": "必須電話番号",
+              "name": "tel",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n10",
+            "value": "test@example.com",
+            "reason": "optional email"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n10",
+              "label": "メール",
+              "name": "email",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n11",
+            "value": "",
+            "reason": "Go to confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "done",
+            "ref": "n1",
+            "value": "",
+            "reason": "Confirmation screen reached; the name \"Sukarno\" was entered in the single name field with no family name."
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n6@checkpoint",
+              "label": "必須どんな症状ですか？ (as shown on checkpoint screen)",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [],
+              "diagnostic": {
+                "kind": "checkpoint_missing",
+                "note": "this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)"
+              }
+            }
+          ],
+          "pageErrors": []
+        }
+      ],
+      "startedAt": "2026-11-06T11:06:17.537Z",
+      "endedAt": "2026-11-06T11:06:48.662Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "diacritics",
+        "tests": "Latin letters with diacritics",
+        "fullName": "Nguyễn Thị Hương",
+        "familyName": "Nguyễn",
+        "givenName": "Thị Hương",
+        "kanaFamily": "グエン",
+        "kanaGiven": "ティ フオン",
+        "kanaFull": "グエン ティ フオン",
+        "guidance": "p.27: multiple scripts accepted in name fields",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "safe checkpoint reached",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n1",
+            "value": "",
+            "reason": "First radio option"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "2026年11月09日",
+            "reason": "First selectable date per placeholder"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "必須仮予約希望日",
+              "name": "date",
+              "id": null,
+              "requested": "2026年11月09日",
+              "retained": "2026年11月09日",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n4",
+            "value": "10:00 〜",
+            "reason": "First time option"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n5",
+            "value": "虫歯",
+            "reason": "Treatment"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "歯が痛いです。",
+            "reason": "Symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "必須どんな症状ですか？",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n7",
+            "value": "Nguyễn Thị Hương",
+            "reason": "Full name in single name field"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n7",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Nguyễn Thị Hương",
+              "retained": "Nguyễn Thị Hương",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n8",
+            "value": "ぐえん てぃ ふおん",
+            "reason": "Hiragana reading for ふりがな"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n8",
+              "label": "必須ふりがな",
+              "name": "furigana",
+              "id": null,
+              "requested": "ぐえん てぃ ふおん",
+              "retained": "ぐえん てぃ ふおん",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n9",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n9",
+              "label": "必須電話番号",
+              "name": "tel",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n10",
+            "value": "test@example.com",
+            "reason": "Optional email"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n10",
+              "label": "メール",
+              "name": "email",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n11",
+            "value": "",
+            "reason": "Proceed to confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "done",
+            "ref": "",
+            "value": "",
+            "reason": "safe checkpoint reached"
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n6@checkpoint",
+              "label": "必須どんな症状ですか？ (as shown on checkpoint screen)",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [],
+              "diagnostic": {
+                "kind": "checkpoint_missing",
+                "note": "this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)"
+              }
+            }
+          ],
+          "pageErrors": []
+        }
+      ],
+      "startedAt": "2026-11-06T11:06:48.700Z",
+      "endedAt": "2026-11-06T11:07:18.687Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "hyphen-compound",
+        "tests": "Hyphenated compound family name",
+        "fullName": "Ana García-López",
+        "familyName": "García-López",
+        "givenName": "Ana",
+        "kanaFamily": "ガルシア ロペス",
+        "kanaGiven": "アナ",
+        "kanaFull": "アナ ガルシア ロペス",
+        "guidance": "p.27: compound names and punctuation accepted",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen reached; name accepted. Stopping before 送信する.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "2026年11月09日",
+            "reason": "First selectable date (placeholder shows it)"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "必須仮予約希望日",
+              "name": "date",
+              "id": null,
+              "requested": "2026年11月09日",
+              "retained": "2026年11月09日",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n4",
+            "value": "10:00 〜",
+            "reason": "first time option"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "select",
+            "ref": "n5",
+            "value": "虫歯",
+            "reason": "treatment"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "歯が痛いです。",
+            "reason": "symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "必須どんな症状ですか？",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n7",
+            "value": "Ana García-López",
+            "reason": "single full-name field"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n7",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Ana García-López",
+              "retained": "Ana García-López",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n8",
+            "value": "あな がるしあ ろぺす",
+            "reason": "hiragana reading"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n8",
+              "label": "必須ふりがな",
+              "name": "furigana",
+              "id": null,
+              "requested": "あな がるしあ ろぺす",
+              "retained": "あな がるしあ ろぺす",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n9",
+            "value": "09012345678",
+            "reason": "phone"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n9",
+              "label": "必須電話番号",
+              "name": "tel",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "fill",
+            "ref": "n10",
+            "value": "test@example.com",
+            "reason": "optional email"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n10",
+              "label": "メール",
+              "name": "email",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "click",
+            "ref": "n11",
+            "value": "",
+            "reason": "go to confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "http://localhost:4313/",
+          "title": "LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム",
+          "action": {
+            "action": "done",
+            "ref": "n1",
+            "value": "",
+            "reason": "Confirmation screen reached; name accepted. Stopping before 送信する."
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [
+            {
+              "ref": "n6@checkpoint",
+              "label": "必須どんな症状ですか？ (as shown on checkpoint screen)",
+              "name": "symptom",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [],
+              "diagnostic": {
+                "kind": "checkpoint_missing",
+                "note": "this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)"
+              }
+            }
+          ],
+          "pageErrors": []
+        }
+      ],
+      "startedAt": "2026-11-06T11:07:18.726Z",
+      "endedAt": "2026-11-06T11:07:46.903Z",
+      "model": "claude-sonnet-5-5"
+    }
+  ],
+  "findings": [],
+  "summary": "0 of 5 name cases stopped before the checkpoint; baseline reached_checkpoint."
+}

@@ -20,6 +20,7 @@ function firstProblem(r: RunResult): { step: Step; field: string; detail: string
   for (const s of r.steps) {
     for (const o of s.observations) {
       const c = checkField(o);
+      if (o.diagnostic?.kind === "checkpoint_missing" && /not a name finding/.test(o.diagnostic.note)) continue;
       if (c.kind !== "accepted" && c.kind !== "not_verified") return { step: s, field: o.label ?? o.name ?? o.ref, detail: c.detail, kind: c.kind, source: c.source ?? "site" };
     }
   }
@@ -95,7 +96,7 @@ export function renderHtml(b: RunBundle): string {
     <h2>Repair verification</h2>
     <p class="scope">${esc(scope)}</p>
     <table class="ba"><thead><tr><th>Name</th><th>Before (${esc(b.before.id)}, ${esc(b.before.target)})</th><th>After (this run, local reproduction)</th><th>Value shown intact</th></tr></thead><tbody>
-    ${all.map((r) => { const bo = b.before!.outcomes[r.identity.id]; const intact = !r.steps.flatMap((s) => s.observations).some((o) => o.diagnostic); return `<tr><th>${esc(r.identity.fullName)}</th><td class="${tone(bo ?? "not_determined")}">${esc(bo ? describe(bo) : "not run")}</td><td class="${tone(r.outcome)}">${esc(describe(r.outcome))}</td><td>${r.outcome === "reached_checkpoint" ? (intact ? "yes" : "see diagnostics") : "n/a"}</td></tr>`; }).join("")}
+    ${all.map((r) => { const bo = b.before!.outcomes[r.identity.id]; const intact = !r.steps.flatMap((s) => s.observations).some((o) => o.diagnostic && !/not a name finding/.test(o.diagnostic.note)); return `<tr><th>${esc(r.identity.fullName)}</th><td class="${tone(bo ?? "not_determined")}">${esc(bo ? describe(bo) : "not run")}</td><td class="${tone(r.outcome)}">${esc(describe(r.outcome))}</td><td>${r.outcome === "reached_checkpoint" ? (intact ? "yes" : "see diagnostics") : "n/a"}</td></tr>`; }).join("")}
     </tbody></table>
     <p class="muted">"Before" is the saved public run; "after" is this run on the repaired local copy. Two passing results prove these cases on the reproduction, not the live site. Genuinely invalid input must still be rejected; see the local copy's banner for what was changed.</p>` : "";
 

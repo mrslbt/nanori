@@ -1,0 +1,1313 @@
+{
+  "id": "fixture-full",
+  "url": "http://localhost:4310/",
+  "goal": "reach the reservation review screen",
+  "createdAt": "2026-11-06T08:41:42.371Z",
+  "target": "public",
+  "baseline": {
+    "identity": {
+      "id": "baseline",
+      "tests": "Japanese name, kanji with katakana reading",
+      "fullName": "山田 太郎",
+      "familyName": "山田",
+      "givenName": "太郎",
+      "kanaFamily": "ヤマダ",
+      "kanaGiven": "タロウ",
+      "kanaFull": "ヤマダ タロウ",
+      "guidance": "n/a (control case)",
+      "email": "test@example.com",
+      "phone": "09012345678",
+      "postal": "1500001",
+      "address": "東京都渋谷区神宮前1-1-1"
+    },
+    "outcome": "reached_checkpoint",
+    "stopReason": "Safe checkpoint reached: review screen shows the entered values correctly.",
+    "steps": [
+      {
+        "index": 1,
+        "url": "http://localhost:4310/",
+        "title": "さくら内科クリニック 予約",
+        "action": {
+          "action": "select",
+          "ref": "n1",
+          "value": "2026-11-10",
+          "reason": "Pick first date"
+        },
+        "ok": true,
+        "screenshot": "step-01.jpg",
+        "observations": [],
+        "pageErrors": []
+      },
+      {
+        "index": 2,
+        "url": "http://localhost:4310/",
+        "title": "さくら内科クリニック 予約",
+        "action": {
+          "action": "select",
+          "ref": "n2",
+          "value": "10:00",
+          "reason": "Pick first time"
+        },
+        "ok": true,
+        "screenshot": "step-02.jpg",
+        "observations": [],
+        "pageErrors": []
+      },
+      {
+        "index": 3,
+        "url": "http://localhost:4310/",
+        "title": "さくら内科クリニック 予約",
+        "action": {
+          "action": "click",
+          "ref": "n3",
+          "value": "",
+          "reason": "Go to next step"
+        },
+        "ok": true,
+        "screenshot": "step-03.jpg",
+        "observations": [],
+        "pageErrors": []
+      },
+      {
+        "index": 4,
+        "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+        "title": "さくら内科クリニック 予約 - お客様情報",
+        "action": {
+          "action": "fill",
+          "ref": "n1",
+          "value": "山田",
+          "reason": "Family name"
+        },
+        "ok": true,
+        "screenshot": "step-04.jpg",
+        "observations": [
+          {
+            "ref": "n1",
+            "label": "姓 必須",
+            "name": "sei",
+            "requested": "山田",
+            "retained": "山田",
+            "maxlength": 10,
+            "pattern": null,
+            "required": true,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "index": 5,
+        "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+        "title": "さくら内科クリニック 予約 - お客様情報",
+        "action": {
+          "action": "fill",
+          "ref": "n2",
+          "value": "太郎",
+          "reason": "Given name"
+        },
+        "ok": true,
+        "screenshot": "step-05.jpg",
+        "observations": [
+          {
+            "ref": "n2",
+            "label": "名 必須",
+            "name": "mei",
+            "requested": "太郎",
+            "retained": "太郎",
+            "maxlength": 10,
+            "pattern": null,
+            "required": true,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "index": 6,
+        "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+        "title": "さくら内科クリニック 予約 - お客様情報",
+        "action": {
+          "action": "fill",
+          "ref": "n3",
+          "value": "ヤマダ",
+          "reason": "Family kana"
+        },
+        "ok": true,
+        "screenshot": "step-06.jpg",
+        "observations": [
+          {
+            "ref": "n3",
+            "label": "セイ（全角カタカナ） 必須",
+            "name": "seikana",
+            "requested": "ヤマダ",
+            "retained": "ヤマダ",
+            "maxlength": null,
+            "pattern": null,
+            "required": true,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "index": 7,
+        "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+        "title": "さくら内科クリニック 予約 - お客様情報",
+        "action": {
+          "action": "fill",
+          "ref": "n4",
+          "value": "タロウ",
+          "reason": "Given kana"
+        },
+        "ok": true,
+        "screenshot": "step-07.jpg",
+        "observations": [
+          {
+            "ref": "n4",
+            "label": "メイ（全角カタカナ） 必須",
+            "name": "meikana",
+            "requested": "タロウ",
+            "retained": "タロウ",
+            "maxlength": null,
+            "pattern": null,
+            "required": true,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "index": 8,
+        "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+        "title": "さくら内科クリニック 予約 - お客様情報",
+        "action": {
+          "action": "fill",
+          "ref": "n5",
+          "value": "09012345678",
+          "reason": "Phone"
+        },
+        "ok": true,
+        "screenshot": "step-08.jpg",
+        "observations": [
+          {
+            "ref": "n5",
+            "label": "電話番号（半角数字） 必須",
+            "name": "tel",
+            "requested": "09012345678",
+            "retained": "09012345678",
+            "maxlength": null,
+            "pattern": null,
+            "required": true,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "index": 9,
+        "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+        "title": "さくら内科クリニック 予約 - お客様情報",
+        "action": {
+          "action": "fill",
+          "ref": "n6",
+          "value": "test@example.com",
+          "reason": "Email was empty"
+        },
+        "ok": true,
+        "screenshot": "step-09.jpg",
+        "observations": [
+          {
+            "ref": "n6",
+            "label": "メールアドレス 必須",
+            "name": "email",
+            "requested": "test@example.com",
+            "retained": "test@example.com",
+            "maxlength": null,
+            "pattern": null,
+            "required": true,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "index": 10,
+        "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+        "title": "さくら内科クリニック 予約 - お客様情報",
+        "action": {
+          "action": "click",
+          "ref": "n7",
+          "value": "",
+          "reason": "Go to review"
+        },
+        "ok": true,
+        "screenshot": "step-10.jpg",
+        "observations": [],
+        "pageErrors": []
+      },
+      {
+        "index": 11,
+        "url": "http://localhost:4310/confirm.html",
+        "title": "さくら内科クリニック 予約 - 確認",
+        "action": {
+          "action": "done",
+          "ref": "n1",
+          "value": "",
+          "reason": "Safe checkpoint reached: review screen shows the entered values correctly."
+        },
+        "ok": true,
+        "screenshot": "step-11.jpg",
+        "observations": [],
+        "pageErrors": []
+      }
+    ],
+    "startedAt": "2026-11-06T08:38:43.067Z",
+    "endedAt": "2026-11-06T08:39:15.300Z",
+    "model": "claude-sonnet-5-5"
+  },
+  "cases": [
+    {
+      "identity": {
+        "id": "latin-own",
+        "tests": "Latin letters only, no kanji, space between given and family name",
+        "fullName": "Marsel Bait",
+        "familyName": "Bait",
+        "givenName": "Marsel",
+        "kanaFamily": "バイト",
+        "kanaGiven": "マーセル",
+        "kanaFull": "マーセル バイト",
+        "guidance": "p.27: name fields accept multiple scripts incl. Latin letters",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Review screen reached; safe checkpoint, not clicking final confirm.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n1",
+            "value": "2026-11-10",
+            "reason": "Pick first date"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n2",
+            "value": "10:00",
+            "reason": "Pick first time"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "click",
+            "ref": "n3",
+            "value": "",
+            "reason": "Go to next step"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n1",
+            "value": "Bait",
+            "reason": "Family name"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n1",
+              "label": "姓 必須",
+              "name": "sei",
+              "requested": "Bait",
+              "retained": "Bait",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n2",
+            "value": "Marsel",
+            "reason": "Given name"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n2",
+              "label": "名 必須",
+              "name": "mei",
+              "requested": "Marsel",
+              "retained": "Marsel",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "バイト",
+            "reason": "Family kana"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "セイ（全角カタカナ） 必須",
+              "name": "seikana",
+              "requested": "バイト",
+              "retained": "バイト",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n4",
+            "value": "マーセル",
+            "reason": "Given kana"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n4",
+              "label": "メイ（全角カタカナ） 必須",
+              "name": "meikana",
+              "requested": "マーセル",
+              "retained": "マーセル",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n5",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n5",
+              "label": "電話番号（半角数字） 必須",
+              "name": "tel",
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 9,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "test@example.com",
+            "reason": "Email is empty"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "メールアドレス 必須",
+              "name": "email",
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 10,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "click",
+            "ref": "n7",
+            "value": "",
+            "reason": "Go to review"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 11,
+          "url": "http://localhost:4310/confirm.html",
+          "title": "さくら内科クリニック 予約 - 確認",
+          "action": {
+            "action": "done",
+            "ref": "n1",
+            "value": "",
+            "reason": "Review screen reached; safe checkpoint, not clicking final confirm."
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [],
+          "pageErrors": []
+        }
+      ],
+      "startedAt": "2026-11-06T08:39:15.399Z",
+      "endedAt": "2026-11-06T08:39:45.680Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "long-name-spaces",
+        "tests": "Long name with two middle names and spaces",
+        "fullName": "Maria Clara Santos Dela Cruz",
+        "familyName": "Dela Cruz",
+        "givenName": "Maria Clara Santos",
+        "kanaFamily": "デラ クルス",
+        "kanaGiven": "マリア クララ サントス",
+        "kanaFull": "マリア クララ サントス デラ クルス",
+        "guidance": "p.27: sufficient max length; middle and compound names fit in one field",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "stopped_before_checkpoint",
+      "stopReason": "名 field has maxlength=10, so the given name \"Maria Clara Santos\" (18 chars) was truncated to \"Maria Clar\". I can't shorten the real name to get past this.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n1",
+            "value": "2026-11-10",
+            "reason": "Pick first date"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n2",
+            "value": "10:00",
+            "reason": "First time"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "click",
+            "ref": "n3",
+            "value": "",
+            "reason": "Go to next step"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n1",
+            "value": "Dela Cruz",
+            "reason": "Family name"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n1",
+              "label": "姓 必須",
+              "name": "sei",
+              "requested": "Dela Cruz",
+              "retained": "Dela Cruz",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n2",
+            "value": "Maria Clara Santos",
+            "reason": "Given name"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n2",
+              "label": "名 必須",
+              "name": "mei",
+              "requested": "Maria Clara Santos",
+              "retained": "Maria Clar",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "stuck",
+            "ref": "n2",
+            "value": "",
+            "reason": "名 field has maxlength=10, so the given name \"Maria Clara Santos\" (18 chars) was truncated to \"Maria Clar\". I can't shorten the real name to get past this."
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [],
+          "pageErrors": [
+            "セイは全角カタカナで入力してください",
+            "メイは全角カタカナで入力してください",
+            "電話番号は半角数字で入力してください",
+            "メールアドレスの形式が正しくありません"
+          ]
+        }
+      ],
+      "startedAt": "2026-11-06T08:39:45.732Z",
+      "endedAt": "2026-11-06T08:40:05.918Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "single-name",
+        "tests": "Single name, no family name at all",
+        "fullName": "Sukarno",
+        "familyName": null,
+        "givenName": "Sukarno",
+        "kanaFamily": null,
+        "kanaGiven": "スカルノ",
+        "kanaFull": "スカルノ",
+        "guidance": "p.27: single full-name field accommodates names without a surname",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "stopped_before_checkpoint",
+      "stopReason": "The form requires 名 and メイ, but Sukarno has only a single name. I put it in 姓 and セイ and left the others empty. The errors are「名を入力してください」and「メイは全角カタカナで入力してください」. I won't invent a given name.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n1",
+            "value": "2026-11-10",
+            "reason": "Pick first date"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n2",
+            "value": "10:00",
+            "reason": "Pick first time"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "click",
+            "ref": "n3",
+            "value": "",
+            "reason": "Go to next step"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n1",
+            "value": "Sukarno",
+            "reason": "Single name: full name in sei field once, leave 名 empty"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n1",
+              "label": "姓 必須",
+              "name": "sei",
+              "requested": "Sukarno",
+              "retained": "Sukarno",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "スカルノ",
+            "reason": "Full katakana reading in セイ; メイ left empty since single name"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "セイ（全角カタカナ） 必須",
+              "name": "seikana",
+              "requested": "スカルノ",
+              "retained": "スカルノ",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n5",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n5",
+              "label": "電話番号（半角数字） 必須",
+              "name": "tel",
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "test@example.com",
+            "reason": "Email"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "メールアドレス 必須",
+              "name": "email",
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "stuck",
+            "ref": "n2",
+            "value": "",
+            "reason": "The form requires 名 and メイ, but Sukarno has only a single name. I put it in 姓 and セイ and left the others empty. The errors are「名を入力してください」and「メイは全角カタカナで入力してください」. I won't invent a given name."
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [],
+          "pageErrors": [
+            "名を入力してください",
+            "メイは全角カタカナで入力してください"
+          ]
+        }
+      ],
+      "startedAt": "2026-11-06T08:40:05.994Z",
+      "endedAt": "2026-11-06T08:40:31.076Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "diacritics",
+        "tests": "Latin letters with diacritics",
+        "fullName": "Nguyễn Thị Hương",
+        "familyName": "Nguyễn",
+        "givenName": "Thị Hương",
+        "kanaFamily": "グエン",
+        "kanaGiven": "ティ フオン",
+        "kanaFull": "グエン ティ フオン",
+        "guidance": "p.27: multiple scripts accepted in name fields",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "stopped_before_checkpoint",
+      "stopReason": "The form rejected the real kana reading \"ティ フオン\" with the error \"メイは全角カタカナで入力してください\". The field probably doesn't accept the half-width space or the small ィ. I won't change the person's data to get past it.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n1",
+            "value": "2026-11-10",
+            "reason": "Pick first date"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n2",
+            "value": "10:00",
+            "reason": "Pick first time"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "click",
+            "ref": "n3",
+            "value": "",
+            "reason": "Go to next step"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n1",
+            "value": "Nguyễn",
+            "reason": "Family name"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n1",
+              "label": "姓 必須",
+              "name": "sei",
+              "requested": "Nguyễn",
+              "retained": "Nguyễn",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n2",
+            "value": "Thị Hương",
+            "reason": "Given name"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n2",
+              "label": "名 必須",
+              "name": "mei",
+              "requested": "Thị Hương",
+              "retained": "Thị Hương",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "グエン",
+            "reason": "Family kana"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "セイ（全角カタカナ） 必須",
+              "name": "seikana",
+              "requested": "グエン",
+              "retained": "グエン",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n4",
+            "value": "ティ フオン",
+            "reason": "Given kana"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n4",
+              "label": "メイ（全角カタカナ） 必須",
+              "name": "meikana",
+              "requested": "ティ フオン",
+              "retained": "ティ フオン",
+              "maxlength": null,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": true,
+              "visibleErrors": [
+                "メイは全角カタカナで入力してください"
+              ]
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "stuck",
+            "ref": "n4",
+            "value": "",
+            "reason": "The form rejected the real kana reading \"ティ フオン\" with the error \"メイは全角カタカナで入力してください\". The field probably doesn't accept the half-width space or the small ィ. I won't change the person's data to get past it."
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [],
+          "pageErrors": [
+            "メイは全角カタカナで入力してください",
+            "電話番号は半角数字で入力してください",
+            "メールアドレスの形式が正しくありません"
+          ]
+        }
+      ],
+      "startedAt": "2026-11-06T08:40:31.160Z",
+      "endedAt": "2026-11-06T08:40:54.475Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "hyphen-compound",
+        "tests": "Hyphenated compound family name",
+        "fullName": "Ana García-López",
+        "familyName": "García-López",
+        "givenName": "Ana",
+        "kanaFamily": "ガルシア ロペス",
+        "kanaGiven": "アナ",
+        "kanaFull": "アナ ガルシア ロペス",
+        "guidance": "p.27: compound names and punctuation accepted",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "stopped_before_checkpoint",
+      "stopReason": "The family name field has maxlength 10, so \"García-López\" (12 characters) was cut to \"García-Lóp\". I can't enter the real name in full without shortening it.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n1",
+            "value": "2026-11-10",
+            "reason": "Pick first date"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "select",
+            "ref": "n2",
+            "value": "10:00",
+            "reason": "Pick first time"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4310/",
+          "title": "さくら内科クリニック 予約",
+          "action": {
+            "action": "click",
+            "ref": "n3",
+            "value": "",
+            "reason": "Go to next step"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": []
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "fill",
+            "ref": "n1",
+            "value": "García-López",
+            "reason": "Family name"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n1",
+              "label": "姓 必須",
+              "name": "sei",
+              "requested": "García-López",
+              "retained": "García-Lóp",
+              "maxlength": 10,
+              "pattern": null,
+              "required": true,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": []
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4310/form.html?date=2026-11-10&time=10%3A00",
+          "title": "さくら内科クリニック 予約 - お客様情報",
+          "action": {
+            "action": "stuck",
+            "ref": "n1",
+            "value": "",
+            "reason": "The family name field has maxlength 10, so \"García-López\" (12 characters) was cut to \"García-Lóp\". I can't enter the real name in full without shortening it."
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [],
+          "pageErrors": [
+            "名を入力してください",
+            "セイは全角カタカナで入力してください",
+            "メイは全角カタカナで入力してください",
+            "電話番号は半角数字で入力してください",
+            "メールアドレスの形式が正しくありません"
+          ]
+        }
+      ],
+      "startedAt": "2026-11-06T08:40:54.579Z",
+      "endedAt": "2026-11-06T08:41:10.483Z",
+      "model": "claude-sonnet-5-5"
+    }
+  ],
+  "findings": [
+    {
+      "identity": "long-name-spaces",
+      "stepIndex": 5,
+      "field": "名 (name=mei)",
+      "kind": "truncated",
+      "requested": "Maria Clara Santos",
+      "retained": "Maria Clar",
+      "errorText": "",
+      "classification": "site_defect",
+      "guidance": "applicable",
+      "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 Name, item 3 (sufficient maximum length); item 1 (middle and compound names)",
+      "observation": "The 名 field silently kept only the first 10 of 18 characters, cutting \"Maria Clara Santos\" to \"Maria Clar\" with no error shown. The baseline Japanese name was not truncated.",
+      "relevance": "This person has two given names plus a middle name, which is common in Filipino naming. Their legal given name is longer than 10 characters, so they cannot enter it in full.",
+      "basis": "This is inconsistent with p.27 item 3 of the GovTech Tokyo guidance, which says to set a sufficient maximum length because foreign names need more characters. The guidance covers Tokyo Metropolitan Government forms, so for this site it is a reference, not a requirement.",
+      "cause": "Observed in source: the input has maxlength=10. The browser cuts input at that limit.",
+      "fix": "Raise the limit, for example maxlength=\"50\" on the 名 input, and apply the same limit in server-side validation. Keep the field required so that empty input is still rejected.",
+      "screenshot": "step-05.jpg",
+      "id": "F1",
+      "reviewState": "proposed"
+    },
+    {
+      "identity": "hyphen-compound",
+      "stepIndex": 4,
+      "field": "姓 (name=sei)",
+      "kind": "truncated",
+      "requested": "García-López",
+      "retained": "García-Lóp",
+      "errorText": "",
+      "classification": "site_defect",
+      "guidance": "applicable",
+      "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 Name, item 3 (sufficient maximum length)",
+      "observation": "The 姓 field silently kept 10 of 12 characters, turning \"García-López\" into \"García-Lóp\" with no error shown. The baseline Japanese name was not truncated.",
+      "relevance": "This person has a hyphenated Spanish compound family name, which is common in Spanish-speaking countries. Their legal family name is 12 characters long.",
+      "basis": "This is inconsistent with p.27 item 3 of the GovTech Tokyo guidance, which calls for a sufficient maximum length for foreign names. The guidance is scoped to Tokyo Metropolitan Government forms.",
+      "cause": "Observed in source: the input has maxlength=10, which cuts the name at the tenth character.",
+      "fix": "Set maxlength=\"50\" on the 姓 input and match that limit server-side. Keep the field required.",
+      "screenshot": "step-04.jpg",
+      "id": "F2",
+      "reviewState": "proposed"
+    },
+    {
+      "identity": "diacritics",
+      "stepIndex": 7,
+      "field": "メイ（全角カタカナ） (name=meikana)",
+      "kind": "rejected",
+      "requested": "ティ フオン",
+      "retained": "ティ フオン",
+      "errorText": "メイは全角カタカナで入力してください",
+      "classification": "site_defect",
+      "guidance": "applicable",
+      "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 Name, item 4 (allow spaces within names); item 2 (furigana accepts multiple scripts and widths)",
+      "observation": "The メイ field marked the person's katakana reading \"ティ フオン\" invalid (aria-invalid=true) and showed メイは全角カタカナで入力してください. The baseline reading was accepted.",
+      "relevance": "This person's given name has two parts, Thị and Hương, so their katakana reading contains a space between the two parts. They have a valid katakana reading, and that reading was rejected.",
+      "basis": "This is inconsistent with p.27 item 4 of the GovTech Tokyo guidance, which says to allow spaces within names. It is also inconsistent with item 2, which says the furigana field should accept more than full-width katakana only; the guidance is scoped to Tokyo Metropolitan Government forms.",
+      "cause": "Reproduced from behaviour, not confirmed in source, because no pattern attribute is visible. The likely trigger is the half-width space, since ティ is full-width katakana, but the server rule was not observed.",
+      "fix": "Widen the reading validation to allow half- and full-width spaces between katakana runs, for example /^[\\u30A0-\\u30FF]+([ 　][\\u30A0-\\u30FF]+)*$/, and normalise width server-side. Digits and other symbols stay rejected; this verifies only a local reproduction, not the live site's rule.",
+      "screenshot": "step-07.jpg",
+      "id": "F3",
+      "reviewState": "proposed"
+    },
+    {
+      "identity": "single-name",
+      "stepIndex": 8,
+      "field": "名 / メイ",
+      "kind": "stopped_before_checkpoint",
+      "requested": "Sukarno (entered in 姓) / スカルノ (entered in セイ); 名 and メイ left empty",
+      "retained": "",
+      "errorText": "名を入力してください / メイは全角カタカナで入力してください",
+      "classification": "inconclusive",
+      "guidance": "applicable",
+      "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 Name, item 1 (single full-name field; avoid forcing a two-part split)",
+      "observation": "The agent reports that the form required 名 and メイ, and that it showed both error messages when those fields were left empty. No measured fact or screenshot was captured, so this rests on the agent's report only.",
+      "relevance": "This person has a single name and no family name, a common pattern in Indonesia. A form that requires both a family name and a given name has no truthful way to accept their name.",
+      "basis": "If confirmed, this would be inconsistent with p.27 item 1 of the GovTech Tokyo guidance, which says to avoid forcing a two-part split when a name does not split that way. The guidance is scoped to Tokyo Metropolitan Government forms.",
+      "cause": "Not measured: the code checks recorded no required-field rejection, and it is not known whether the page documents a way to enter single names. The rule is reported by the agent, not confirmed in source.",
+      "fix": "Re-run with fact capture on the empty required fields, and check the page for any single-name instructions. If confirmed, make 名 and メイ optional when 姓 is filled, or offer a single full-name field, while still requiring at least one name.",
+      "screenshot": "",
+      "id": "F4",
+      "reviewState": "proposed"
+    }
+  ],
+  "summary": "4 of 5 name cases stopped before the checkpoint; baseline reached_checkpoint."
+}

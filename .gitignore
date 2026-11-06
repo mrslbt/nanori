@@ -1,7 +1,16 @@
 node_modules
 dist
 .env
-runs/
+# Saved runs are large; only the ones the README cites are tracked.
+runs/*
+!runs/yotsuya-dental-2/
+!runs/yotsuya-local-before/
+!runs/yotsuya-dental-2-rerun-mw4vasge/
+!runs/yotsuya-dental-1/
+runs/yotsuya-dental-1/*
+!runs/yotsuya-dental-1/diag/
+!runs/scan-tokyo-1/
+!runs/fixture-full/
 *.log
 .DS_Store
 .nanori-rerun.lock
