@@ -21,3 +21,15 @@ describe("classifyField", () => {
     expect(classifyField(el({ id: "seikana" }))).toBe("kana_family");
   });
 });
+import { toHiragana, kanaScript } from "../src/scan.js";
+describe("kana script", () => {
+  it("converts katakana to hiragana keeping spaces and long vowel marks", () => {
+    expect(toHiragana("マーセル バイト")).toBe("まーせる ばいと");
+  });
+  it("picks hiragana for ふりがな and katakana for フリガナ", () => {
+    expect(kanaScript(el({ label: "ふりがな" }))).toBe("hiragana");
+    expect(kanaScript(el({ label: "フリガナ" }))).toBe("katakana");
+    expect(kanaScript(el({ label: "お名前（ふりがな）", placeholder: "例）やまもと　たろう" }))).toBe("hiragana");
+    expect(kanaScript(el({ label: "セイ（全角カタカナ）" }))).toBe("katakana");
+  });
+});

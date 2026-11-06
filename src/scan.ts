@@ -13,7 +13,7 @@ import { checkField } from "./checks/index.js";
  * It answers "did the name fields reject or cut this input", nothing more.
  */
 
-const NOT_NAME = /(会社|法人|店|学校|商品|件名|団体|組織|部署|company|subject|organization|school|product|title|user ?name|username|login|nickname|ニックネーム|ユーザー)/i;
+const NOT_NAME = /(会社|法人|店|学校|商品|件名|団体|組織|部署|名称|組合|施設|コース|プラン|役職|building|company|subject|organization|school|product|title|user ?name|username|login|nickname|ニックネーム|ユーザー)/i;
 const KANA = /(フリガナ|ふりがな|カナ|かな|kana|furigana|セイ|メイ|ｾｲ|ﾒｲ)/i;
 const NAME = /(氏名|名前|姓|名|name|sei|mei|last|first|family|given|surname)/i;
 const FAMILY = /(姓|セイ|ｾｲ|sei|last|family|surname)/i;
@@ -23,6 +23,22 @@ const ADVANCE = /(確認|次へ|次に進む|入力内容|confirm|next|続ける
 const FORBIDDEN = /(送信|確定|申し?込|予約する|予約を確定|決済|支払|submit|send|purchase|pay|place order)/i;
 
 type Role = "family" | "given" | "full" | "kana_family" | "kana_given" | "kana_full";
+type Script = "katakana" | "hiragana";
+
+export function toHiragana(s: string): string {
+  return s.replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60));
+}
+
+/** Which kana script the field asks for. Convention: ふりがな/ひらがな → hiragana, フリガナ/カタカナ → katakana. */
+export function kanaScript(e: ElementInfo, rowText = ""): Script {
+  const hay = [e.label, e.placeholder, rowText].filter(Boolean).join(" ");
+  if (/(ひらがな|平仮名|hiragana)/i.test(hay)) return "hiragana";
+  if (/(カタカナ|カナ|片仮名|katakana)/i.test(hay)) return "katakana";
+  if (/[ぁ-ん]{2,}/.test(e.placeholder ?? "")) return "hiragana";
+  if (/[ァ-ヶ]{2,}/.test(e.placeholder ?? "")) return "katakana";
+  if (/ふりがな/.test(hay)) return "hiragana";
+  return "katakana";
+}
 
 export function classifyField(e: ElementInfo): Role | null {
   if (!["input", "textarea"].includes(e.tag)) return null;
@@ -37,21 +53,55 @@ export function classifyField(e: ElementInfo): Role | null {
   return full ? "full" : fam ? "family" : "given";
 }
 
-function valueFor(id: Identity, role: Role): string {
+function valueFor(id: Identity, role: Role, script: Script = "katakana"): string {
+  const k = (v: string | null) => (v == null ? "" : script === "hiragana" ? toHiragana(v) : v);
   switch (role) {
     case "family": return id.familyName ?? id.fullName;
     case "given": return id.givenName ?? "";
     case "full": return id.fullName;
-    case "kana_family": return id.kanaFamily ?? id.kanaFull;
-    case "kana_given": return id.kanaGiven ?? "";
-    case "kana_full": return id.kanaFull;
+    case "kana_family": return k(id.kanaFamily ?? id.kanaFull);
+    case "kana_given": return k(id.kanaGiven);
+    case "kana_full": return k(id.kanaFull);
   }
 }
 
-export interface ProbeField { ref: string; role: Role; label: string | null; requested: string; afterBlur: string; afterAdvance: string | null; error: string; retained: string; maxlength: number | null; pattern: string | null }
-export interface ProbeResult { url: string; identity: string; status: "probed" | "no_name_fields" | "blocked" | "error"; note: string; fields: ProbeField[]; advanced: boolean; worst: "accepted" | "rejected" | "truncated" | "altered" | "unknown" }
+export interface ProbeField { ref: string; key: { name: string | null; id: string | null }; role: Role; script?: Script; label: string | null; requested: string; afterBlur: string; afterAdvance: string | null; error: string; retained: string; maxlength: number | null; pattern: string | null }
+export interface ProbeResult { url: string; identity: string; status: "probed" | "no_name_fields" | "blocked" | "error"; note: string; fields: ProbeField[]; advanced: boolean; worst: "accepted" | "rejected" | "truncated" | "altered" | "unknown"; screenshot?: string; afterUrl?: string; clicked?: string }
 
-async function probeOne(page: Page, url: string, id: Identity): Promise<ProbeResult> {
+const SUPPORT: Array<{ re: RegExp; type?: RegExp; value: (id: Identity) => string }> = [
+  { re: /(mail|メール)/i, value: (id) => id.email },
+  { re: /(tel|phone|電話|携帯)/i, value: (id) => id.phone },
+  { re: /(zip|postal|郵便)/i, value: (id) => id.postal },
+  { re: /(住所|address|addr|市区|町|番地|建物)/i, value: (id) => id.address },
+  { re: /(年齢|age)/i, value: () => "35" },
+  { re: /(生年|birth|誕生)/i, value: () => "1990-01-01" },
+  { re: /(会社|法人|company|organization|学校名)/i, value: () => "テスト" },
+  { re: /(件名|subject|title)/i, value: () => "テスト（自動入力のテストです。送信しません）" },
+];
+const NOTE = "nanori による自動入力テストです。送信はしません。";
+
+async function fillSupporting(page: Page, elements: ElementInfo[], skip: string[], id: Identity) {
+  for (const e of elements) {
+    if (skip.includes(e.ref)) continue;
+    const loc = page.locator(`[data-nanori-ref="${e.ref}"]`);
+    const hay = [e.label, e.name, e.id, e.placeholder, e.type].filter(Boolean).join(" ");
+    try {
+      if (e.tag === "textarea") { await loc.fill(NOTE, { timeout: 2000 }); continue; }
+      if (e.tag === "select") { const opt = (e.options ?? []).find((o) => o.split("|")[0] !== ""); if (opt) await loc.selectOption({ value: opt.split("|")[0] }, { timeout: 2000 }).catch(() => {}); continue; }
+      if (e.tag === "input") {
+        if (e.type === "checkbox") { await loc.check({ timeout: 2000 }).catch(() => {}); continue; }
+        if (e.type === "radio") { if (!(await page.locator(`input[type=radio][name="${e.name}"]:checked`).count())) await loc.check({ timeout: 2000 }).catch(() => {}); continue; }
+        if (e.type && !["text", "email", "tel", "number", "date", "url", "search"].includes(e.type)) continue;
+        if (e.value) continue;
+        const rule = SUPPORT.find((r) => r.re.test(hay) || (e.type && r.re.test(e.type)));
+        if (rule) await loc.fill(rule.value(id), { timeout: 2000 });
+        else if (e.required) await loc.fill("テスト", { timeout: 2000 });
+      }
+    } catch { /* supporting fields are best effort */ }
+  }
+}
+
+async function probeOne(page: Page, url: string, id: Identity, outDir: string, idx: number): Promise<ProbeResult> {
   const base: ProbeResult = { url, identity: id.id, status: "probed", note: "", fields: [], advanced: false, worst: "unknown" };
   try {
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
@@ -62,28 +112,56 @@ async function probeOne(page: Page, url: string, id: Identity): Promise<ProbeRes
     if (elements.some((e) => /recaptcha|captcha/i.test(`${e.id} ${e.name} ${e.text}`))) base.note = "captcha present; blur-level only";
 
     for (const { e, role } of named) {
-      const v = valueFor(id, role);
+      const script = role.startsWith("kana") ? kanaScript(e) : undefined;
+      const v = valueFor(id, role, script);
+      const key = { name: e.name, id: e.id };
       if (!v) continue;
       const loc = page.locator(`[data-nanori-ref="${e.ref}"]`);
-      try { await loc.fill(v, { timeout: 3000 }); await loc.dispatchEvent("blur").catch(() => {}); } catch (err: any) { base.fields.push({ ref: e.ref, role, label: e.label, requested: v, afterBlur: "fill failed", afterAdvance: null, error: String(err?.message ?? err).slice(0, 120), retained: "", maxlength: e.maxlength, pattern: e.pattern }); continue; }
+      try { await loc.fill(v, { timeout: 3000 }); await loc.dispatchEvent("blur").catch(() => {}); } catch (err: any) { base.fields.push({ ref: e.ref, key, role, script, label: e.label, requested: v, afterBlur: "fill failed", afterAdvance: null, error: String(err?.message ?? err).slice(0, 120), retained: "", maxlength: e.maxlength, pattern: e.pattern }); continue; }
       await page.waitForTimeout(150);
-      const o = await observeField(page, e.ref, v);
+      const o = await observeField(page, e.ref, v, key);
       const c = checkField(o);
-      base.fields.push({ ref: e.ref, role, label: e.label, requested: v, afterBlur: c.kind, afterAdvance: null, error: c.detail, retained: o.retained, maxlength: o.maxlength, pattern: o.pattern });
+      base.fields.push({ ref: e.ref, key, role, script, label: e.label, requested: v, afterBlur: c.kind, afterAdvance: null, error: c.detail, retained: o.retained, maxlength: o.maxlength, pattern: o.pattern });
     }
+    // Fill the other fields a confirmation step usually requires, with the same contact data for every case.
+    await fillSupporting(page, elements, named.map((n) => n.e.ref), id);
     // Try to advance to a confirmation screen. Never a final submit.
-    const btn = elements.find((e) => (e.tag === "button" || e.type === "submit" || e.tag === "a") && e.text && ADVANCE.test(e.text) && !FORBIDDEN.test(e.text));
+    const fresh = await snapshotElements(page);
+    const btn = fresh.find((e) => (e.tag === "button" || e.type === "submit" || e.type === "image" || e.tag === "a" || e.tag === "input") && e.text && ADVANCE.test(e.text) && !FORBIDDEN.test(e.text));
     if (btn) {
       const beforeUrl = page.url();
+      base.clicked = btn.text ?? "";
       await page.locator(`[data-nanori-ref="${btn.ref}"]`).click({ timeout: 5000 }).catch(() => {});
       await page.waitForLoadState("domcontentloaded").catch(() => {});
       await page.waitForTimeout(800);
-      const stillThere = await page.locator(`[data-nanori-ref="${named[0].e.ref}"]`).count();
-      base.advanced = page.url() !== beforeUrl || stillThere === 0;
-      if (!base.advanced) {
+      // Advanced only if the URL changed or the page no longer has the name fields (by name/id, refs may be re-rendered).
+      const after = await snapshotElements(page);
+      const stillHasNames = after.some((e) => classifyField(e) && (named.some((n) => (n.e.name && n.e.name === e.name) || (n.e.id && n.e.id === e.id))));
+      const strip = (u: string) => u.replace(/#.*$/, "");
+      base.advanced = strip(page.url()) !== strip(beforeUrl) || !stillHasNames;
+      base.afterUrl = page.url();
+      base.screenshot = `${String(idx).padStart(3, "0")}-${id.id}.jpg`;
+      await page.screenshot({ path: path.join(outDir, base.screenshot), type: "jpeg", quality: 55 }).catch(() => {});
+      if (base.advanced) {
+        // On the review screen: is the name shown in full, cut, or missing?
+        const norm = (t: string) => t.replace(/[\s\u3000]+/g, " ");
+        const text = norm(await page.evaluate(() => document.body?.innerText ?? ""));
+        for (const f of base.fields) {
+          if (!f.requested || f.afterBlur === "fill failed") continue;
+          const req = norm(f.requested);
+          if (text.includes(req)) { f.afterAdvance = "accepted"; continue; }
+          const compact = req.replace(/ /g, "");
+          if (text.replace(/ /g, "").includes(compact)) { f.afterAdvance = "altered"; f.error = "shown without spaces on review screen"; continue; }
+          let cut = 0;
+          for (let n = [...req].length - 1; n >= 3; n--) { const pre = [...req].slice(0, n).join(""); if (text.includes(pre)) { cut = n; break; } }
+          if (cut) { f.afterAdvance = "truncated"; f.error = `review screen shows only the first ${cut} of ${[...req].length} characters`; f.retained = [...req].slice(0, cut).join(""); }
+          else { f.afterAdvance = "unknown"; f.error = "name not found on the next screen"; }
+        }
+      } else {
+        base.note += (base.note ? "; " : "") + "stayed on the input page after confirm (other fields may be incomplete)";
         for (const f of base.fields) {
           if (f.afterBlur === "fill failed") continue;
-          const o = await observeField(page, f.ref, f.requested);
+          const o = await observeField(page, f.ref, f.requested, f.key);
           const c = checkField(o);
           f.afterAdvance = c.kind; if (c.kind !== "accepted") { f.error = c.detail || f.error; f.retained = o.retained; }
         }
@@ -91,7 +169,7 @@ async function probeOne(page: Page, url: string, id: Identity): Promise<ProbeRes
     } else {
       base.note += (base.note ? "; " : "") + "no confirmation button found; blur-level only";
     }
-    const kinds = base.fields.flatMap((f) => [f.afterBlur, f.afterAdvance].filter(Boolean) as string[]);
+    const kinds = base.fields.flatMap((f) => [f.afterBlur, f.afterAdvance].filter((k) => k && k !== "unknown") as string[]);
     base.worst = kinds.includes("rejected") || kinds.includes("required_empty") ? "rejected" : kinds.includes("truncated") ? "truncated" : kinds.includes("altered") ? "altered" : kinds.includes("accepted") ? "accepted" : "unknown";
     if (base.fields.every((f) => f.afterBlur === "fill failed")) { base.status = "blocked"; base.worst = "unknown"; }
     return base;
@@ -106,15 +184,17 @@ export async function scan(urls: string[], opts: { outDir: string; cases?: strin
   const ids = [baseline, ...(opts.cases?.length ? battery.filter((b) => opts.cases!.includes(b.id)) : battery)];
   const browser = await chromium.launch({ channel: "chrome", headless: opts.headless ?? false });
   const results: ProbeResult[] = [];
+  let idx = 0;
   for (const url of urls) {
+    idx += 1;
     log(`\n${url}`);
     for (const id of ids) {
       const context = await browser.newContext({ locale: "ja-JP" });
       const page = await context.newPage();
       await page.setViewportSize({ width: 1200, height: 900 });
-      const r = await probeOne(page, url, id);
+      const r = await probeOne(page, url, id, opts.outDir, idx);
       results.push(r);
-      log(`  ${id.id.padEnd(18)} ${r.status.padEnd(15)} ${r.worst.padEnd(9)} ${r.fields.map((f) => `${f.role}:${f.afterAdvance ?? f.afterBlur}`).join(" ")} ${r.note}`);
+      log(`  ${id.id.padEnd(18)} ${r.status.padEnd(15)} ${r.worst.padEnd(9)} ${r.fields.map((f) => `${f.role}:${f.afterAdvance ?? f.afterBlur}`).join(" ")} ${r.note}${r.clicked ? ` [clicked "${r.clicked}" → ${r.advanced ? "advanced" : "stayed"}]` : ""}`);
       await context.close();
       await page.waitForTimeout(0).catch(() => {});
     }
