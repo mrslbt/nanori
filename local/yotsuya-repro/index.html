@@ -12,7 +12,7 @@ button{width:100%;font-size:16px;padding:14px;background:#b8c82a;color:#fff;bord
 #confirm table td{background:#fff}
 </style></head>
 <body>
-<div class="banner">LOCAL REPRODUCTION. Built from the observed behaviour of yotsuya-haisya.com/contact/ on 2026-11-06. Not the live site. The name-length rule (max 20 characters) was measured with scripts/diag-length.mjs, not read from the site's source.</div>
+<div class="banner">LOCAL REPRODUCTION, BEFORE REPAIR. Built from the observed behaviour of yotsuya-haisya.com/contact/ on 2026-11-06. Not the live site. The name-length rule (max 20 characters) was measured with scripts/diag-length.mjs, not read from the site's source.</div>
 <main>
 <form id="f" novalidate>
 <table>
@@ -37,7 +37,7 @@ button{width:100%;font-size:16px;padding:14px;background:#b8c82a;color:#fff;bord
 </main>
 <script>
 // Validation rules reproduced from observed behaviour (see banner). NAME_MAX is the measured limit.
-const NAME_MAX = 100; // repaired: was 20. Keeps the required check and an upper bound; empty and absurd input are still rejected.
+const NAME_MAX = 20;
 const HIRA = /^[ぁ-んー\s　]+$/;
 function show(id, msg){ const e=document.getElementById('err-'+id); e.textContent=msg; e.hidden=!msg; const el=document.querySelector('[name='+id+']'); el.setAttribute('aria-invalid', msg?'true':'false'); return !msg; }
 document.getElementById('f').addEventListener('submit', ev => {

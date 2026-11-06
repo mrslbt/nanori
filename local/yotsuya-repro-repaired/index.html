@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>LOCAL REPRODUCTION: 四ツ谷デンタルオフィス 仮予約フォーム</title>
+<style>
+body{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;margin:0;background:#f4f4f4;color:#333}
+.banner{background:#9a6700;color:#fff;padding:8px 16px;font-size:13px;font-weight:600}
+main{max-width:830px;margin:24px auto;background:#fff;padding:0}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:12px;text-align:left;vertical-align:top}
+th{width:230px;background:#f7f7f7;font-weight:500}.req{display:inline-block;background:#c0392b;color:#fff;font-size:11px;padding:2px 8px;margin-right:8px}
+input[type=text],input[type=email],input[type=tel],select,textarea{font-size:15px;padding:8px;width:100%;max-width:520px;box-sizing:border-box;border:1px solid #ccc;background:#fdfdf0}
+.error{display:inline-block;background:#c0392b;color:#fff;padding:6px 8px;margin-top:6px;font-size:13px}
+button{width:100%;font-size:16px;padding:14px;background:#b8c82a;color:#fff;border:0;margin-top:0}
+#confirm table td{background:#fff}
+</style></head>
+<body>
+<div class="banner">LOCAL REPRODUCTION, REPAIRED (name limit 20 to 100; required check kept). Built from the observed behaviour of yotsuya-haisya.com/contact/ on 2026-11-06. Not the live site. The name-length rule (max 20 characters) was measured with scripts/diag-length.mjs, not read from the site's source.</div>
+<main>
+<form id="f" novalidate>
+<table>
+<tr><th><span class="req">必須</span>お問い合わせ内容</th><td><label><input type="radio" name="kind" value="初めてのご予約" checked> 初めてのご予約</label> <label><input type="radio" name="kind" value="再診"> 2回目以降（再診）のご予約</label></td></tr>
+<tr><th><span class="req">必須</span>仮予約希望日</th><td><input type="text" name="date" placeholder="2026年11月09日"></td></tr>
+<tr><th><span class="req">必須</span>ご希望のお時間</th><td><select name="time"><option value="">選択</option><option>10:00 〜</option><option>14:00 〜</option></select></td></tr>
+<tr><th><span class="req">必須</span>ご希望の診療内容</th><td><select name="menu"><option value="">選択</option><option>虫歯</option><option>定期検診</option></select></td></tr>
+<tr><th><span class="req">必須</span>どんな症状ですか？</th><td><textarea name="symptom" rows="4"></textarea></td></tr>
+<tr><th><span class="req">必須</span>お名前</th><td><input type="text" name="flname" placeholder="氏名"><div class="error" id="err-flname" hidden></div></td></tr>
+<tr><th><span class="req">必須</span>ふりがな</th><td><input type="text" name="furigana" placeholder="ふりがな"><div class="error" id="err-furigana" hidden></div></td></tr>
+<tr><th><span class="req">必須</span>電話番号</th><td><input type="tel" name="tel"><div class="error" id="err-tel" hidden></div></td></tr>
+<tr><th>メール</th><td><input type="email" name="email"></td></tr>
+</table>
+<button type="submit">確認画面へ進む</button>
+</form>
+<section id="confirm" hidden>
+<h2>入力内容の確認</h2>
+<table id="review"></table>
+<p>以下の内容で送信します。</p>
+<button type="button" onclick="alert('LOCAL REPRODUCTION: 送信 is disabled')">送信する</button>
+</section>
+</main>
+<script>
+// Validation rules reproduced from observed behaviour (see banner). NAME_MAX is the measured limit.
+const NAME_MAX = 100; // repaired: was 20. Keeps the required check and an upper bound; empty and absurd input are still rejected.
+const HIRA = /^[ぁ-んー\s　]+$/;
+function show(id, msg){ const e=document.getElementById('err-'+id); e.textContent=msg; e.hidden=!msg; const el=document.querySelector('[name='+id+']'); el.setAttribute('aria-invalid', msg?'true':'false'); return !msg; }
+document.getElementById('f').addEventListener('submit', ev => {
+  ev.preventDefault();
+  const f = ev.target;
+  let ok = true;
+  const name = f.flname.value;
+  ok &= show('flname', !name.trim() ? '未入力です。' : [...name].length > NAME_MAX ? '文字数が正しくありません。' : '');
+  ok &= show('furigana', !f.furigana.value.trim() ? '未入力です。' : HIRA.test(f.furigana.value) ? '' : 'ひらがなで入力してください。');
+  ok &= show('tel', /^[0-9\-]{10,13}$/.test(f.tel.value) ? '' : '電話番号の形式が正しくありません。');
+  if (!ok) return;
+  const rows = [['お問い合わせ内容', f.kind.value], ['仮予約希望日', f.date.value], ['お名前', name], ['ふりがな', f.furigana.value], ['電話番号', f.tel.value], ['メール', f.email.value]];
+  document.getElementById('review').innerHTML = rows.map(r => `<tr><th>${r[0]}</th><td>${r[1].replace(/</g,'&lt;')}</td></tr>`).join('');
+  f.hidden = true; document.getElementById('confirm').hidden = false;
+});
+</script>
+</body></html>
