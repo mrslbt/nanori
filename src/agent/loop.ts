@@ -141,6 +141,23 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
       if (action.action === "done") {
         outcome = "reached_checkpoint";
         stopReason = action.reason;
+        // Measure what the checkpoint screen shows for every value we typed: full, cut, escaped, or missing.
+        const norm = (t: string) => t.replace(/[\s\u3000]+/g, " ");
+        const shown = norm(await page.evaluate(() => document.body?.innerText ?? ""));
+        for (const prev of steps.flatMap((s) => s.observations)) {
+          if (!prev.requested || prev.requested.length < 2) continue;
+          const req = norm(prev.requested);
+          let retained = req, note = "";
+          if (!shown.includes(req)) {
+            const entity = req.replace(/[^\x00-\x7F]/g, (c) => `&#${c.codePointAt(0)};`);
+            let cut = 0;
+            for (let n = [...req].length - 1; n >= 3; n--) { if (shown.includes([...req].slice(0, n).join(""))) { cut = n; break; } }
+            if (entity !== req && shown.includes(entity)) { retained = entity; note = "checkpoint screen shows the value as HTML entities"; }
+            else if (cut) { retained = [...req].slice(0, cut).join(""); note = `checkpoint screen shows only the first ${cut} of ${[...req].length} characters`; }
+            else { retained = ""; note = "value not found on the checkpoint screen"; }
+          }
+          if (retained !== req) step.observations.push({ ...prev, ref: prev.ref + "@checkpoint", label: (prev.label ?? prev.name ?? "") + " (as shown on checkpoint screen)", retained, validationMessage: "", ariaInvalid: false, visibleErrors: note ? [note] : [] });
+        }
         steps.push(step);
         messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "ok" }] });
         break;
