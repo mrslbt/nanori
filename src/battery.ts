@@ -88,6 +88,22 @@ export const battery: Identity[] = [
   },
 ];
 
+/**
+ * The non-name scenario every case uses, so only the name (and its reading) varies between runs.
+ * The agent is told to use these exact choices; the report records what was actually selected.
+ */
+export const scenario = {
+  dateRule: "the first selectable date, and if a date must be typed, 2026年11月20日",
+  timeRule: "the first available time option",
+  choiceRule: "the first non-empty option in every select, and the first radio in every radio group",
+  treatment: "虫歯",
+  symptom: "歯が痛いです。",
+  message: "nanori による自動入力テストです。送信はしません。",
+  optionalFields: "fill optional email and address fields with the contact data above; leave other optional fields empty",
+  age: "35",
+  birthDate: "1990年1月1日",
+};
+
 export function identityById(id: string): Identity | undefined {
   return id === "baseline" ? baseline : battery.find((b) => b.id === id);
 }

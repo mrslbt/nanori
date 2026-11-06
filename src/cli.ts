@@ -17,10 +17,11 @@ program.command("run")
   .option("-c, --cases <ids>", "comma-separated case ids (default: all)", (v) => v.split(","))
   .option("--headless", "run without a visible browser", false)
   .option("--max-steps <n>", "agent step budget per case", (v) => Number(v), 40)
-  .option("--local", "mark this run as a local reproduction (repair verification)", false)
+  .option("--local", "mark this run as a local reproduction", false)
+  .option("--repaired", "with --local: this copy has the repair applied (otherwise it is the before state)", false)
   .option("--run-id <id>", "fixed run id (default: timestamp)")
   .action(async (url, goal, o) => {
-    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", runId: o.runId });
+    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, runId: o.runId });
     console.log(`\nopen ${path.join(dir, "report.html")}`);
   });
 
@@ -31,7 +32,7 @@ program.command("rerun")
   .action(async (runId, o) => {
     const prev = JSON.parse(fs.readFileSync(path.join("runs", runId, "report.json"), "utf8"));
     const cases = prev.cases.map((c: any) => c.identity.id);
-    const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", runId: `${runId}-rerun-${Date.now().toString(36)}` });
+    const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", repairState: "after", comparedTo: runId, runId: `${runId}-rerun-${Date.now().toString(36)}` });
     console.log(`\nBefore: runs/${runId}/report.html\nAfter:  ${path.join(dir, "report.html")}`);
   });
 

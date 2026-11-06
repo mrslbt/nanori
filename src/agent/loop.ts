@@ -6,6 +6,7 @@ import type { BrowserContext, Page } from "playwright";
 import type { Action, Identity, RunResult, Step, FieldObservation, Outcome } from "../types.js";
 import { snapshotElements, observeField, pageErrors, visibleText } from "./page.js";
 import { toHiragana } from "../kana.js";
+import { scenario } from "../battery.js";
 
 const ActionSchema = z.object({
   action: z.enum(["click", "fill", "select", "done", "stuck"]),
@@ -66,10 +67,39 @@ Rules:
 - Enter the name exactly as written above. Do not shorten, transliterate into kanji, remove spaces, or invent a family name. If a field demands something this person does not have (for example a family name when they have only one name), enter the full name in that field once and leave the other name field empty, and say so in the reason.
 - For reading fields, use the script the field asks for: a field labelled ふりがな or ひらがな (or with a hiragana example) gets the hiragana reading; a field labelled フリガナ, カナ or カタカナ (or with a katakana example) gets the katakana reading. Keep spaces where the name has spaces. Never substitute the other script to get past an error: if the field rejects the correct-script reading, that is the finding.
 - For phone and postal fields, enter the digits given, half-width.
-- Choose any available date or time. Pick the first valid option.
+- Non-name choices are fixed so that only the name differs between runs. Use exactly: date = ${scenario.dateRule}; time = ${scenario.timeRule}; selects and radios = ${scenario.choiceRule}; if a treatment or purpose is asked, "${scenario.treatment}"; if symptoms or a free-text message is asked, "${scenario.symptom}" for symptoms and "${scenario.message}" for messages; age ${scenario.age}; birth date ${scenario.birthDate}; ${scenario.optionalFields}.
 - Fill one field per action. After filling all required fields on a page, click the button that goes to the next step (次へ, 確認, 確認画面へ, Next).
 - If an error message appears, read it. If it is about a field you filled with this person's real data, do NOT change the data to make it pass; call "stuck" and quote the error. If it is a mistake of yours (wrong field, wrong format for a non-name field), correct it.
 - Only use refs that exist in the current element list. One act call per turn, always.`;
+}
+
+/**
+ * Checkpoint verification: for the latest value typed into each field, is it shown on this screen
+ * in full, cut, HTML-escaped, or missing? Returns nanori diagnostics (never site error text).
+ * Verified = at least one typed value is shown in full and none is missing.
+ */
+export async function verifyCheckpoint(page: Page, steps: Step[]): Promise<{ verified: boolean; observations: FieldObservation[] }> {
+  const norm = (t: string) => t.normalize("NFC").replace(/[\s\u3000]+/g, " ");
+  const shown = norm(await page.evaluate(() => document.body?.innerText ?? ""));
+  // Latest value per field (by name/id), so corrected entries replace earlier ones.
+  const latest = new Map<string, FieldObservation>();
+  for (const o of steps.flatMap((s) => s.observations)) { if (o.requested && !o.diagnostic) latest.set(o.name ?? o.id ?? o.ref, o); }
+  const observations: FieldObservation[] = [];
+  let shownInFull = 0, missing = 0;
+  for (const prev of latest.values()) {
+    const req = norm(prev.requested);
+    if ([...req].length < 2) continue;
+    if (shown.includes(req)) { shownInFull++; continue; }
+    const entity = req.replace(/[^\x00-\x7F]/g, (c) => `&#${c.codePointAt(0)!};`);
+    let cut = 0;
+    for (let n = [...req].length - 1; n >= Math.max(3, Math.ceil([...req].length / 2)); n--) { if (shown.includes([...req].slice(0, n).join(""))) { cut = n; break; } }
+    let diag: NonNullable<FieldObservation["diagnostic"]>, retained: string;
+    if (entity !== req && shown.includes(entity)) { retained = entity; diag = { kind: "checkpoint_escaped", note: "the checkpoint screen shows this value as HTML entities" }; }
+    else if (cut) { retained = [...req].slice(0, cut).join(""); diag = { kind: "checkpoint_truncated", note: `the checkpoint screen shows only the first ${cut} of ${[...req].length} characters (prefix match; verify against the review row)` }; }
+    else { retained = ""; missing++; diag = { kind: "checkpoint_missing", note: "this value was not found on the checkpoint screen" }; }
+    observations.push({ ...prev, ref: prev.ref + "@checkpoint", label: (prev.label ?? prev.name ?? "") + " (as shown on checkpoint screen)", retained, validationMessage: "", ariaInvalid: false, visibleErrors: [], diagnostic: diag });
+  }
+  return { verified: shownInFull > 0 && missing === 0, observations };
 }
 
 export async function runLoop(context: BrowserContext, opts: LoopOptions): Promise<RunResult> {
@@ -139,25 +169,11 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
     let resultText = "ok";
     try {
       if (action.action === "done") {
-        outcome = "reached_checkpoint";
-        stopReason = action.reason;
-        // Measure what the checkpoint screen shows for every value we typed: full, cut, escaped, or missing.
-        const norm = (t: string) => t.replace(/[\s\u3000]+/g, " ");
-        const shown = norm(await page.evaluate(() => document.body?.innerText ?? ""));
-        for (const prev of steps.flatMap((s) => s.observations)) {
-          if (!prev.requested || prev.requested.length < 2) continue;
-          const req = norm(prev.requested);
-          let retained = req, note = "";
-          if (!shown.includes(req)) {
-            const entity = req.replace(/[^\x00-\x7F]/g, (c) => `&#${c.codePointAt(0)};`);
-            let cut = 0;
-            for (let n = [...req].length - 1; n >= 3; n--) { if (shown.includes([...req].slice(0, n).join(""))) { cut = n; break; } }
-            if (entity !== req && shown.includes(entity)) { retained = entity; note = "checkpoint screen shows the value as HTML entities"; }
-            else if (cut) { retained = [...req].slice(0, cut).join(""); note = `checkpoint screen shows only the first ${cut} of ${[...req].length} characters`; }
-            else { retained = ""; note = "value not found on the checkpoint screen"; }
-          }
-          if (retained !== req) step.observations.push({ ...prev, ref: prev.ref + "@checkpoint", label: (prev.label ?? prev.name ?? "") + " (as shown on checkpoint screen)", retained, validationMessage: "", ariaInvalid: false, visibleErrors: note ? [note] : [] });
-        }
+        // The model saying "done" is a claim. Verify: the typed name values must appear on this screen.
+        const v = await verifyCheckpoint(page, steps);
+        outcome = v.verified ? "reached_checkpoint" : "not_determined";
+        stopReason = action.reason + (v.verified ? "" : " (not verified: typed values not found on this screen)");
+        step.observations.push(...v.observations);
         steps.push(step);
         messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "ok" }] });
         break;
@@ -166,6 +182,14 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         outcome = "stopped_before_checkpoint";
         stopReason = action.reason;
         step.pageErrors = await pageErrors(page);
+        try {
+          const lastBad = [...steps].reverse().flatMap((s) => s.observations).find((o) => o.visibleErrors.length || o.ariaInvalid || o.validationMessage);
+          if (lastBad) await page.evaluate((k) => { const el = (k.id ? document.getElementById(k.id) : null) ?? (k.name ? document.querySelector(`[name="${CSS.escape(k.name)}"]`) : null); (el as HTMLElement | null)?.scrollIntoView({ block: "center" }); }, { id: lastBad.id, name: lastBad.name });
+          await page.waitForTimeout(200);
+          const after = path.join(opts.outDir, `step-${String(i).padStart(2, "0")}-after.jpg`);
+          await page.screenshot({ path: after, type: "jpeg", quality: 60 });
+          step.screenshotAfter = path.basename(after);
+        } catch { /* best effort */ }
         steps.push(step);
         messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "ok" }] });
         break;
@@ -190,8 +214,11 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
       } else if (action.action === "click") {
         const label = (el.text ?? el.value ?? "").trim();
         if (FORBIDDEN_BUTTON.test(label)) {
-          outcome = "reached_checkpoint";
-          stopReason = `safe checkpoint: refused to click "${label}"`;
+          // A safe stop is not proof the goal screen was reached. Verify below like a "done".
+          const v = await verifyCheckpoint(page, steps);
+          outcome = v.verified ? "reached_checkpoint" : "not_determined";
+          stopReason = `safe stop: refused to click "${label}"` + (v.verified ? "; typed values are shown on this screen" : "; could not verify this is the goal screen");
+          if (v.observations.length) step.observations.push(...v.observations);
           step.ok = false;
           step.error = stopReason;
           steps.push(step);
@@ -228,6 +255,17 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
       step.error = String(e?.message ?? e);
       resultText = `error: ${step.error}`;
     }
+    // Evidence: a second screenshot AFTER the action settled. If a field now shows an error, scroll it into view first.
+    try {
+      const bad = step.observations.find((o) => o.visibleErrors.length || o.ariaInvalid || o.validationMessage);
+      if (bad) {
+        await page.evaluate((k) => { const el = (k.id ? document.getElementById(k.id) : null) ?? (k.name ? document.querySelector(`[name="${CSS.escape(k.name)}"]`) : null); (el as HTMLElement | null)?.scrollIntoView({ block: "center" }); }, { id: bad.id, name: bad.name });
+        await page.waitForTimeout(200);
+      }
+      const after = path.join(opts.outDir, `step-${String(i).padStart(2, "0")}-after.jpg`);
+      await page.screenshot({ path: after, type: "jpeg", quality: 60, fullPage: false });
+      step.screenshotAfter = path.basename(after);
+    } catch { /* evidence capture is best effort */ }
     steps.push(step);
     messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: resultText }] });
   }

@@ -1,4 +1,5 @@
 import type { RunBundle, RunResult, Finding } from "../types.js";
+import { verdict } from "../verdict.js";
 
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 
@@ -21,12 +22,7 @@ function outcomeTone(o: RunResult["outcome"]) {
 
 export function renderHtml(b: RunBundle, runDir: string): string {
   const all = [b.baseline, ...b.cases];
-  const blocked = b.cases.filter((c) => c.outcome === "stopped_before_checkpoint").length;
-  const verdict = b.baseline.outcome !== "reached_checkpoint"
-    ? "The baseline did not reach the review screen, so name results are inconclusive."
-    : blocked === 0
-      ? `All ${b.cases.length} tested names reached the review screen.`
-      : `${blocked} of ${b.cases.length} tested names could not reach the review screen. The Japanese baseline did.`;
+  const verdictText = verdict(b);
 
   const maxSteps = Math.max(...all.map((r) => r.steps.length));
   const grid = all.map((r) => {
@@ -90,8 +86,8 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 </style></head><body><main>
 <h1>nanori</h1>
 <div class="meta">${esc(b.url)} · goal: ${esc(b.goal)} · recorded ${esc(b.createdAt)} · run ${esc(b.id)}</div>
-${b.target === "local_reproduction" ? `<p><span class="scope">Repair verified on a local reproduction. Original website unchanged.</span></p>` : ""}
-<div class="verdict">${esc(verdict)}</div>
+${b.target === "local_reproduction" ? `<p><span class="scope">${b.repairState === "after" ? "Repair verified on a local reproduction. Original website unchanged." : "Local reproduction, before repair. Original website unchanged."}</span></p>` : ""}
+<div class="verdict">${esc(verdictText)}</div>
 
 <h2>Comparison</h2>
 <p class="muted">Same form, same contact details, same goal. Only the name changes between rows. Each cell is one agent action; click a cell to open its screenshot. Recorded run, not live.</p>

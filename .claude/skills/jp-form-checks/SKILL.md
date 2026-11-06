@@ -33,11 +33,13 @@ Extra facts: `patternRejects` is true when the element's own `pattern` attribute
 Source: https://www.digitalservice.metro.tokyo.lg.jp/documents/d/digitalservice/inputform_guidance_v11
 Scope: guidance for Tokyo Metropolitan Government input forms. Not a law. For other sites, say "inconsistent with this guidance" and nothing stronger.
 
-Page 27, Name (氏名):
-1. A single full-name field accommodates middle names and compound names; avoid forcing a two-part split when the person's name does not split that way.
-2. The furigana field accepts kanji, hiragana, katakana and Latin letters, in full or half width, rather than katakana only.
-3. Set a sufficient maximum length, because foreign names need more characters.
-4. Allow spaces within names.
+Page 27, Name (氏名), items as numbered on the page:
+1. One full-name field accommodates middle names and compound names; avoid forcing a two-part split when the person's name does not split that way.
+2. Accept the scripts people actually write their names in (kanji, hiragana, katakana, Latin letters), full or half width.
+3. Allow spaces within names.
+4. Set a sufficient maximum length, because foreign names need more characters.
+Cite the item number only when the quoted behaviour matches; otherwise cite the page and say "analogy".
+The guidance illustrates required name and reading fields; it does not say a reading field must be optional.
 
 Page 31, Phone (電話番号):
 - One field, digits 0-9 with an optional hyphen, full or half width accepted and normalised, maximum 13 digits.

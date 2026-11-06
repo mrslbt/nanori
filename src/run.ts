@@ -14,6 +14,8 @@ export interface RunOptions {
   runsDir?: string;
   runId?: string;
   target?: "public" | "local_reproduction";
+  repairState?: "before" | "after";
+  comparedTo?: string;
   headless?: boolean;
   maxSteps?: number;
   log?: (s: string) => void;
@@ -52,6 +54,7 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
   const findings = await diagnose(baselineRun, cases, opts.url, opts.goal);
   const bundle: RunBundle = {
     id, url: opts.url, goal: opts.goal, createdAt: new Date().toISOString(), target: opts.target ?? "public",
+    repairState: opts.repairState, comparedTo: opts.comparedTo,
     baseline: baselineRun, cases, findings,
     summary: `${cases.filter((c) => c.outcome === "stopped_before_checkpoint").length} of ${cases.length} name cases stopped before the checkpoint; baseline ${baselineRun.outcome}.`,
   };

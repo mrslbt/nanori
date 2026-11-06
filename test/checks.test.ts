@@ -57,3 +57,15 @@ describe("required_empty", () => {
     expect(r.kind).toBe("required_empty");
   });
 });
+
+describe("nanori diagnostics are not site errors", () => {
+  it("a checkpoint note is reported with source nanori, never as a site rejection", () => {
+    const r = checkField({ ...base, requested: "Nguyễn Thị Hương", retained: "Nguy", diagnostic: { kind: "checkpoint_truncated", note: "prefix match" } });
+    expect(r.kind).toBe("truncated");
+    expect(r.source).toBe("nanori");
+  });
+  it("a missing value is not_verified, not rejected", () => {
+    const r = checkField({ ...base, requested: "x y", retained: "", diagnostic: { kind: "checkpoint_missing", note: "not found" } });
+    expect(r.kind).toBe("not_verified");
+  });
+});
