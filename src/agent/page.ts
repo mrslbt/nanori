@@ -131,7 +131,16 @@ export async function visibleText(page: Page, max = 3000): Promise<string> {
 export async function pageModel(page: Page, keys: Array<{ name: string | null; id: string | null }>, urlChanged: boolean) {
   return page.evaluate(({ keys, urlChanged }) => {
     const text = (el: Element | null) => (el ? ((el as HTMLElement).innerText ?? el.textContent ?? "").trim() : "");
-    const shown = (el: Element) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
+    // On screen means: a box, and neither the element nor any ancestor is display:none, visibility:hidden or fully
+    // transparent. A future step kept mounted but transparent during a transition is not what the person sees.
+    const shown = (el: Element) => {
+      const r = el.getBoundingClientRect(); if (r.width === 0 || r.height === 0) return false;
+      for (let e: Element | null = el; e && e !== document.documentElement; e = e.parentElement) {
+        const cs = getComputedStyle(e);
+        if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) === 0) return false;
+      }
+      return true;
+    };
     // Hidden headings (a later step kept in the same document) are not on the screen the person sees.
     const headings = Array.from(document.querySelectorAll("h1, h2, h3, h4, .title, [class*=title], [class*=heading], legend, th[colspan]")).filter(shown).map(text).filter(Boolean).slice(0, 40);
     headings.push(document.title);

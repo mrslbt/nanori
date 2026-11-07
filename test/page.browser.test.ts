@@ -16,6 +16,13 @@ describe("page model extraction in a real browser", () => {
     expect(m.cues).toEqual(["配送先をご確認ください"]);
     expect(m.rows).toEqual([{ label: "氏名", value: "山田 太郎" }]);
     expect(recogniseCheckpoint(m)).toBe("not_recognised");
+    // Transparent content, and content under a transparent or visibility:hidden ancestor, is not on screen either.
+    await page.setContent(`<h2 style="opacity:0">入力内容の確認</h2><div style="opacity:0"><p>入力内容をご確認の上、送信してください。</p></div><div style="visibility:hidden"><h3>入力内容の確認</h3></div>
+      <h1>配送方法の選択</h1><table><tr><th>氏名</th><td>山田 太郎</td></tr></table>`);
+    const m3 = await pageModel(page, [{ name: "sei", id: null }], true);
+    expect(m3.headings.filter((h) => h.includes("入力内容の確認"))).toEqual([]);
+    expect(m3.cues).toEqual([]);
+    expect(recogniseCheckpoint(m3)).toBe("not_recognised");
     await page.setContent(`<h1>お問い合わせフォーム</h1><p>入力内容をご確認の上、よろしければ送信ボタンを押してください。</p><table><tr><th>氏名</th><td>山田 太郎</td></tr></table>`);
     const m2 = await pageModel(page, [{ name: "sei", id: null }], true);
     expect(recogniseCheckpoint(m2)).toBe("recognised");
