@@ -35,7 +35,7 @@ program.command("rerun")
     const prev = JSON.parse(fs.readFileSync(path.join("runs", runId, "report.json"), "utf8"));
     const cases = prev.cases.map((c: any) => c.identity.id);
     const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", repairState: "after", comparedTo: o.before ?? runId, runId: `${runId}-rerun-${Date.now().toString(36)}` });
-    console.log(`\nBefore: runs/${runId}/report.html\nAfter:  ${path.join(dir, "report.html")}`);
+    console.log(`\nBefore: runs/${o.before ?? runId}/report.html\nAfter:  ${path.join(dir, "report.html")}`);
   });
 
 program.command("scan")
