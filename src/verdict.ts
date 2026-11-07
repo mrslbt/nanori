@@ -13,6 +13,18 @@ export function tally(cases: RunResult[]): Tally {
   return t;
 }
 
+/** Headline + supporting line. Never claims "all reached" unless every case was verified reached. */
+export function headline(b: Pick<RunBundle, "baseline" | "cases">): { head: string; support: string } {
+  const t = tally(b.cases);
+  if (b.baseline.outcome !== "reached_checkpoint") return { head: "Comparison inconclusive.", support: `The kanji-name baseline did not reach the confirmation screen (${describe(b.baseline.outcome)}).` };
+  if (t.total === 0) return { head: "No name cases were run.", support: "" };
+  const stoppedCases = b.cases.filter((c) => c.outcome === "stopped_before_checkpoint");
+  const names = stoppedCases.map((c) => (c.identity as any).label ?? c.identity.tests);
+  if (t.reached === t.total) return { head: "All tested name formats reached confirmation.", support: `Kanji-name baseline + ${t.total} other ${t.total === 1 ? "case" : "cases"} reached the confirmation screen.` };
+  if (t.stopped === 1 && t.undetermined === 0 && t.workaround === 0) return { head: `One test was rejected: ${names[0]}.`, support: `Kanji-name baseline + ${t.reached} other ${t.reached === 1 ? "case" : "cases"} reached confirmation; this one did not.` };
+  return { head: verdict(b), support: "" };
+}
+
 /** One honest sentence. Never claims "all reached" unless every case was verified reached. */
 export function verdict(b: Pick<RunBundle, "baseline" | "cases">): string {
   const t = tally(b.cases);

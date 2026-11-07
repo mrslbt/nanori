@@ -2106,5 +2106,6 @@
     }
   ],
   "summary": "1 of 5 name cases stopped before the checkpoint; baseline reached_checkpoint.",
-  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T08:28:35.458Z"
+  "publicRun": "yotsuya-dental-3",
+  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T09:58:32.145Z"
 }

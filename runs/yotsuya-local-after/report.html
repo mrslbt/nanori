@@ -18,16 +18,30 @@ td.outcome{font-weight:600;white-space:nowrap}td.ok,.ok{color:var(--ok)}td.bad,.
 .site_defect .badge{background:var(--badbg);color:var(--bad)}.no_issue .badge{background:var(--okbg);color:var(--ok)}.agent_limit .badge{background:#eceff3;color:#374151}
 .rev{color:var(--muted);font-size:13px;margin-left:8px}dl{display:grid;grid-template-columns:160px 1fr;gap:8px 16px;margin:16px 0 0}dt{color:var(--muted);font-size:14px}dd{margin:0}
 code{font:14px ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f1ea;padding:1px 6px;border-radius:4px;word-break:break-all}code.big{font-size:20px;padding:4px 10px}
-.muted{color:var(--muted);font-size:14px}details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}
+.muted{color:var(--muted);font-size:14px}details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}details.cmp{padding:4px 16px}details.cmp h2{margin-top:12px}
 .finding dl{grid-template-columns:140px 1fr}.log{font-size:14px;padding-left:20px}.log li{margin:4px 0}.log li.bad{color:var(--bad)}.log .act{font-weight:600}.log ul{margin:2px 0 6px;color:var(--ink)}
-table.ba td{font-weight:600}@media (max-width:800px){.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr}}
+table.ba td{font-weight:600}.verdict .head{font-size:26px;font-weight:600;line-height:1.3}.verdict .support{font-size:16px;color:var(--muted);margin-top:6px}
+.crop{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;aspect-ratio:4/3;background:#fff}.crop img{position:absolute;left:50%;top:50%;width:200%;max-width:none;transform:translate(-50%,-50%)}
+.passed{background:var(--okbg);color:var(--ok);padding:14px 18px;border-radius:8px;font-weight:600}
+td.outcome{white-space:normal}
+@media (max-width:800px){.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr}.verdict .head{font-size:21px}
+ table:not(.ba){display:block}table:not(.ba) thead{display:none}table:not(.ba) tbody,table:not(.ba) tr{display:block}table:not(.ba) tr{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 12px;background:#fff}table:not(.ba) th,table:not(.ba) td{display:block;border:0;padding:4px 0;min-width:0}td.num{text-align:left}
+ table.ba{display:block;overflow-x:auto;white-space:nowrap}.meta{word-break:break-all}}
 footer{margin-top:48px;color:var(--muted);font-size:13px}
 </style></head><body><main>
 <h1>nanori</h1>
 <div class="meta">http://localhost:4313/ · goal: reach the confirmation screen (入力内容の確認) · recorded run yotsuya-local-after on 2026-11-07T08:28:24.077Z</div>
 <p><span class="scope">Repair verified on a local reproduction. Original website unchanged.</span></p>
-<div class="verdict">All 5 tested names reached the review screen, as the baseline did.</div>
+<div class="verdict"><div class="head">All tested name formats reached confirmation.</div><div class="support">Kanji-name baseline + 5 other cases reached the confirmation screen.</div></div>
 
+
+    <h2>Repair verification</h2>
+    <p class="scope">Repair verified on a local reproduction. Original website unchanged.</p>
+    <table class="ba"><thead><tr><th>Name format</th><th>Before (yotsuya-local-before, local reproduction, before repair)</th><th>After (this run, local reproduction, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
+    <tr><th>山田 太郎</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Marsel Bait</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Maria Clara Santos Dela Cruz</th><td class="bad">stopped before the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Sukarno</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Nguyễn Thị Hương</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Ana García-López</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr>
+    </tbody></table>
+    <p class="muted">Both columns are the same local reproduction, before and after the repair; the public finding is linked separately. Passing results prove these cases on the reproduction, not the live site. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>
+<details class="cmp"><summary>Comparison table for this run (all cases)</summary>
 <h2>Comparison</h2>
 <p class="muted">Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table><thead><tr><th>Name format</th><th>Outcome</th><th>Name check: first measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody><tr class="baseline">
@@ -64,17 +78,13 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
 
 
+</details>
+
 <h2>Evidence</h2>
-<p class="muted">No findings.</p>
+<p class="passed">Every case reached the confirmation screen on the repaired reproduction, with each name shown exactly in its review row. No name finding; no site error text was recorded.</p>
 
+<p class="muted">The public finding this repair answers: <a href="../yotsuya-dental-3/report.html">yotsuya-dental-3/report.html</a>.</p>
 
-
-    <h2>Repair verification</h2>
-    <p class="scope">Repair verified on a local reproduction. Original website unchanged.</p>
-    <table class="ba"><thead><tr><th>Name format</th><th>Before (yotsuya-local-before, local reproduction, before repair)</th><th>After (this run, local reproduction, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
-    <tr><th>山田 太郎</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Marsel Bait</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Maria Clara Santos Dela Cruz</th><td class="bad">stopped before the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Sukarno</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Nguyễn Thị Hương</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Ana García-López</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr>
-    </tbody></table>
-    <p class="muted">Both columns are the same local reproduction, before and after the repair; the public finding is linked separately. Passing results prove these cases on the reproduction, not the live site. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>
 
 <h2>Run details</h2>
 

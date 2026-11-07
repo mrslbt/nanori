@@ -138,6 +138,10 @@ export interface RunBundle {
   comparedTo?: string;
   /** Summary of the compared run, copied at rerun time so the report is self-contained. */
   before?: { id: string; target: string; outcomes: Record<string, Outcome> };
+  /** For repaired reruns: the public run whose finding this repair answers (cross-report link). */
+  publicRun?: string;
+  /** Separate boundary probe evidence attached at render time. */
+  probe?: { summary: string; href: string };
   /** The fixed non-name scenario the agent was told to use. Absent on runs made before it existed. */
   scenario?: Record<string, string>;
   baseline: RunResult;

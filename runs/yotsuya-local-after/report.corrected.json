@@ -2148,6 +2148,7 @@
   ],
   "findings": [],
   "summary": "0 of 5 name cases stopped before the checkpoint; baseline reached_checkpoint.",
+  "publicRun": "yotsuya-dental-3",
   "before": {
     "id": "yotsuya-local-before",
     "target": "local_reproduction",
@@ -2161,5 +2162,5 @@
     }
   },
   "comparedTo": "yotsuya-local-before",
-  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T08:28:35.487Z"
+  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T09:59:21.447Z"
 }

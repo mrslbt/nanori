@@ -1,7 +1,7 @@
 import type { RunBundle, RunResult, Finding, Step, FieldObservation } from "../types.js";
 import { norm } from "../checkpoint.js";
 import { identityById } from "../battery.js";
-import { verdict, describe } from "../verdict.js";
+import { verdict, describe, headline } from "../verdict.js";
 import { checkField } from "../checks/index.js";
 
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
@@ -53,6 +53,7 @@ function evidenceShot(r: RunResult, s: Step | undefined): string | null {
 export function renderHtml(b: RunBundle): string {
   const all = [b.baseline, ...b.cases];
   const verdictText = verdict(b);
+  const hl = headline(b);
   const scope = b.target === "local_reproduction"
     ? (b.repairState === "after" ? "Repair verified on a local reproduction. Original website unchanged." : "Local reproduction, before repair. Original website unchanged.")
     : "Public page. Nothing was submitted.";
@@ -84,8 +85,8 @@ export function renderHtml(b: RunBundle): string {
   const selectedHtml = selected ? `
     <section class="selected ${selected.classification}">
       <div class="pair">
-        <figure><a href="${esc(baseShot)}" target="_blank"><img src="${esc(baseShot)}" alt="Baseline, final screen"></a><figcaption>Baseline · ${esc(b.baseline.identity.fullName)} · ${esc(describe(b.baseline.outcome))}</figcaption></figure>
-        <figure><a href="${esc(selShot)}" target="_blank"><img src="${esc(selShot)}" alt="Affected case, screen with the error"></a><figcaption>${esc(selRun?.identity.fullName)} · ${esc(describe(selRun!.outcome))} · step ${selected.stepIndex}</figcaption></figure>
+        <figure><div class="crop"><img src="${esc(selShot)}" alt="Detail: the name field and the error"></div><figcaption>Detail crop (the same screenshot, magnified around the centre; nothing edited) · <a href="${esc(selShot)}" target="_blank">open the untouched full screenshot</a></figcaption></figure>
+        <figure><a href="${esc(baseShot)}" target="_blank"><img src="${esc(baseShot)}" alt="Baseline, final screen"></a><figcaption>Baseline · ${esc(b.baseline.identity.fullName)} · ${esc(describe(b.baseline.outcome))} · <a href="${esc(baseShot)}" target="_blank">full screenshot</a></figcaption></figure>
       </div>
       <div class="facts">
         <span class="badge">${CLASS_LABEL[selected.classification]}</span> <span class="rev">${selected.reviewState === "proposed" ? "proposed by Claude from measured facts, not yet reviewed by a person" : "reviewed"}</span>
@@ -144,27 +145,37 @@ td.outcome{font-weight:600;white-space:nowrap}td.ok,.ok{color:var(--ok)}td.bad,.
 .site_defect .badge{background:var(--badbg);color:var(--bad)}.no_issue .badge{background:var(--okbg);color:var(--ok)}.agent_limit .badge{background:#eceff3;color:#374151}
 .rev{color:var(--muted);font-size:13px;margin-left:8px}dl{display:grid;grid-template-columns:160px 1fr;gap:8px 16px;margin:16px 0 0}dt{color:var(--muted);font-size:14px}dd{margin:0}
 code{font:14px ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f1ea;padding:1px 6px;border-radius:4px;word-break:break-all}code.big{font-size:20px;padding:4px 10px}
-.muted{color:var(--muted);font-size:14px}details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}
+.muted{color:var(--muted);font-size:14px}details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}details.cmp{padding:4px 16px}details.cmp h2{margin-top:12px}
 .finding dl{grid-template-columns:140px 1fr}.log{font-size:14px;padding-left:20px}.log li{margin:4px 0}.log li.bad{color:var(--bad)}.log .act{font-weight:600}.log ul{margin:2px 0 6px;color:var(--ink)}
-table.ba td{font-weight:600}@media (max-width:800px){.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr}}
+table.ba td{font-weight:600}.verdict .head{font-size:26px;font-weight:600;line-height:1.3}.verdict .support{font-size:16px;color:var(--muted);margin-top:6px}
+.crop{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;aspect-ratio:4/3;background:#fff}.crop img{position:absolute;left:50%;top:50%;width:200%;max-width:none;transform:translate(-50%,-50%)}
+.passed{background:var(--okbg);color:var(--ok);padding:14px 18px;border-radius:8px;font-weight:600}
+td.outcome{white-space:normal}
+@media (max-width:800px){.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr}.verdict .head{font-size:21px}
+ table:not(.ba){display:block}table:not(.ba) thead{display:none}table:not(.ba) tbody,table:not(.ba) tr{display:block}table:not(.ba) tr{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 12px;background:#fff}table:not(.ba) th,table:not(.ba) td{display:block;border:0;padding:4px 0;min-width:0}td.num{text-align:left}
+ table.ba{display:block;overflow-x:auto;white-space:nowrap}.meta{word-break:break-all}}
 footer{margin-top:48px;color:var(--muted);font-size:13px}
 </style></head><body><main>
 <h1>nanori</h1>
 <div class="meta">${esc(b.url)} · goal: ${esc(b.goal)} · recorded run ${esc(b.id)} on ${esc(b.createdAt)}</div>
 <p><span class="scope">${esc(scope)}</span></p>
-<div class="verdict">${esc(verdictText)}</div>
+<div class="verdict"><div class="head">${esc(hl.head)}</div>${hl.support ? `<div class="support">${esc(hl.support)}</div>` : ""}</div>
 
+${b.before ? beforeAfter : ""}
+${b.before ? `<details class="cmp"><summary>Comparison table for this run (all cases)</summary>` : ""}
 <h2>Comparison</h2>
 <p class="muted">${b.scenario ? "Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected." : "Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows; see the run log."} Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table><thead><tr><th>Name format</th><th>Outcome</th><th>Name check: first measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody>${rows}</tbody></table>
 <p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
 ${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ...d }))); return od.length ? `<details class="other"><summary>Other diagnostics (${od.length}, not name findings; kept in the data)</summary><ul>${od.map((d) => `<li><span class="muted">${esc(d.r.identity.fullName)} · step ${d.step.index} · ${esc(d.o.label ?? d.o.name)}</span>: ${esc(d.c.kind)}${d.c.detail ? ` <span lang="ja">${esc(d.c.detail)}</span>` : ""}${d.c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}<br><span class="muted">typed "${esc(d.o.requested)}", field kept "${esc(d.o.retained)}"${d.o.diagnostic ? "; uncertain: " + esc(d.o.diagnostic.note) : ""}</span></li>`).join("")}</ul></details>` : ""; })()}
 
-<h2>Evidence</h2>
-${selectedHtml}
-${others ? `<h3 class="muted">Other findings</h3>${others}` : ""}
+${b.before ? `</details>` : ""}
 
-${beforeAfter}
+<h2>Evidence</h2>
+${b.findings.length ? selectedHtml : `<p class="passed">${esc(b.before ? "Every case reached the confirmation screen on the repaired reproduction, with each name shown exactly in its review row. No name finding; no site error text was recorded." : "No findings.")}</p>`}
+${others ? `<h3 class="muted">Other findings</h3>${others}` : ""}
+${b.publicRun ? `<p class="muted">The public finding this repair answers: <a href="../${esc(b.publicRun)}/report.html">${esc(b.publicRun)}/report.html</a>.</p>` : ""}
+${b.probe ? `<p class="muted">Separate boundary probe (same page, fixed inputs, only the name length varied): ${esc(b.probe.summary)} <a href="${esc(b.probe.href)}" target="_blank">probe evidence</a>. The model-written cause above was captured before this probe and is left as recorded.</p>` : ""}
 
 <h2>Run details</h2>
 ${log}
