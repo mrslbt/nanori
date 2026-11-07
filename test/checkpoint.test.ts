@@ -32,3 +32,11 @@ describe("name preservation", () => {
     expect(checkNamePreserved(m, "Maria Clara Santos Dela Cruz").status).toBe("differs");
   });
 });
+
+describe("reading rows", () => {
+  it("a typed reading is matched against the furigana row, not the kanji row", () => {
+    const m = review([{ label: "必須お名前", value: "山田 太郎" }, { label: "必須ふりがな", value: "やまだ たろう" }]);
+    expect(checkNamePreserved(m, "やまだ たろう").status).toBe("exact");
+    expect(checkNamePreserved(m, "山田 太郎").status).toBe("exact");
+  });
+});

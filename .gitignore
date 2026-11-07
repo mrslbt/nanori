@@ -3,9 +3,9 @@ dist
 .env
 # Saved runs are large; only the ones the README cites are tracked.
 runs/*
-!runs/yotsuya-dental-2/
+!runs/yotsuya-dental-3/
 !runs/yotsuya-local-before/
-!runs/yotsuya-dental-2-rerun-mw4vasge/
+!runs/yotsuya-local-after/
 !runs/yotsuya-dental-1/
 runs/yotsuya-dental-1/*
 !runs/yotsuya-dental-1/diag/

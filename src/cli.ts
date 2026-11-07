@@ -19,9 +19,10 @@ program.command("run")
   .option("--max-steps <n>", "agent step budget per case", (v) => Number(v), 40)
   .option("--local", "mark this run as a local reproduction", false)
   .option("--repaired", "with --local: this copy has the repair applied (otherwise it is the before state)", false)
+  .option("--before <runId>", "with --repaired: the saved run to show as 'before' in the repair table")
   .option("--run-id <id>", "fixed run id (default: timestamp)")
   .action(async (url, goal, o) => {
-    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, runId: o.runId });
+    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, comparedTo: o.repaired ? o.before : undefined, runId: o.runId });
     console.log(`\nopen ${path.join(dir, "report.html")}`);
   });
 

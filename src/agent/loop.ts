@@ -78,16 +78,17 @@ Rules:
  * Checkpoint verification = recognition (is this a review screen?) + preservation (is each typed name value shown exactly in its labelled row?).
  * Both are pure functions in src/checkpoint.ts; this only builds the page model. Unknown is never upgraded to verified.
  */
-export async function verifyCheckpoint(page: Page, steps: Step[], identity: Identity, startUrl: string): Promise<{ verified: boolean; reason: string; observations: FieldObservation[] }> {
+export async function verifyCheckpoint(page: Page, steps: Step[], identity: Identity, startUrl: string): Promise<{ verified: boolean; reason: string; observations: FieldObservation[]; model?: Step["checkpointModel"] }> {
   const nameValues = new Set([identity.fullName, identity.familyName, identity.givenName, identity.kanaFull, identity.kanaFamily, identity.kanaGiven, toHiragana(identity.kanaFull), identity.kanaFamily && toHiragana(identity.kanaFamily), identity.kanaGiven && toHiragana(identity.kanaGiven)].filter((v): v is string => !!v).map(norm));
   const latest = new Map<string, FieldObservation>();
   for (const o of steps.flatMap((s) => s.observations)) { if (o.requested && !o.diagnostic) latest.set(o.name ?? o.id ?? o.ref, o); }
   const typedNames = [...latest.values()].filter((o) => nameValues.has(norm(o.requested)));
   const model = await pageModel(page, typedNames.map((o) => ({ name: o.name, id: o.id })), page.url().replace(/#.*$/, "") !== startUrl.replace(/#.*$/, ""));
   const observations: FieldObservation[] = [];
+  const saved = { urlChanged: model.urlChanged, nameInputsPresent: model.nameInputsPresent, headings: model.headings, rows: model.rows };
   const recognised = recogniseCheckpoint(model) === "recognised";
-  if (!recognised) return { verified: false, reason: "this screen was not recognised as a review screen (no review heading, or name inputs still present)", observations };
-  if (!typedNames.length) return { verified: false, reason: "no name value was typed, nothing to verify", observations };
+  if (!recognised) return { verified: false, reason: "this screen was not recognised as a review screen (no review heading, or name inputs still present)", observations, model: saved };
+  if (!typedNames.length) return { verified: false, reason: "no name value was typed, nothing to verify", observations, model: saved };
   let allExact = true;
   for (const o of typedNames) {
     const p = checkNamePreserved(model, o.requested);
@@ -95,7 +96,7 @@ export async function verifyCheckpoint(page: Page, steps: Step[], identity: Iden
     allExact = false;
     observations.push({ ...o, ref: o.ref + "@checkpoint", label: (o.label ?? o.name ?? "") + " (review row)", retained: p.shown ?? "", validationMessage: "", ariaInvalid: false, visibleErrors: [], diagnostic: { kind: p.status === "differs" ? "checkpoint_truncated" : "checkpoint_not_verified", note: (p.status === "differs" ? "review row differs from the typed value: " : "could not verify: ") + p.note } });
   }
-  return { verified: allExact, reason: allExact ? "review screen recognised; every typed name value shown exactly in its review row" : "review screen recognised, but a name value is not shown exactly", observations };
+  return { verified: allExact, reason: allExact ? "review screen recognised; every typed name value shown exactly in its review row" : "review screen recognised, but a name value is not shown exactly", observations, model: saved };
 }
 
 export async function runLoop(context: BrowserContext, opts: LoopOptions): Promise<RunResult> {
@@ -169,6 +170,7 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         const v = await verifyCheckpoint(page, steps, opts.identity, opts.url);
         outcome = v.verified ? "reached_checkpoint" : "not_determined";
         stopReason = action.reason + (v.verified ? "" : ` (not verified: ${v.reason})`);
+        step.checkpointModel = v.model;
         step.observations.push(...v.observations);
         steps.push(step);
         messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "ok" }] });
@@ -214,6 +216,7 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
           const v = await verifyCheckpoint(page, steps, opts.identity, opts.url);
           outcome = v.verified ? "reached_checkpoint" : "not_determined";
           stopReason = `safe stop: refused to click "${label}"; ${v.reason}`;
+          step.checkpointModel = v.model;
           if (v.observations.length) step.observations.push(...v.observations);
           step.ok = false;
           step.error = stopReason;

@@ -22,7 +22,7 @@ export interface CheckpointContract {
 /** Default contract for Japanese forms: a review heading and a name row. Site adapters can narrow it. */
 export const defaultContract: CheckpointContract = {
   heading: /(入力内容の確認|入力内容をご確認|確認画面|ご確認ください|内容確認|確認)/,
-  nameRowLabel: /(お名前|氏名|名前|姓名|name)/i,
+  nameRowLabel: /(お名前|氏名|名前|姓名|フリガナ|ふりがな|カナ|かな|セイ|メイ|name|kana|furigana)/i,
 };
 
 export const norm = (t: string) => t.normalize("NFC").replace(/[\s　]+/g, " ").trim();

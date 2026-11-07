@@ -1,0 +1,4196 @@
+{
+  "id": "yotsuya-dental-3",
+  "url": "https://yotsuya-haisya.com/contact/",
+  "goal": "reach the confirmation screen (入力内容の確認)",
+  "createdAt": "2026-11-07T08:27:57.625Z",
+  "target": "public",
+  "scenario": {
+    "dateRule": "the first selectable date, and if a date must be typed, 2026年11月20日",
+    "timeRule": "the first available time option",
+    "choiceRule": "the first non-empty option in every select, and the first radio in every radio group",
+    "treatment": "虫歯",
+    "symptom": "歯が痛いです。",
+    "message": "nanori による自動入力テストです。送信はしません。",
+    "optionalFields": "fill optional email and address fields with the contact data above; leave other optional fields empty",
+    "age": "35",
+    "birthDate": "1990年1月1日"
+  },
+  "baseline": {
+    "identity": {
+      "id": "baseline",
+      "tests": "kanji name with its reading",
+      "label": "Kanji name, baseline",
+      "fullName": "山田 太郎",
+      "familyName": "山田",
+      "givenName": "太郎",
+      "kanaFamily": "ヤマダ",
+      "kanaGiven": "タロウ",
+      "kanaFull": "ヤマダ タロウ",
+      "guidance": "n/a (control case)",
+      "email": "test@example.com",
+      "phone": "09012345678",
+      "postal": "1500001",
+      "address": "東京都渋谷区神宮前1-1-1"
+    },
+    "outcome": "reached_checkpoint",
+    "stopReason": "Confirmation screen 入力内容の確認 is showing the entered values, including the name 山田 太郎 and reading やまだ たろう. Only the final send button remains, so this is a safe checkpoint.",
+    "steps": [
+      {
+        "index": 1,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "click",
+          "ref": "n18",
+          "value": "",
+          "reason": "First radio in inquiry group"
+        },
+        "ok": true,
+        "screenshot": "step-01.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-01-after.jpg"
+      },
+      {
+        "index": 2,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "click",
+          "ref": "n21",
+          "value": "",
+          "reason": "Open date picker to choose first selectable date"
+        },
+        "ok": true,
+        "screenshot": "step-02.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-02-after.jpg"
+      },
+      {
+        "index": 3,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "click",
+          "ref": "n245",
+          "value": "",
+          "reason": "Pick first selectable date (7)"
+        },
+        "ok": true,
+        "screenshot": "step-03.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-03-after.jpg"
+      },
+      {
+        "index": 4,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "select",
+          "ref": "n22",
+          "value": "10:00 ～",
+          "reason": "First time option"
+        },
+        "ok": true,
+        "screenshot": "step-04.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-04-after.jpg"
+      },
+      {
+        "index": 5,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "select",
+          "ref": "n23",
+          "value": "虫歯",
+          "reason": "Treatment is 虫歯"
+        },
+        "ok": true,
+        "screenshot": "step-05.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-05-after.jpg"
+      },
+      {
+        "index": 6,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n24",
+          "value": "歯が痛いです。",
+          "reason": "Symptoms"
+        },
+        "ok": true,
+        "screenshot": "step-06.jpg",
+        "observations": [
+          {
+            "ref": "n24",
+            "label": "必須どんな症状ですか？",
+            "name": "shoujyou",
+            "id": null,
+            "requested": "歯が痛いです。",
+            "retained": "歯が痛いです。",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-06-after.jpg"
+      },
+      {
+        "index": 7,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n25",
+          "value": "山田 太郎",
+          "reason": "Full name in single name field"
+        },
+        "ok": true,
+        "screenshot": "step-07.jpg",
+        "observations": [
+          {
+            "ref": "n25",
+            "label": "必須お名前",
+            "name": "flname",
+            "id": null,
+            "requested": "山田 太郎",
+            "retained": "山田 太郎",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-07-after.jpg"
+      },
+      {
+        "index": 8,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n26",
+          "value": "やまだ たろう",
+          "reason": "ふりがな field gets hiragana reading"
+        },
+        "ok": true,
+        "screenshot": "step-08.jpg",
+        "observations": [
+          {
+            "ref": "n26",
+            "label": "必須ふりがな",
+            "name": "furik",
+            "id": null,
+            "requested": "やまだ たろう",
+            "retained": "やまだ たろう",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-08-after.jpg"
+      },
+      {
+        "index": 9,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n27",
+          "value": "09012345678",
+          "reason": "Phone number"
+        },
+        "ok": true,
+        "screenshot": "step-09.jpg",
+        "observations": [
+          {
+            "ref": "n27",
+            "label": "必須電話番号",
+            "name": "telno",
+            "id": null,
+            "requested": "09012345678",
+            "retained": "09012345678",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-09-after.jpg"
+      },
+      {
+        "index": 10,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n28",
+          "value": "test@example.com",
+          "reason": "Optional email"
+        },
+        "ok": true,
+        "screenshot": "step-10.jpg",
+        "observations": [
+          {
+            "ref": "n28",
+            "label": "任意メール",
+            "name": "fmail",
+            "id": null,
+            "requested": "test@example.com",
+            "retained": "test@example.com",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-10-after.jpg"
+      },
+      {
+        "index": 11,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n29",
+          "value": "test@example.com",
+          "reason": "Email confirmation"
+        },
+        "ok": true,
+        "screenshot": "step-11.jpg",
+        "observations": [
+          {
+            "ref": "n29",
+            "label": "任意メール確認入力",
+            "name": "kmail",
+            "id": null,
+            "requested": "test@example.com",
+            "retained": "test@example.com",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-11-after.jpg"
+      },
+      {
+        "index": 12,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n30",
+          "value": "1500001",
+          "reason": "Optional postal code"
+        },
+        "ok": true,
+        "screenshot": "step-12.jpg",
+        "observations": [
+          {
+            "ref": "n30",
+            "label": "任意郵便番号",
+            "name": "zip",
+            "id": "zip",
+            "requested": "1500001",
+            "retained": "1500001",
+            "maxlength": 8,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-12-after.jpg"
+      },
+      {
+        "index": 13,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n31",
+          "value": "東京都渋谷区神宮前1-1-1",
+          "reason": "Optional address"
+        },
+        "ok": true,
+        "screenshot": "step-13.jpg",
+        "observations": [
+          {
+            "ref": "n31",
+            "label": "任意住所",
+            "name": "addr",
+            "id": "addr",
+            "requested": "東京都渋谷区神宮前1-1-1",
+            "retained": "東京都渋谷区神宮前1-1-1",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-13-after.jpg"
+      },
+      {
+        "index": 14,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "click",
+          "ref": "n32",
+          "value": "",
+          "reason": "First radio in gender group"
+        },
+        "ok": true,
+        "screenshot": "step-14.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-14-after.jpg"
+      },
+      {
+        "index": 15,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "fill",
+          "ref": "n34",
+          "value": "35",
+          "reason": "Age 35"
+        },
+        "ok": true,
+        "screenshot": "step-15.jpg",
+        "observations": [
+          {
+            "ref": "n34",
+            "label": "任意年齢",
+            "name": "age",
+            "id": null,
+            "requested": "35",
+            "retained": "35",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-15-after.jpg"
+      },
+      {
+        "index": 16,
+        "url": "https://yotsuya-haisya.com/contact/",
+        "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "click",
+          "ref": "n35",
+          "value": "",
+          "reason": "Proceed to confirmation screen"
+        },
+        "ok": true,
+        "screenshot": "step-16.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-16-after.jpg"
+      },
+      {
+        "index": 17,
+        "url": "https://yotsuya-haisya.com/kakunin/",
+        "title": "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+        "action": {
+          "action": "done",
+          "ref": "n15",
+          "value": "",
+          "reason": "Confirmation screen 入力内容の確認 is showing the entered values, including the name 山田 太郎 and reading やまだ たろう. Only the final send button remains, so this is a safe checkpoint."
+        },
+        "ok": true,
+        "screenshot": "step-17.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "checkpointModel": {
+          "urlChanged": true,
+          "nameInputsPresent": false,
+          "headings": [
+            "トップページ",
+            "初めての方",
+            "当院の特徴",
+            "診療内容",
+            "料金・その他",
+            "症例集",
+            "ドクター紹介",
+            "医院情報",
+            "アクセス",
+            "採用情報",
+            "入力内容の確認",
+            "入力内容の確認",
+            "クリニックについて",
+            "治療メニュー",
+            "歯周病治療",
+            "虫歯治療",
+            "セラミック治療",
+            "Yotsuya dental office\n\n四ツ谷デンタルオフィス\n\n四ツ谷・四谷三丁目・曙橋・市ヶ谷",
+            "四ツ谷デンタルオフィス",
+            "Opening hours\n\n診療時間\n\n※祝日は休診です。",
+            "診療時間",
+            "Our clinics\n\n医療法人社団 志朋会\n\n四ツ谷に、ふたつの診療拠点。\n\n四谷三栄町の本院と、四谷1丁目の駅前診療所。\nご予約・ご来院の際は、受診先の医院名と所在地をご確認ください。",
+            "医療法人社団 志朋会",
+            "四ツ谷に、ふたつの診療拠点。",
+            "四ツ谷デンタルオフィス\n本院",
+            "四ツ谷デンタルオフィス\n駅前診療所",
+            "本院と駅前診療所の\n位置関係",
+            "本院の所在地・アクセス",
+            "関連リンク",
+            "本院の治療専門サイト",
+            "治療メニュー",
+            "医院情報",
+            "トップページ",
+            "初めての方",
+            "当院の特徴",
+            "診療内容",
+            "歯周病",
+            "虫歯",
+            "詰め物・被せ物",
+            "歯列矯正",
+            "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト"
+          ],
+          "rows": [
+            {
+              "label": "必須お問い合わせ内容",
+              "value": "初めてのご予約"
+            },
+            {
+              "label": "必須仮予約希望日",
+              "value": "2026年11月07日"
+            },
+            {
+              "label": "必須ご希望のお時間",
+              "value": "ご希望時間10:00 ～"
+            },
+            {
+              "label": "必須ご希望の診療内容",
+              "value": "虫歯"
+            },
+            {
+              "label": "必須どんな症状ですか？",
+              "value": "歯が痛いです。"
+            },
+            {
+              "label": "必須お名前",
+              "value": "山田 太郎"
+            },
+            {
+              "label": "必須ふりがな",
+              "value": "やまだ たろう"
+            },
+            {
+              "label": "必須電話番号",
+              "value": "09012345678"
+            },
+            {
+              "label": "任意メール",
+              "value": "test@example.com"
+            },
+            {
+              "label": "任意メール確認入力",
+              "value": "test@example.com"
+            },
+            {
+              "label": "任意郵便番号",
+              "value": "1500001"
+            },
+            {
+              "label": "任意住所",
+              "value": "東京都渋谷区神宮前1-1-1"
+            },
+            {
+              "label": "任意性別",
+              "value": "男性"
+            },
+            {
+              "label": "任意年齢",
+              "value": "35"
+            },
+            {
+              "label": "診療時間",
+              "value": "月 火 水 木 金 土 日 祝"
+            },
+            {
+              "label": "9:30-13:00",
+              "value": "◎ ◎ - ◎ ◎ - - 休"
+            },
+            {
+              "label": "14:00-18:30",
+              "value": "◎ ◎ - ◎ ◎ - - 休"
+            },
+            {
+              "label": "09:30-14:00",
+              "value": "- - ◎ - - - - 休"
+            },
+            {
+              "label": "10:00-13:00",
+              "value": "- - - - - ◎ - 休"
+            },
+            {
+              "label": "14:00-18:00",
+              "value": "- - - - - ◎ - 休"
+            },
+            {
+              "label": "10:00-15:00",
+              "value": "- - - - - - ◎ 休"
+            },
+            {
+              "label": "診療内容\nTreatment",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "",
+              "value": ""
+            },
+            {
+              "label": "本院のご予約・お電話",
+              "value": ""
+            },
+            {
+              "label": "関連リンク",
+              "value": "関連リンク\n\n医療法人社団 志朋会\n\n四ツ谷デンタルオフィス\n\n本院 公式サイト\n→\n03-5361-7788\n24時間Web予約\n→\n駅前診療所 公式サイト\n→\n03-5990-2524\n24時間Web予約\n→\n本院の治療専門サイト\n小児矯正\n↗\nマウスピース矯正\n↗\nセラミック治療\n↗\nインプラント治療\n↗"
+            },
+            {
+              "label": "診療内容Treatment",
+              "value": ""
+            },
+            {
+              "label": "歯周病",
+              "value": ""
+            },
+            {
+              "label": "歯周病",
+              "value": ""
+            },
+            {
+              "label": "歯周病",
+              "value": ""
+            },
+            {
+              "label": "虫歯",
+              "value": ""
+            },
+            {
+              "label": "虫歯",
+              "value": ""
+            },
+            {
+              "label": "詰め物・被せ物",
+              "value": ""
+            },
+            {
+              "label": "詰め物・被せ物",
+              "value": ""
+            },
+            {
+              "label": "歯列矯正",
+              "value": ""
+            },
+            {
+              "label": "歯列矯正",
+              "value": ""
+            },
+            {
+              "label": "小児歯科",
+              "value": ""
+            },
+            {
+              "label": "小児歯科",
+              "value": ""
+            },
+            {
+              "label": "口腔外科",
+              "value": ""
+            },
+            {
+              "label": "口腔外科",
+              "value": ""
+            },
+            {
+              "label": "口腔外科",
+              "value": ""
+            },
+            {
+              "label": "歯を失った時の治療",
+              "value": ""
+            },
+            {
+              "label": "歯を失った時の治療",
+              "value": ""
+            },
+            {
+              "label": "その他",
+              "value": ""
+            },
+            {
+              "label": "その他",
+              "value": ""
+            },
+            {
+              "label": "予防",
+              "value": ""
+            },
+            {
+              "label": "予防",
+              "value": ""
+            }
+          ]
+        }
+      }
+    ],
+    "startedAt": "2026-11-07T08:22:38.139Z",
+    "endedAt": "2026-11-07T08:23:34.967Z",
+    "model": "claude-sonnet-5-5"
+  },
+  "cases": [
+    {
+      "identity": {
+        "id": "latin-own",
+        "tests": "Latin letters, no kanji; the creator's own name and reading as he uses them on Japanese forms",
+        "label": "Latin letters, creator's name",
+        "fullName": "Marsel Bait",
+        "familyName": "Bait",
+        "givenName": "Marsel",
+        "kanaFamily": "バイト",
+        "kanaGiven": "マーセル",
+        "kanaFull": "マーセル バイト",
+        "guidance": "p.27: name fields accept multiple scripts incl. Latin letters",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen reached showing the entered values, including the full name \"Marsel Bait\" in the single お名前 field. I did not click 送信する.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n18",
+            "value": "",
+            "reason": "First radio in inquiry type group"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n21",
+            "value": "",
+            "reason": "Open datepicker to pick first selectable date"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n245",
+            "value": "",
+            "reason": "Pick first selectable date (Nov 7)"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n22",
+            "value": "10:00 ～",
+            "reason": "First available time"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n23",
+            "value": "虫歯",
+            "reason": "Treatment is 虫歯"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n24",
+            "value": "歯が痛いです。",
+            "reason": "Symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n24",
+              "label": "必須どんな症状ですか？",
+              "name": "shoujyou",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n25",
+            "value": "Marsel Bait",
+            "reason": "Full name in single name field"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n25",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Marsel Bait",
+              "retained": "Marsel Bait",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n26",
+            "value": "まーせる ばいと",
+            "reason": "Hiragana reading for ふりがな field"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n26",
+              "label": "必須ふりがな",
+              "name": "furik",
+              "id": null,
+              "requested": "まーせる ばいと",
+              "retained": "まーせる ばいと",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n27",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n27",
+              "label": "必須電話番号",
+              "name": "telno",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n28",
+            "value": "test@example.com",
+            "reason": "Optional email"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [
+            {
+              "ref": "n28",
+              "label": "任意メール",
+              "name": "fmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n29",
+            "value": "test@example.com",
+            "reason": "Email confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n29",
+              "label": "任意メール確認入力",
+              "name": "kmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-11-after.jpg"
+        },
+        {
+          "index": 12,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n30",
+            "value": "1500001",
+            "reason": "Optional postal code"
+          },
+          "ok": true,
+          "screenshot": "step-12.jpg",
+          "observations": [
+            {
+              "ref": "n30",
+              "label": "任意郵便番号",
+              "name": "zip",
+              "id": "zip",
+              "requested": "1500001",
+              "retained": "1500001",
+              "maxlength": 8,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-12-after.jpg"
+        },
+        {
+          "index": 13,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n31",
+            "value": "東京都渋谷区神宮前1-1-1",
+            "reason": "Optional address"
+          },
+          "ok": true,
+          "screenshot": "step-13.jpg",
+          "observations": [
+            {
+              "ref": "n31",
+              "label": "任意住所",
+              "name": "addr",
+              "id": "addr",
+              "requested": "東京都渋谷区神宮前1-1-1",
+              "retained": "東京都渋谷区神宮前1-1-1",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-13-after.jpg"
+        },
+        {
+          "index": 14,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n32",
+            "value": "",
+            "reason": "First radio in gender group"
+          },
+          "ok": true,
+          "screenshot": "step-14.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-14-after.jpg"
+        },
+        {
+          "index": 15,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n34",
+            "value": "35",
+            "reason": "Age 35"
+          },
+          "ok": true,
+          "screenshot": "step-15.jpg",
+          "observations": [
+            {
+              "ref": "n34",
+              "label": "任意年齢",
+              "name": "age",
+              "id": null,
+              "requested": "35",
+              "retained": "35",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-15-after.jpg"
+        },
+        {
+          "index": 16,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n35",
+            "value": "",
+            "reason": "Go to confirmation screen"
+          },
+          "ok": true,
+          "screenshot": "step-16.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-16-after.jpg"
+        },
+        {
+          "index": 17,
+          "url": "https://yotsuya-haisya.com/kakunin/",
+          "title": "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "done",
+            "ref": "n15",
+            "value": "",
+            "reason": "Confirmation screen reached showing the entered values, including the full name \"Marsel Bait\" in the single お名前 field. I did not click 送信する."
+          },
+          "ok": true,
+          "screenshot": "step-17.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "checkpointModel": {
+            "urlChanged": true,
+            "nameInputsPresent": false,
+            "headings": [
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "料金・その他",
+              "症例集",
+              "ドクター紹介",
+              "医院情報",
+              "アクセス",
+              "採用情報",
+              "入力内容の確認",
+              "入力内容の確認",
+              "クリニックについて",
+              "治療メニュー",
+              "歯周病治療",
+              "虫歯治療",
+              "セラミック治療",
+              "Yotsuya dental office\n\n四ツ谷デンタルオフィス\n\n四ツ谷・四谷三丁目・曙橋・市ヶ谷",
+              "四ツ谷デンタルオフィス",
+              "Opening hours\n\n診療時間\n\n※祝日は休診です。",
+              "診療時間",
+              "Our clinics\n\n医療法人社団 志朋会\n\n四ツ谷に、ふたつの診療拠点。\n\n四谷三栄町の本院と、四谷1丁目の駅前診療所。\nご予約・ご来院の際は、受診先の医院名と所在地をご確認ください。",
+              "医療法人社団 志朋会",
+              "四ツ谷に、ふたつの診療拠点。",
+              "四ツ谷デンタルオフィス\n本院",
+              "四ツ谷デンタルオフィス\n駅前診療所",
+              "本院と駅前診療所の\n位置関係",
+              "本院の所在地・アクセス",
+              "関連リンク",
+              "本院の治療専門サイト",
+              "治療メニュー",
+              "医院情報",
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "歯周病",
+              "虫歯",
+              "詰め物・被せ物",
+              "歯列矯正",
+              "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト"
+            ],
+            "rows": [
+              {
+                "label": "必須お問い合わせ内容",
+                "value": "初めてのご予約"
+              },
+              {
+                "label": "必須仮予約希望日",
+                "value": "2026年11月07日"
+              },
+              {
+                "label": "必須ご希望のお時間",
+                "value": "ご希望時間10:00 ～"
+              },
+              {
+                "label": "必須ご希望の診療内容",
+                "value": "虫歯"
+              },
+              {
+                "label": "必須どんな症状ですか？",
+                "value": "歯が痛いです。"
+              },
+              {
+                "label": "必須お名前",
+                "value": "Marsel Bait"
+              },
+              {
+                "label": "必須ふりがな",
+                "value": "まーせる ばいと"
+              },
+              {
+                "label": "必須電話番号",
+                "value": "09012345678"
+              },
+              {
+                "label": "任意メール",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意メール確認入力",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意郵便番号",
+                "value": "1500001"
+              },
+              {
+                "label": "任意住所",
+                "value": "東京都渋谷区神宮前1-1-1"
+              },
+              {
+                "label": "任意性別",
+                "value": "男性"
+              },
+              {
+                "label": "任意年齢",
+                "value": "35"
+              },
+              {
+                "label": "診療時間",
+                "value": "月 火 水 木 金 土 日 祝"
+              },
+              {
+                "label": "9:30-13:00",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "14:00-18:30",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "09:30-14:00",
+                "value": "- - ◎ - - - - 休"
+              },
+              {
+                "label": "10:00-13:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "14:00-18:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "10:00-15:00",
+                "value": "- - - - - - ◎ 休"
+              },
+              {
+                "label": "診療内容\nTreatment",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "本院のご予約・お電話",
+                "value": ""
+              },
+              {
+                "label": "関連リンク",
+                "value": "関連リンク\n\n医療法人社団 志朋会\n\n四ツ谷デンタルオフィス\n\n本院 公式サイト\n→\n03-5361-7788\n24時間Web予約\n→\n駅前診療所 公式サイト\n→\n03-5990-2524\n24時間Web予約\n→\n本院の治療専門サイト\n小児矯正\n↗\nマウスピース矯正\n↗\nセラミック治療\n↗\nインプラント治療\n↗"
+              },
+              {
+                "label": "診療内容Treatment",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              }
+            ]
+          }
+        }
+      ],
+      "startedAt": "2026-11-07T08:23:35.020Z",
+      "endedAt": "2026-11-07T08:24:34.424Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "long-name-spaces",
+        "tests": "long full name, 28 characters including spaces",
+        "label": "Long full name, 28 characters",
+        "fullName": "Maria Clara Santos Dela Cruz",
+        "familyName": "Dela Cruz",
+        "givenName": "Maria Clara Santos",
+        "kanaFamily": "デラ クルス",
+        "kanaGiven": "マリア クララ サントス",
+        "kanaFull": "マリア クララ サントス デラ クルス",
+        "guidance": "p.27: sufficient max length; middle and compound names fit in one field",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "stopped_before_checkpoint",
+      "stopReason": "The form rejected the full name \"Maria Clara Santos Dela Cruz\" with the error 文字数が正しくありません。 (character count incorrect). The time select also has no options. I did not change the name.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n18",
+            "value": "",
+            "reason": "First radio for inquiry type"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n21",
+            "value": "",
+            "reason": "Open datepicker to pick first selectable date"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n245",
+            "value": "",
+            "reason": "First selectable date (Nov 7)"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n22",
+            "value": "10:00 ～",
+            "reason": "First available time"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n23",
+            "value": "虫歯",
+            "reason": "Treatment is 虫歯"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n24",
+            "value": "歯が痛いです。",
+            "reason": "Symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n24",
+              "label": "必須どんな症状ですか？",
+              "name": "shoujyou",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n25",
+            "value": "Maria Clara Santos Dela Cruz",
+            "reason": "Single full-name field"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n25",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Maria Clara Santos Dela Cruz",
+              "retained": "Maria Clara Santos Dela Cruz",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n26",
+            "value": "まりあ くらら さんとす でら くるす",
+            "reason": "Hiragana reading for ふりがな field"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n26",
+              "label": "必須ふりがな",
+              "name": "furik",
+              "id": null,
+              "requested": "まりあ くらら さんとす でら くるす",
+              "retained": "まりあ くらら さんとす でら くるす",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n27",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n27",
+              "label": "必須電話番号",
+              "name": "telno",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n28",
+            "value": "test@example.com",
+            "reason": "Optional email"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [
+            {
+              "ref": "n28",
+              "label": "任意メール",
+              "name": "fmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n29",
+            "value": "test@example.com",
+            "reason": "Email confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n29",
+              "label": "任意メール確認入力",
+              "name": "kmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-11-after.jpg"
+        },
+        {
+          "index": 12,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n30",
+            "value": "1500001",
+            "reason": "Optional postal code"
+          },
+          "ok": true,
+          "screenshot": "step-12.jpg",
+          "observations": [
+            {
+              "ref": "n30",
+              "label": "任意郵便番号",
+              "name": "zip",
+              "id": "zip",
+              "requested": "1500001",
+              "retained": "1500001",
+              "maxlength": 8,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-12-after.jpg"
+        },
+        {
+          "index": 13,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n31",
+            "value": "東京都渋谷区神宮前1-1-1",
+            "reason": "Optional address"
+          },
+          "ok": true,
+          "screenshot": "step-13.jpg",
+          "observations": [
+            {
+              "ref": "n31",
+              "label": "任意住所",
+              "name": "addr",
+              "id": "addr",
+              "requested": "東京都渋谷区神宮前1-1-1",
+              "retained": "東京都渋谷区神宮前1-1-1",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-13-after.jpg"
+        },
+        {
+          "index": 14,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n32",
+            "value": "",
+            "reason": "First radio in the gender group"
+          },
+          "ok": true,
+          "screenshot": "step-14.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-14-after.jpg"
+        },
+        {
+          "index": 15,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n34",
+            "value": "35",
+            "reason": "Age 35"
+          },
+          "ok": true,
+          "screenshot": "step-15.jpg",
+          "observations": [
+            {
+              "ref": "n34",
+              "label": "任意年齢",
+              "name": "age",
+              "id": null,
+              "requested": "35",
+              "retained": "35",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-15-after.jpg"
+        },
+        {
+          "index": 16,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n35",
+            "value": "",
+            "reason": "Proceed to confirmation screen"
+          },
+          "ok": true,
+          "screenshot": "step-16.jpg",
+          "observations": [
+            {
+              "ref": "n25",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Maria Clara Santos Dela Cruz",
+              "retained": "Maria Clara Santos Dela Cruz",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [
+                "文字数が正しくありません。"
+              ]
+            }
+          ],
+          "pageErrors": [
+            "文字数が正しくありません。"
+          ],
+          "screenshotAfter": "step-16-after.jpg"
+        },
+        {
+          "index": 17,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "stuck",
+            "ref": "n25",
+            "value": "",
+            "reason": "The form rejected the full name \"Maria Clara Santos Dela Cruz\" with the error 文字数が正しくありません。 (character count incorrect). The time select also has no options. I did not change the name."
+          },
+          "ok": true,
+          "screenshot": "step-17.jpg",
+          "observations": [],
+          "pageErrors": [
+            "文字数が正しくありません。"
+          ],
+          "screenshotAfter": "step-17-after.jpg"
+        }
+      ],
+      "startedAt": "2026-11-07T08:24:34.458Z",
+      "endedAt": "2026-11-07T08:25:28.873Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "single-name",
+        "tests": "single name, no separate surname in this test",
+        "label": "Single name",
+        "fullName": "Sukarno",
+        "familyName": null,
+        "givenName": "Sukarno",
+        "kanaFamily": null,
+        "kanaGiven": "スカルノ",
+        "kanaFull": "スカルノ",
+        "guidance": "p.27: single full-name field accommodates names without a surname",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "The confirmation screen (入力内容の確認) is showing. It lists the name Sukarno and the reading すかるの. I did not click 送信する.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n18",
+            "value": "",
+            "reason": "First radio in the inquiry type group"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n21",
+            "value": "",
+            "reason": "Open the date picker to choose the first selectable date"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n245",
+            "value": "",
+            "reason": "Pick the first selectable date (Nov 7)"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n22",
+            "value": "10:00 ～",
+            "reason": "First available time option"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n23",
+            "value": "虫歯",
+            "reason": "Treatment is 虫歯"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n24",
+            "value": "歯が痛いです。",
+            "reason": "Symptoms field"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n24",
+              "label": "必須どんな症状ですか？",
+              "name": "shoujyou",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n25",
+            "value": "Sukarno",
+            "reason": "Single name goes in the full name field; no family name exists."
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n25",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Sukarno",
+              "retained": "Sukarno",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n26",
+            "value": "すかるの",
+            "reason": "ふりがな field takes hiragana reading"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n26",
+              "label": "必須ふりがな",
+              "name": "furik",
+              "id": null,
+              "requested": "すかるの",
+              "retained": "すかるの",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n27",
+            "value": "09012345678",
+            "reason": "Phone number"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n27",
+              "label": "必須電話番号",
+              "name": "telno",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n28",
+            "value": "test@example.com",
+            "reason": "Optional email filled with contact data"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [
+            {
+              "ref": "n28",
+              "label": "任意メール",
+              "name": "fmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n29",
+            "value": "test@example.com",
+            "reason": "Email confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n29",
+              "label": "任意メール確認入力",
+              "name": "kmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-11-after.jpg"
+        },
+        {
+          "index": 12,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n30",
+            "value": "1500001",
+            "reason": "Optional postal code"
+          },
+          "ok": true,
+          "screenshot": "step-12.jpg",
+          "observations": [
+            {
+              "ref": "n30",
+              "label": "任意郵便番号",
+              "name": "zip",
+              "id": "zip",
+              "requested": "1500001",
+              "retained": "1500001",
+              "maxlength": 8,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-12-after.jpg"
+        },
+        {
+          "index": 13,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n31",
+            "value": "東京都渋谷区神宮前1-1-1",
+            "reason": "Optional address"
+          },
+          "ok": true,
+          "screenshot": "step-13.jpg",
+          "observations": [
+            {
+              "ref": "n31",
+              "label": "任意住所",
+              "name": "addr",
+              "id": "addr",
+              "requested": "東京都渋谷区神宮前1-1-1",
+              "retained": "東京都渋谷区神宮前1-1-1",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-13-after.jpg"
+        },
+        {
+          "index": 14,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n32",
+            "value": "",
+            "reason": "First radio in gender group"
+          },
+          "ok": true,
+          "screenshot": "step-14.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-14-after.jpg"
+        },
+        {
+          "index": 15,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n34",
+            "value": "35",
+            "reason": "Age 35"
+          },
+          "ok": true,
+          "screenshot": "step-15.jpg",
+          "observations": [
+            {
+              "ref": "n34",
+              "label": "任意年齢",
+              "name": "age",
+              "id": null,
+              "requested": "35",
+              "retained": "35",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-15-after.jpg"
+        },
+        {
+          "index": 16,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n35",
+            "value": "",
+            "reason": "Go to the confirmation screen"
+          },
+          "ok": true,
+          "screenshot": "step-16.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-16-after.jpg"
+        },
+        {
+          "index": 17,
+          "url": "https://yotsuya-haisya.com/kakunin/",
+          "title": "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "done",
+            "ref": "n15",
+            "value": "",
+            "reason": "The confirmation screen (入力内容の確認) is showing. It lists the name Sukarno and the reading すかるの. I did not click 送信する."
+          },
+          "ok": true,
+          "screenshot": "step-17.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "checkpointModel": {
+            "urlChanged": true,
+            "nameInputsPresent": false,
+            "headings": [
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "料金・その他",
+              "症例集",
+              "ドクター紹介",
+              "医院情報",
+              "アクセス",
+              "採用情報",
+              "入力内容の確認",
+              "入力内容の確認",
+              "クリニックについて",
+              "治療メニュー",
+              "歯周病治療",
+              "虫歯治療",
+              "セラミック治療",
+              "Yotsuya dental office\n\n四ツ谷デンタルオフィス\n\n四ツ谷・四谷三丁目・曙橋・市ヶ谷",
+              "四ツ谷デンタルオフィス",
+              "Opening hours\n\n診療時間\n\n※祝日は休診です。",
+              "診療時間",
+              "Our clinics\n\n医療法人社団 志朋会\n\n四ツ谷に、ふたつの診療拠点。\n\n四谷三栄町の本院と、四谷1丁目の駅前診療所。\nご予約・ご来院の際は、受診先の医院名と所在地をご確認ください。",
+              "医療法人社団 志朋会",
+              "四ツ谷に、ふたつの診療拠点。",
+              "四ツ谷デンタルオフィス\n本院",
+              "四ツ谷デンタルオフィス\n駅前診療所",
+              "本院と駅前診療所の\n位置関係",
+              "本院の所在地・アクセス",
+              "関連リンク",
+              "本院の治療専門サイト",
+              "治療メニュー",
+              "医院情報",
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "歯周病",
+              "虫歯",
+              "詰め物・被せ物",
+              "歯列矯正",
+              "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト"
+            ],
+            "rows": [
+              {
+                "label": "必須お問い合わせ内容",
+                "value": "初めてのご予約"
+              },
+              {
+                "label": "必須仮予約希望日",
+                "value": "2026年11月07日"
+              },
+              {
+                "label": "必須ご希望のお時間",
+                "value": "ご希望時間10:00 ～"
+              },
+              {
+                "label": "必須ご希望の診療内容",
+                "value": "虫歯"
+              },
+              {
+                "label": "必須どんな症状ですか？",
+                "value": "歯が痛いです。"
+              },
+              {
+                "label": "必須お名前",
+                "value": "Sukarno"
+              },
+              {
+                "label": "必須ふりがな",
+                "value": "すかるの"
+              },
+              {
+                "label": "必須電話番号",
+                "value": "09012345678"
+              },
+              {
+                "label": "任意メール",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意メール確認入力",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意郵便番号",
+                "value": "1500001"
+              },
+              {
+                "label": "任意住所",
+                "value": "東京都渋谷区神宮前1-1-1"
+              },
+              {
+                "label": "任意性別",
+                "value": "男性"
+              },
+              {
+                "label": "任意年齢",
+                "value": "35"
+              },
+              {
+                "label": "診療時間",
+                "value": "月 火 水 木 金 土 日 祝"
+              },
+              {
+                "label": "9:30-13:00",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "14:00-18:30",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "09:30-14:00",
+                "value": "- - ◎ - - - - 休"
+              },
+              {
+                "label": "10:00-13:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "14:00-18:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "10:00-15:00",
+                "value": "- - - - - - ◎ 休"
+              },
+              {
+                "label": "診療内容\nTreatment",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "本院のご予約・お電話",
+                "value": ""
+              },
+              {
+                "label": "関連リンク",
+                "value": "関連リンク\n\n医療法人社団 志朋会\n\n四ツ谷デンタルオフィス\n\n本院 公式サイト\n→\n03-5361-7788\n24時間Web予約\n→\n駅前診療所 公式サイト\n→\n03-5990-2524\n24時間Web予約\n→\n本院の治療専門サイト\n小児矯正\n↗\nマウスピース矯正\n↗\nセラミック治療\n↗\nインプラント治療\n↗"
+              },
+              {
+                "label": "診療内容Treatment",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              }
+            ]
+          }
+        }
+      ],
+      "startedAt": "2026-11-07T08:25:28.901Z",
+      "endedAt": "2026-11-07T08:26:21.924Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "diacritics",
+        "tests": "letters with accents",
+        "label": "Letters with accents",
+        "fullName": "Nguyễn Thị Hương",
+        "familyName": "Nguyễn",
+        "givenName": "Thị Hương",
+        "kanaFamily": "グエン",
+        "kanaGiven": "ティ フオン",
+        "kanaFull": "グエン ティ フオン",
+        "guidance": "p.27: multiple scripts accepted in name fields",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen reached showing the name Nguyễn Thị Hương and the hiragana reading ぐえん てぃ ふおん. The form accepted both. I did not click 送信する.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n18",
+            "value": "",
+            "reason": "First radio in inquiry type group"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n21",
+            "value": "",
+            "reason": "Open date picker to choose first selectable date"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n245",
+            "value": "",
+            "reason": "First selectable date (Nov 7)"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n22",
+            "value": "10:00 ～",
+            "reason": "First available time"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n23",
+            "value": "虫歯",
+            "reason": "Treatment is 虫歯"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n24",
+            "value": "歯が痛いです。",
+            "reason": "Symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n24",
+              "label": "必須どんな症状ですか？",
+              "name": "shoujyou",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n25",
+            "value": "Nguyễn Thị Hương",
+            "reason": "Full name in single name field"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n25",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Nguyễn Thị Hương",
+              "retained": "Nguyễn Thị Hương",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n26",
+            "value": "ぐえん てぃ ふおん",
+            "reason": "ふりがな field gets hiragana reading"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n26",
+              "label": "必須ふりがな",
+              "name": "furik",
+              "id": null,
+              "requested": "ぐえん てぃ ふおん",
+              "retained": "ぐえん てぃ ふおん",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n27",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n27",
+              "label": "必須電話番号",
+              "name": "telno",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n28",
+            "value": "test@example.com",
+            "reason": "Optional email"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [
+            {
+              "ref": "n28",
+              "label": "任意メール",
+              "name": "fmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n29",
+            "value": "test@example.com",
+            "reason": "Email confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n29",
+              "label": "任意メール確認入力",
+              "name": "kmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-11-after.jpg"
+        },
+        {
+          "index": 12,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n30",
+            "value": "1500001",
+            "reason": "Optional postal code"
+          },
+          "ok": true,
+          "screenshot": "step-12.jpg",
+          "observations": [
+            {
+              "ref": "n30",
+              "label": "任意郵便番号",
+              "name": "zip",
+              "id": "zip",
+              "requested": "1500001",
+              "retained": "1500001",
+              "maxlength": 8,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-12-after.jpg"
+        },
+        {
+          "index": 13,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n31",
+            "value": "東京都渋谷区神宮前1-1-1",
+            "reason": "Optional address"
+          },
+          "ok": true,
+          "screenshot": "step-13.jpg",
+          "observations": [
+            {
+              "ref": "n31",
+              "label": "任意住所",
+              "name": "addr",
+              "id": "addr",
+              "requested": "東京都渋谷区神宮前1-1-1",
+              "retained": "東京都渋谷区神宮前1-1-1",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-13-after.jpg"
+        },
+        {
+          "index": 14,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n32",
+            "value": "",
+            "reason": "First radio in gender group"
+          },
+          "ok": true,
+          "screenshot": "step-14.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-14-after.jpg"
+        },
+        {
+          "index": 15,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n34",
+            "value": "35",
+            "reason": "Age 35"
+          },
+          "ok": true,
+          "screenshot": "step-15.jpg",
+          "observations": [
+            {
+              "ref": "n34",
+              "label": "任意年齢",
+              "name": "age",
+              "id": null,
+              "requested": "35",
+              "retained": "35",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-15-after.jpg"
+        },
+        {
+          "index": 16,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n35",
+            "value": "",
+            "reason": "Go to confirmation screen"
+          },
+          "ok": true,
+          "screenshot": "step-16.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-16-after.jpg"
+        },
+        {
+          "index": 17,
+          "url": "https://yotsuya-haisya.com/kakunin/",
+          "title": "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "done",
+            "ref": "n15",
+            "value": "",
+            "reason": "Confirmation screen reached showing the name Nguyễn Thị Hương and the hiragana reading ぐえん てぃ ふおん. The form accepted both. I did not click 送信する."
+          },
+          "ok": true,
+          "screenshot": "step-17.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "checkpointModel": {
+            "urlChanged": true,
+            "nameInputsPresent": false,
+            "headings": [
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "料金・その他",
+              "症例集",
+              "ドクター紹介",
+              "医院情報",
+              "アクセス",
+              "採用情報",
+              "入力内容の確認",
+              "入力内容の確認",
+              "クリニックについて",
+              "治療メニュー",
+              "歯周病治療",
+              "虫歯治療",
+              "セラミック治療",
+              "Yotsuya dental office\n\n四ツ谷デンタルオフィス\n\n四ツ谷・四谷三丁目・曙橋・市ヶ谷",
+              "四ツ谷デンタルオフィス",
+              "Opening hours\n\n診療時間\n\n※祝日は休診です。",
+              "診療時間",
+              "Our clinics\n\n医療法人社団 志朋会\n\n四ツ谷に、ふたつの診療拠点。\n\n四谷三栄町の本院と、四谷1丁目の駅前診療所。\nご予約・ご来院の際は、受診先の医院名と所在地をご確認ください。",
+              "医療法人社団 志朋会",
+              "四ツ谷に、ふたつの診療拠点。",
+              "四ツ谷デンタルオフィス\n本院",
+              "四ツ谷デンタルオフィス\n駅前診療所",
+              "本院と駅前診療所の\n位置関係",
+              "本院の所在地・アクセス",
+              "関連リンク",
+              "本院の治療専門サイト",
+              "治療メニュー",
+              "医院情報",
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "歯周病",
+              "虫歯",
+              "詰め物・被せ物",
+              "歯列矯正",
+              "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト"
+            ],
+            "rows": [
+              {
+                "label": "必須お問い合わせ内容",
+                "value": "初めてのご予約"
+              },
+              {
+                "label": "必須仮予約希望日",
+                "value": "2026年11月07日"
+              },
+              {
+                "label": "必須ご希望のお時間",
+                "value": "ご希望時間10:00 ～"
+              },
+              {
+                "label": "必須ご希望の診療内容",
+                "value": "虫歯"
+              },
+              {
+                "label": "必須どんな症状ですか？",
+                "value": "歯が痛いです。"
+              },
+              {
+                "label": "必須お名前",
+                "value": "Nguyễn Thị Hương"
+              },
+              {
+                "label": "必須ふりがな",
+                "value": "ぐえん てぃ ふおん"
+              },
+              {
+                "label": "必須電話番号",
+                "value": "09012345678"
+              },
+              {
+                "label": "任意メール",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意メール確認入力",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意郵便番号",
+                "value": "1500001"
+              },
+              {
+                "label": "任意住所",
+                "value": "東京都渋谷区神宮前1-1-1"
+              },
+              {
+                "label": "任意性別",
+                "value": "男性"
+              },
+              {
+                "label": "任意年齢",
+                "value": "35"
+              },
+              {
+                "label": "診療時間",
+                "value": "月 火 水 木 金 土 日 祝"
+              },
+              {
+                "label": "9:30-13:00",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "14:00-18:30",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "09:30-14:00",
+                "value": "- - ◎ - - - - 休"
+              },
+              {
+                "label": "10:00-13:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "14:00-18:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "10:00-15:00",
+                "value": "- - - - - - ◎ 休"
+              },
+              {
+                "label": "診療内容\nTreatment",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "本院のご予約・お電話",
+                "value": ""
+              },
+              {
+                "label": "関連リンク",
+                "value": "関連リンク\n\n医療法人社団 志朋会\n\n四ツ谷デンタルオフィス\n\n本院 公式サイト\n→\n03-5361-7788\n24時間Web予約\n→\n駅前診療所 公式サイト\n→\n03-5990-2524\n24時間Web予約\n→\n本院の治療専門サイト\n小児矯正\n↗\nマウスピース矯正\n↗\nセラミック治療\n↗\nインプラント治療\n↗"
+              },
+              {
+                "label": "診療内容Treatment",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              }
+            ]
+          }
+        }
+      ],
+      "startedAt": "2026-11-07T08:26:21.957Z",
+      "endedAt": "2026-11-07T08:27:03.841Z",
+      "model": "claude-sonnet-5-5"
+    },
+    {
+      "identity": {
+        "id": "hyphen-compound",
+        "tests": "accents and a hyphen (a failure here would not isolate the hyphen)",
+        "label": "Accents and a hyphen",
+        "fullName": "Ana García-López",
+        "familyName": "García-López",
+        "givenName": "Ana",
+        "kanaFamily": "ガルシア ロペス",
+        "kanaGiven": "アナ",
+        "kanaFull": "アナ ガルシア ロペス",
+        "guidance": "p.27: compound names and punctuation accepted",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen reached; name Ana García-López and reading shown accepted. Not sending.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n18",
+            "value": "",
+            "reason": "First radio in inquiry type group"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n21",
+            "value": "",
+            "reason": "Open date picker to choose first selectable date"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n245",
+            "value": "",
+            "reason": "First selectable date (Nov 7)"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n22",
+            "value": "10:00 ～",
+            "reason": "First available time"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "select",
+            "ref": "n23",
+            "value": "虫歯",
+            "reason": "Treatment 虫歯"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n24",
+            "value": "歯が痛いです。",
+            "reason": "Symptoms"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n24",
+              "label": "必須どんな症状ですか？",
+              "name": "shoujyou",
+              "id": null,
+              "requested": "歯が痛いです。",
+              "retained": "歯が痛いです。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n25",
+            "value": "Ana García-López",
+            "reason": "Full name in single name field"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n25",
+              "label": "必須お名前",
+              "name": "flname",
+              "id": null,
+              "requested": "Ana García-López",
+              "retained": "Ana García-López",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n26",
+            "value": "あな がるしあ ろぺす",
+            "reason": "Hiragana reading for ふりがな"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n26",
+              "label": "必須ふりがな",
+              "name": "furik",
+              "id": null,
+              "requested": "あな がるしあ ろぺす",
+              "retained": "あな がるしあ ろぺす",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n27",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n27",
+              "label": "必須電話番号",
+              "name": "telno",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n28",
+            "value": "test@example.com",
+            "reason": "Optional email"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [
+            {
+              "ref": "n28",
+              "label": "任意メール",
+              "name": "fmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n29",
+            "value": "test@example.com",
+            "reason": "Email confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n29",
+              "label": "任意メール確認入力",
+              "name": "kmail",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-11-after.jpg"
+        },
+        {
+          "index": 12,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n30",
+            "value": "1500001",
+            "reason": "Optional postal code"
+          },
+          "ok": true,
+          "screenshot": "step-12.jpg",
+          "observations": [
+            {
+              "ref": "n30",
+              "label": "任意郵便番号",
+              "name": "zip",
+              "id": "zip",
+              "requested": "1500001",
+              "retained": "1500001",
+              "maxlength": 8,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-12-after.jpg"
+        },
+        {
+          "index": 13,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n31",
+            "value": "東京都渋谷区神宮前1-1-1",
+            "reason": "Optional address"
+          },
+          "ok": true,
+          "screenshot": "step-13.jpg",
+          "observations": [
+            {
+              "ref": "n31",
+              "label": "任意住所",
+              "name": "addr",
+              "id": "addr",
+              "requested": "東京都渋谷区神宮前1-1-1",
+              "retained": "東京都渋谷区神宮前1-1-1",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-13-after.jpg"
+        },
+        {
+          "index": 14,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n32",
+            "value": "",
+            "reason": "Optional gender radio: first option is the rule for radios"
+          },
+          "ok": true,
+          "screenshot": "step-14.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-14-after.jpg"
+        },
+        {
+          "index": 15,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "fill",
+            "ref": "n34",
+            "value": "35",
+            "reason": "Age 35"
+          },
+          "ok": true,
+          "screenshot": "step-15.jpg",
+          "observations": [
+            {
+              "ref": "n34",
+              "label": "任意年齢",
+              "name": "age",
+              "id": null,
+              "requested": "35",
+              "retained": "35",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-15-after.jpg"
+        },
+        {
+          "index": 16,
+          "url": "https://yotsuya-haisya.com/contact/",
+          "title": "24時間Web予約フォーム | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "click",
+            "ref": "n35",
+            "value": "",
+            "reason": "Proceed to confirmation screen"
+          },
+          "ok": true,
+          "screenshot": "step-16.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-16-after.jpg"
+        },
+        {
+          "index": 17,
+          "url": "https://yotsuya-haisya.com/kakunin/",
+          "title": "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト",
+          "action": {
+            "action": "done",
+            "ref": "n15",
+            "value": "",
+            "reason": "Confirmation screen reached; name Ana García-López and reading shown accepted. Not sending."
+          },
+          "ok": true,
+          "screenshot": "step-17.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "checkpointModel": {
+            "urlChanged": true,
+            "nameInputsPresent": false,
+            "headings": [
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "料金・その他",
+              "症例集",
+              "ドクター紹介",
+              "医院情報",
+              "アクセス",
+              "採用情報",
+              "入力内容の確認",
+              "入力内容の確認",
+              "クリニックについて",
+              "治療メニュー",
+              "歯周病治療",
+              "虫歯治療",
+              "セラミック治療",
+              "Yotsuya dental office\n\n四ツ谷デンタルオフィス\n\n四ツ谷・四谷三丁目・曙橋・市ヶ谷",
+              "四ツ谷デンタルオフィス",
+              "Opening hours\n\n診療時間\n\n※祝日は休診です。",
+              "診療時間",
+              "Our clinics\n\n医療法人社団 志朋会\n\n四ツ谷に、ふたつの診療拠点。\n\n四谷三栄町の本院と、四谷1丁目の駅前診療所。\nご予約・ご来院の際は、受診先の医院名と所在地をご確認ください。",
+              "医療法人社団 志朋会",
+              "四ツ谷に、ふたつの診療拠点。",
+              "四ツ谷デンタルオフィス\n本院",
+              "四ツ谷デンタルオフィス\n駅前診療所",
+              "本院と駅前診療所の\n位置関係",
+              "本院の所在地・アクセス",
+              "関連リンク",
+              "本院の治療専門サイト",
+              "治療メニュー",
+              "医院情報",
+              "トップページ",
+              "初めての方",
+              "当院の特徴",
+              "診療内容",
+              "歯周病",
+              "虫歯",
+              "詰め物・被せ物",
+              "歯列矯正",
+              "入力内容の確認 | 四ツ谷の歯医者『四ツ谷デンタルオフィス』｜歯科医院公式サイト"
+            ],
+            "rows": [
+              {
+                "label": "必須お問い合わせ内容",
+                "value": "初めてのご予約"
+              },
+              {
+                "label": "必須仮予約希望日",
+                "value": "2026年11月07日"
+              },
+              {
+                "label": "必須ご希望のお時間",
+                "value": "ご希望時間10:00 ～"
+              },
+              {
+                "label": "必須ご希望の診療内容",
+                "value": "虫歯"
+              },
+              {
+                "label": "必須どんな症状ですか？",
+                "value": "歯が痛いです。"
+              },
+              {
+                "label": "必須お名前",
+                "value": "Ana García-López"
+              },
+              {
+                "label": "必須ふりがな",
+                "value": "あな がるしあ ろぺす"
+              },
+              {
+                "label": "必須電話番号",
+                "value": "09012345678"
+              },
+              {
+                "label": "任意メール",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意メール確認入力",
+                "value": "test@example.com"
+              },
+              {
+                "label": "任意郵便番号",
+                "value": "1500001"
+              },
+              {
+                "label": "任意住所",
+                "value": "東京都渋谷区神宮前1-1-1"
+              },
+              {
+                "label": "任意性別",
+                "value": "男性"
+              },
+              {
+                "label": "任意年齢",
+                "value": "35"
+              },
+              {
+                "label": "診療時間",
+                "value": "月 火 水 木 金 土 日 祝"
+              },
+              {
+                "label": "9:30-13:00",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "14:00-18:30",
+                "value": "◎ ◎ - ◎ ◎ - - 休"
+              },
+              {
+                "label": "09:30-14:00",
+                "value": "- - ◎ - - - - 休"
+              },
+              {
+                "label": "10:00-13:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "14:00-18:00",
+                "value": "- - - - - ◎ - 休"
+              },
+              {
+                "label": "10:00-15:00",
+                "value": "- - - - - - ◎ 休"
+              },
+              {
+                "label": "診療内容\nTreatment",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "",
+                "value": ""
+              },
+              {
+                "label": "本院のご予約・お電話",
+                "value": ""
+              },
+              {
+                "label": "関連リンク",
+                "value": "関連リンク\n\n医療法人社団 志朋会\n\n四ツ谷デンタルオフィス\n\n本院 公式サイト\n→\n03-5361-7788\n24時間Web予約\n→\n駅前診療所 公式サイト\n→\n03-5990-2524\n24時間Web予約\n→\n本院の治療専門サイト\n小児矯正\n↗\nマウスピース矯正\n↗\nセラミック治療\n↗\nインプラント治療\n↗"
+              },
+              {
+                "label": "診療内容Treatment",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "歯周病",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "虫歯",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "詰め物・被せ物",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "歯列矯正",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "小児歯科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "口腔外科",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "歯を失った時の治療",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "その他",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              },
+              {
+                "label": "予防",
+                "value": ""
+              }
+            ]
+          }
+        }
+      ],
+      "startedAt": "2026-11-07T08:27:03.871Z",
+      "endedAt": "2026-11-07T08:27:44.551Z",
+      "model": "claude-sonnet-5-5"
+    }
+  ],
+  "findings": [
+    {
+      "identity": "long-name-spaces",
+      "stepIndex": 16,
+      "field": "必須お名前 (name=flname)",
+      "kind": "rejected",
+      "requested": "Maria Clara Santos Dela Cruz",
+      "retained": "Maria Clara Santos Dela Cruz",
+      "errorText": "文字数が正しくありません。",
+      "classification": "site_defect",
+      "guidance": "applicable",
+      "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 item 4 (sufficient maximum length)",
+      "observation": "The single お名前 field kept the full 28-character value \"Maria Clara Santos Dela Cruz\" but showed the site error 文字数が正しくありません。 (character count incorrect), and the form did not reach the confirmation screen. The Japanese baseline and shorter Latin names with spaces, such as \"Ana García-López\" and \"Nguyễn Thị Hương\" (16 characters each), all reached confirmation.",
+      "relevance": "A person with a long multi-part name of this shape is an intended user of a public contact form. Middle and compound names often produce full names well over 20 characters when written in Latin letters.",
+      "basis": "Rejecting a name only because of its length is inconsistent with p.27 item 4 of the GovTech Tokyo guidance, which asks for a sufficient maximum length because foreign names need more characters. This guidance is scoped to Tokyo Metropolitan Government forms and is not a law.",
+      "cause": "The DOM shows no maxlength or pattern attribute on the field, so the length limit is enforced by script or server; this cause is reproduced from behaviour, not confirmed in source. The limit lies somewhere between 17 and 27 characters, because 16-character names were accepted and the 28-character name was rejected.",
+      "fix": "Raise the name length limit in the validation that emits 文字数が正しくありません。 to a generous bound (for example 1 to 100 characters), and keep rejecting empty or overlong input. This is a suggested change based on behaviour; it has not been verified against the site's own code.",
+      "screenshot": "step-16.jpg",
+      "id": "F1",
+      "reviewState": "proposed"
+    }
+  ],
+  "summary": "1 of 5 name cases stopped before the checkpoint; baseline reached_checkpoint."
+}

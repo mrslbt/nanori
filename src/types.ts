@@ -76,6 +76,8 @@ export interface Step {
   screenshotAfter?: string;
   observations: FieldObservation[];
   pageErrors: string[];
+  /** The review-screen model used for checkpoint verification (saved so the check can be recomputed offline). */
+  checkpointModel?: { urlChanged: boolean; nameInputsPresent: boolean; headings: string[]; rows: Array<{ label: string; value: string }> };
 }
 
 /**

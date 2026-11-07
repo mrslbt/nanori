@@ -133,7 +133,9 @@ export async function pageModel(page: Page, keys: Array<{ name: string | null; i
     for (const tr of document.querySelectorAll("tr")) { const th = tr.querySelector("th"); const tds = tr.querySelectorAll("td"); if (th && tds.length) rows.push({ label: text(th), value: Array.from(tds).map(text).join(" ") }); else if (tds.length >= 2) rows.push({ label: text(tds[0]), value: Array.from(tds).slice(1).map(text).join(" ") }); }
     for (const dt of document.querySelectorAll("dt")) { let dd = dt.nextElementSibling; while (dd && dd.tagName !== "DD") dd = dd.nextElementSibling; if (dd) rows.push({ label: text(dt), value: text(dd) }); }
     for (const box of document.querySelectorAll("[class*=item], [class*=row], li, p")) { const lab = box.querySelector("[class*=label], [class*=ttl], [class*=title], strong, b, span"); const val = box.querySelector("[class*=value], [class*=data], [class*=text], [class*=content]"); if (lab && val && lab !== val) rows.push({ label: text(lab), value: text(val) }); }
-    const nameInputsPresent = keys.some((k) => (k.id && document.getElementById(k.id)) || (k.name && document.querySelector(`input[name="${CSS.escape(k.name)}"], textarea[name="${CSS.escape(k.name)}"]`)));
+    // Only visible, editable inputs count: a hidden entry form behind a review section is not "still present".
+    const vis = (el: Element | null) => { if (!el) return false; const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && cs.display !== "none" && !(el as HTMLInputElement).disabled && !(el as HTMLInputElement).readOnly; };
+    const nameInputsPresent = keys.some((k) => vis(k.id ? document.getElementById(k.id) : null) || (k.name ? Array.from(document.querySelectorAll(`input[name="${CSS.escape(k.name)}"], textarea[name="${CSS.escape(k.name)}"]`)).some(vis) : false));
     return { urlChanged, nameInputsPresent, headings, bodyText: (document.body?.innerText ?? "").slice(0, 20000), rows: rows.slice(0, 200) };
   }, { keys, urlChanged });
 }
