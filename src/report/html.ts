@@ -67,16 +67,17 @@ export function renderHtml(input: RunBundle): string {
     const p = firstProblem(r);
     const shot = evidenceShot(r, p?.step);
     const where = p
-      ? `<div class="where"><span class="field">${esc(p.field)}</span> <span class="kind">${esc(p.kind)}</span>${p.detail ? `<div class="detail" ${p.source === "site" ? 'lang="ja"' : ""}>${esc(p.detail)}${p.source === "nanori" ? ' <span class="muted">(nanori measurement)</span>' : ""}</div>` : ""}</div>`
-      : `<span class="muted">no measured problem</span>`;
+      ? `<div class="where"><span class="field">${esc(p.field)}</span> <span class="kind">${esc(p.kind)}</span>${p.detail ? `<div class="detail" ${p.source === "site" ? 'lang="ja"' : ""}>${esc(p.detail)}${p.source === "nanori" ? ' <span class="muted">(nanori measurement)</span>' : ""}</div>` : ""}${shot ? `<div class="detail"><a href="${esc(shot)}" target="_blank">Screenshot, step ${p.step.index}</a></div>` : ""}</div>`
+      : `<span class="muted">No measured problem.</span>${shot ? ` <a class="muted" href="${esc(shot)}" target="_blank">Final screen</a>` : ""}`;
+    // The agent's note: first sentence inline, the rest behind a toggle.
+    const [noteHead, ...noteRest] = r.stopReason.split(/(?<=[.。])\s+/);
+    const note = `<div class="note">${esc(noteHead)}${noteRest.length ? ` <details class="why"><summary>more</summary>${esc(noteRest.join(" "))} (${r.steps.length} actions)</details>` : ` <span class="muted">(${r.steps.length} actions)</span>`}</div>`;
     const short = r.outcome === "reached_checkpoint" ? "Confirmation screen reached" : r.outcome === "stopped_before_checkpoint" ? "Stopped: test input rejected" : r.outcome === "reached_name_changed" ? "Reached, but the name was shown changed" : r.outcome === "reached_with_workaround" ? "Reached with a workaround" : "Not determined";
     const label = (r.identity as any).label ?? identityById(r.identity.id)?.label ?? r.identity.tests;
     return `<tr class="${r.identity.id === "baseline" ? "baseline" : ""}">
       <th><div class="who">${esc(label)}</div><div class="tests">${esc(r.identity.fullName)}</div></th>
-      <td class="outcome ${tone(r.outcome)}">${esc(short)}<details class="why"><summary>agent note</summary>${esc(r.stopReason)}</details></td>
-      <td>${where}</td>
-      <td class="num">${r.steps.length}</td>
-      <td>${shot ? `<a href="${esc(shot)}" target="_blank">screenshot</a>` : ""}</td></tr>`;
+      <td class="outcome"><span class="${tone(r.outcome)}">${esc(short)}</span>${note}</td>
+      <td>${where}</td></tr>`;
   }).join("");
 
   // Selected finding: the first supported site defect, else the first finding.
@@ -126,13 +127,14 @@ export function renderHtml(input: RunBundle): string {
   ].join("\n") : "";
 
   const selectedHtml = selected ? `
-    <section class="selected ${selected.classification}">
+    <section class="selected ${selected.classification}" id="finding">
       <div class="pair">
-        <figure><div class="crop"><img src="${esc(selShot)}" style="${cropStyle}" alt="Detail: the name field and the error"></div><figcaption>${esc(selRun?.identity.fullName ?? "")}: the same screenshot, ${cropNote}, nothing edited. <a href="${esc(selShot)}" target="_blank">Full screenshot</a></figcaption></figure>
-        <figure><a href="${esc(baseShot)}" target="_blank"><img src="${esc(baseShot)}" alt="Baseline, final screen"></a><figcaption>Baseline ${esc(b.baseline.identity.fullName)}: ${esc(describe(b.baseline.outcome))}. <a href="${esc(baseShot)}" target="_blank">Full screenshot</a></figcaption></figure>
+        <figure><div class="crop"><img src="${esc(selShot)}" style="${cropStyle}" alt="Detail: the name field and the error"></div><figcaption>${esc(selRun?.identity.fullName ?? "")}: the same screenshot, ${cropNote}, nothing edited. <a href="${esc(selShot)}" target="_blank">${esc(selRun?.identity.fullName ?? "")}, full screenshot</a></figcaption></figure>
+        <figure><a href="${esc(baseShot)}" target="_blank"><img src="${esc(baseShot)}" alt="Baseline, final screen"></a><figcaption>Baseline ${esc(b.baseline.identity.fullName)}: ${esc(describe(b.baseline.outcome))}. <a href="${esc(baseShot)}" target="_blank">Baseline, full screenshot</a></figcaption></figure>
       </div>
       <div class="facts">
-        <p class="cls"><strong>${CLASS_LABEL[selected.classification]}.</strong> ${selected.reviewState === "proposed" ? "Proposed by Claude from measured facts, not yet reviewed by a person." : "Reviewed."}</p>
+        <div class="clsrow"><p class="cls"><strong>${CLASS_LABEL[selected.classification]}.</strong> ${selected.reviewState === "proposed" ? "Proposed by Claude from measured facts, not yet reviewed by a person." : "Reviewed."}</p>
+          <button type="button" id="copy-brief" title="Copies this finding as plain text, for Claude Code or an issue">Copy repair brief</button></div>
         <dl class="measured">
           <dt>Field</dt><dd>${esc(selected.field)}</dd>
           <dt>Entered</dt><dd><code class="big">${esc(selected.requested)}</code></dd>
@@ -147,11 +149,7 @@ export function renderHtml(input: RunBundle): string {
           <dt>Cause</dt><dd>${esc(selected.cause)}</dd>
           <dt>Proposed repair</dt><dd>${esc(selected.fix)}</dd>
         </dl>
-        <div class="brief">
-          <button type="button" id="copy-brief">Copy repair brief</button>
-          <span class="muted">Plain text of this finding, for Claude Code or an issue.</span>
-          <details><summary>show the text</summary><textarea id="brief-text" readonly rows="18" spellcheck="false">${esc(brief)}</textarea></details>
-        </div>
+        <div class="brief"><details><summary>The repair brief as text</summary><textarea id="brief-text" readonly rows="18" spellcheck="false">${esc(brief)}</textarea></details></div>
       </div>
     </section>` : `<p class="muted">No findings.</p>`;
 
@@ -172,8 +170,8 @@ export function renderHtml(input: RunBundle): string {
 
   // Run details: the full action log, collapsed.
   const log = all.map((r) => `
-    <details><summary>${esc(r.identity.fullName)} · ${r.steps.length} actions · ${esc(describe(r.outcome))}</summary>
-    <ol class="log">${r.steps.map((s) => { const bad = s.observations.some((o) => checkField(o).kind !== "accepted"); return `<li class="${bad ? "bad" : ""}"><span class="act">${esc(s.action.action)}</span> ${esc(s.action.ref ?? "")} ${s.action.value ? `<code>${esc(s.action.value)}</code>` : ""} <span class="muted">${esc(s.action.reason)}</span> <a href="${esc(r.identity.id)}/${esc(s.screenshot)}" target="_blank">before</a>${s.screenshotAfter ? ` · <a href="${esc(r.identity.id)}/${esc(s.screenshotAfter)}" target="_blank">after</a>` : ""}${s.observations.length ? `<ul>${s.observations.map((o) => { const c = checkField(o); return `<li><span class="muted">${esc(o.label ?? o.name)}</span>: ${esc(c.kind)}${c.detail ? ` <span lang="ja">${esc(c.detail)}</span>` : ""}${c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}</li>`; }).join("")}</ul>` : ""}</li>`; }).join("")}</ol></details>`).join("");
+    <details><summary>${esc(r.identity.fullName)}: ${r.steps.length} actions, ${esc(describe(r.outcome))}</summary>
+    <ol class="log">${r.steps.map((s) => { const bad = s.observations.some((o) => checkField(o).kind !== "accepted"); return `<li class="${bad ? "bad" : ""}"><span class="act">${esc(s.action.action)}</span> ${esc(s.action.ref ?? "")} ${s.action.value ? `<code>${esc(s.action.value)}</code>` : ""} <span class="muted">${esc(s.action.reason)}</span> <a href="${esc(r.identity.id)}/${esc(s.screenshot)}" target="_blank" aria-label="Step ${s.index}, screenshot before">before</a>${s.screenshotAfter ? ` · <a href="${esc(r.identity.id)}/${esc(s.screenshotAfter)}" target="_blank" aria-label="Step ${s.index}, screenshot after">after</a>` : ""}${s.observations.length ? `<ul>${s.observations.map((o) => { const c = checkField(o); return `<li><span class="muted">${esc(o.label ?? o.name)}</span>: ${esc(c.kind)}${c.detail ? ` <span lang="ja">${esc(c.detail)}</span>` : ""}${c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}</li>`; }).join("")}</ul>` : ""}</li>`; }).join("")}</ol></details>`).join("");
 
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>nanori report: ${esc(b.id)}</title>
@@ -183,51 +181,52 @@ export function renderHtml(input: RunBundle): string {
 <style>
 :root{--bg:#fbfaf8;--ink:#17191d;--text:#2b2e34;--muted:#6b6e75;--rule:#e2dfd8;--ok:#1a6b43;--bad:#b8291b;--warn:#8a5a00;
 --sans:"IBM Plex Sans JP","Hiragino Sans","Noto Sans JP",sans-serif;--mono:"IBM Plex Mono",Menlo,monospace}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 var(--sans)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--sans)}
 main{max-width:1040px;margin:0 auto;padding:36px 28px 72px}
 a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
 .top{padding-bottom:20px;border-bottom:1px solid var(--rule)}
-.brand{font-weight:600;font-size:18px;color:var(--ink);margin-bottom:14px}.meta{font-size:13.5px;color:var(--muted);line-height:1.6}.meta .url{overflow-wrap:anywhere}.meta strong{color:var(--text);font-weight:600}
+.brand{font-weight:600;font-size:18px;color:var(--ink);margin-bottom:14px}.meta{font-size:14px;color:var(--muted);line-height:1.6}.meta .url{overflow-wrap:anywhere}.meta strong{color:var(--text);font-weight:600}
 .verdict{margin:40px 0 8px}.verdict h1{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:-.015em;margin:0;color:var(--ink);text-wrap:balance}.verdict.v-bad h1{color:var(--bad)}.verdict.v-ok h1{color:var(--ok)}.verdict.v-warn h1{color:var(--warn)}
-.verdict p{font-size:16px;margin:10px 0 0;max-width:70ch}
+.verdict p{font-size:17px;margin:10px 0 0;max-width:70ch}
 h2{font-size:19px;font-weight:600;color:var(--ink);margin:52px 0 10px}h3{font-size:14px;font-weight:600;margin:28px 0 6px;color:var(--ink)}
-.muted{color:var(--muted);font-size:13.5px}p.muted{max-width:90ch}
+.muted{color:var(--muted);font-size:14px}p.muted{max-width:90ch}
 table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:12px 12px 12px 0;border-bottom:1px solid var(--rule);vertical-align:top}th:last-child,td:last-child{padding-right:0}
-thead th{font-size:13px;font-weight:500;color:var(--muted);padding-top:0}
-.who{font-weight:600;color:var(--ink)}.tests{font:13.5px var(--mono);color:var(--muted);margin-top:2px}
-td.outcome{font-weight:600}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
-.why{font-weight:400;font-size:12.5px;color:var(--muted);white-space:normal;max-width:300px;margin:4px 0 0;border:0;padding:0}.why summary{cursor:pointer;font-weight:400;color:var(--muted)}
-.where .field{font-weight:600;color:var(--ink)}.where .kind{color:var(--bad);margin-left:6px}.detail{font-size:13.5px;margin-top:3px}td.num{text-align:right;color:var(--muted)}
+thead th{font-size:14px;font-weight:500;color:var(--muted);padding-top:0}
+.who{font-weight:600;color:var(--ink)}.tests{font:14px var(--mono);color:var(--muted);margin-top:2px}
+table.cmp th:first-child{width:26%}table.cmp th:nth-child(2){width:37%}td.outcome span.ok,td.outcome span.bad,td.outcome span.warn{font-weight:600}.note{font-size:14px;color:var(--muted);margin-top:4px;max-width:40ch}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.why{display:inline;font-weight:400;font-size:14px;color:var(--muted);margin:0;border:0;padding:0}.why summary{display:inline;cursor:pointer;font-weight:400;color:var(--ink);text-decoration:underline;text-underline-offset:3px}.why[open] summary{display:block}
+.where .field{font-weight:600;color:var(--ink)}.where .kind{color:var(--bad);margin-left:6px}.detail{font-size:14px;margin-top:3px}
 .selected{margin:16px 0}
-.pair{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;margin-bottom:24px}.pair figure{margin:0}.pair img{width:100%;height:auto;display:block;border:1px solid var(--rule)}.pair figcaption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+.pair{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;margin-bottom:24px}.pair figure{margin:0}.pair img{width:100%;height:auto;display:block;border:1px solid var(--rule)}.pair figcaption{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.5}
 .crop{position:relative;overflow:hidden;border:1px solid var(--rule);aspect-ratio:4/3;background:#fff}.crop img{width:100%;height:100%;object-fit:cover;transform:scale(2);border:0}
-.cls{margin:0 0 4px}.cls strong{color:var(--ink)}.site_defect .cls strong{color:var(--bad)}.no_issue .cls strong{color:var(--ok)}
-dl{display:grid;grid-template-columns:150px 1fr;gap:8px 20px;margin:14px 0 0}dt{font-size:13.5px;color:var(--muted);padding-top:2px}dd{margin:0}
-dl.measured dd{color:var(--ink)}.sep{font-size:13.5px;color:var(--muted);margin:18px 0 0}
-code{font:13.5px var(--mono);background:#f0eee9;padding:1px 6px;word-break:break-all}code.big{font-size:17px;padding:4px 10px;display:inline-block}code.big.diff{background:#f9e3df;color:var(--bad)}code.big.said{background:#fff;border:1px solid var(--rule)}
+.clsrow{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}.cls{margin:0 0 4px;flex:1 1 40ch}.cls strong{color:var(--ink)}.site_defect .cls strong{color:var(--bad)}.no_issue .cls strong{color:var(--ok)}
+dl{display:grid;grid-template-columns:150px 1fr;gap:8px 20px;margin:14px 0 0}dt{font-size:14px;color:var(--muted);padding-top:2px}dd{margin:0}
+dl.measured dd{color:var(--ink)}.sep{font-size:14px;color:var(--muted);margin:18px 0 0}
+code{font:14px var(--mono);background:#f0eee9;padding:1px 6px;word-break:break-all}code.big{font-size:18px;padding:4px 10px;display:inline-block}code.big.diff{background:#f9e3df;color:var(--bad)}code.big.said{background:#fff;border:1px solid var(--rule)}
 details{padding:10px 0;margin:8px 0;border-bottom:1px solid var(--rule)}summary{cursor:pointer;font-weight:500;color:var(--ink)}details.cmp{border:0;padding:0}details.cmp h2{margin-top:16px}
-details.other summary,details.finding summary{font-size:14px}.finding dl{grid-template-columns:140px 1fr}
-.log{font-size:13.5px;padding-left:22px}.log li{margin:5px 0}.log li.bad{color:var(--bad)}.log .act{font-weight:600}.log ul{margin:2px 0 6px;color:var(--text);font-size:13px}
+details.other summary,details.finding summary{font-size:15px}.finding dl{grid-template-columns:140px 1fr}
+.log{font-size:14px;padding-left:22px}.log li{margin:5px 0}.log li.bad{color:var(--bad)}.log .act{font-weight:600}.log ul{margin:2px 0 6px;color:var(--text);font-size:14px}
 table.ba td{font-weight:600}
 .passed{color:var(--ok);font-weight:600;font-size:16px;margin:12px 0}
-.brief{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}.brief button{font:600 14px var(--sans);padding:9px 16px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}.brief button:hover{background:#000}.brief button.done{background:var(--ok);border-color:var(--ok)}.brief details{flex-basis:100%;border:0;padding:0;margin:0}.brief summary{font-weight:400;font-size:13.5px;color:var(--muted)}.brief textarea{width:100%;font:12.5px/1.5 var(--mono);padding:12px;border:1px solid var(--rule);background:#fff;color:var(--ink);margin-top:8px}
-footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:var(--muted);font-size:13px;max-width:90ch}
-@media (max-width:820px){main{padding:24px 16px 56px}.top{grid-template-columns:1fr;gap:8px}.meta{font-size:13px}
+#copy-brief{font:600 14px var(--sans);padding:9px 16px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;flex:0 0 auto}#copy-brief:hover{background:#000}#copy-brief.done{background:var(--ok);border-color:var(--ok)}
+.brief{margin-top:16px}.brief details{border:0;padding:0;margin:0}.brief summary{font-weight:400;font-size:14px;color:var(--muted)}.brief textarea{width:100%;font:13px/1.5 var(--mono);padding:12px;border:1px solid var(--rule);background:#fff;color:var(--ink);margin-top:8px}
+footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px;max-width:90ch}
+@media (max-width:820px){main{padding:24px 16px 56px}.top{grid-template-columns:1fr;gap:8px}.note{max-width:none}
  .verdict h1{font-size:24px}.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr;gap:2px 0}dt{padding-top:10px}
- table:not(.ba){display:block}table:not(.ba) thead{display:none}table:not(.ba) tbody,table:not(.ba) tr{display:block}table:not(.ba) tr{border-bottom:1px solid var(--rule);padding:12px 0}table:not(.ba) th,table:not(.ba) td{display:block;border:0;padding:3px 0;min-width:0}td.num{text-align:left}td.num::before{content:"Actions: ";color:var(--muted)}
+ table:not(.ba){display:block}table:not(.ba) thead{display:none}table:not(.ba) tbody,table:not(.ba) tr{display:block}table:not(.ba) tr{border-bottom:1px solid var(--rule);padding:12px 0}table:not(.ba) th,table:not(.ba) td{display:block;border:0;padding:3px 0;min-width:0}
  table.ba{display:block;overflow-x:auto;white-space:nowrap}}
 </style></head><body><main>
 <header class="top">
   <div class="brand">nanori</div>
   <div class="meta"><div class="url">${esc(b.url)}</div><div>Goal: ${esc(b.goal)}</div><div>Run ${esc(b.id)}, ${esc(b.createdAt.replace("T", " ").replace(/\.\d+Z$/, " UTC"))}</div><div><strong>${esc(scope)}</strong></div></div>
 </header>
-<section class="verdict v-${vtone}"><h1>${esc(hl.head)}</h1>${hl.support ? `<p>${esc(hl.support)}</p>` : ""}</section>
+<section class="verdict v-${vtone}"><h1>${esc(hl.head)}</h1>${hl.support ? `<p>${esc(hl.support)}${b.findings.length ? ` <a href="#finding">See the evidence.</a>` : ""}</p>` : ""}</section>
 
 ${b.before ? beforeAfter : ""}
 ${b.before ? `<details class="cmp"><summary>Comparison table for this run (all cases)</summary>` : ""}
 <h2>Comparison</h2>
 <p class="muted">${b.scenario ? "Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected." : "Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows; see the run log."} Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
-<table><thead><tr><th>Name format</th><th>Outcome</th><th>Name check: first measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody>${rows}</tbody></table>
+<table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody>${rows}</tbody></table>
 <p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
 ${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ...d }))); return od.length ? `<details class="other"><summary>Other diagnostics (${od.length}, not about names)</summary><ul>${od.map((d) => `<li><span class="muted">${esc(d.r.identity.fullName)} · step ${d.step.index} · ${esc(d.o.label ?? d.o.name)}</span>: ${esc(d.c.kind)}${d.c.detail ? ` <span lang="ja">${esc(d.c.detail)}</span>` : ""}${d.c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}<br><span class="muted">typed "${esc(d.o.requested)}", field kept "${esc(d.o.retained)}"${d.o.diagnostic ? "; uncertain: " + esc(d.o.diagnostic.note) : ""}</span></li>`).join("")}</ul></details>` : ""; })()}
 
@@ -247,7 +246,7 @@ ${log}
 <script>
 (function(){var b=document.getElementById("copy-brief"),t=document.getElementById("brief-text");if(!b||!t)return;
 b.addEventListener("click",function(){var done=function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy repair brief";b.classList.remove("done")},2000)};
-var fail=function(){t.closest("details").open=true;t.focus();t.select();b.textContent="Select and copy the text below"};
+var fail=function(){t.closest("details").open=true;t.focus();t.select();b.textContent="Copy the text below"};
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.value).then(done,fail)}else{fail()}})})();
 </script>
 </body></html>`;
