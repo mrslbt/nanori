@@ -29,6 +29,10 @@ export interface ElementInfo {
   id: string | null;
   label: string | null;
   placeholder: string | null;
+  ariaLabel?: string | null;
+  role?: string | null;
+  title?: string | null;
+  alt?: string | null;
   text: string | null;
   required: boolean;
   maxlength: number | null;

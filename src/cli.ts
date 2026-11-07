@@ -9,7 +9,7 @@ import { battery } from "./battery.js";
 import { scan } from "./scan.js";
 
 const program = new Command();
-program.name("nanori").description("Test a Japanese web form with the names of real residents, not just Japanese test data.").version("0.1.0");
+program.name("nanori").description("Test a Japanese web form with name-format test cases that conventional test data can miss.").version("0.1.0");
 
 program.command("run")
   .argument("<url>", "form URL")

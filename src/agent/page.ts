@@ -47,6 +47,10 @@ export async function snapshotElements(page: Page): Promise<ElementInfo[]> {
         id: el.getAttribute("id"),
         label: labelFor(el),
         placeholder: el.getAttribute("placeholder"),
+        ariaLabel: el.getAttribute("aria-label") || (el.getAttribute("aria-labelledby") ? Array.from(el.getAttribute("aria-labelledby")!.split(/\s+/)).map((i) => document.getElementById(i)?.innerText?.trim() ?? "").join(" ") : null),
+        role: el.getAttribute("role"),
+        title: el.getAttribute("title"),
+        alt: el.getAttribute("alt"),
         text: tag === "button" || tag === "a" || el.getAttribute("role") === "button" ? el.innerText.trim().slice(0, 80)
           : tag === "input" && ["submit", "button", "image"].includes((el as HTMLInputElement).type) ? ((el as HTMLInputElement).value || el.getAttribute("alt") || "").trim().slice(0, 80) : null,
         required: el.hasAttribute("required") || el.getAttribute("aria-required") === "true",

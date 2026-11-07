@@ -2,15 +2,19 @@
 
 **Your form works with your test data. Does it work with your customers' names?**
 
-nanori is a test tool for people who build or maintain Japanese web forms. Point it at a form and a goal. It drives a real Chrome, tries to reach the goal as a typical Japanese customer, then again with name-format test cases that conventional Japanese test data can miss: Latin letters, long names with spaces, a single name with no surname, diacritics, a hyphenated surname. Where a test name is rejected, cut, or altered and the baseline was not, it reports the field, the exact input, what the field kept, the error the page showed, which published guidance the behaviour is inconsistent with, and a proposed repair. Fix a local copy, rerun, and the report shows before and after.
+nanori is a test tool for people who build or maintain Japanese web forms. Point it at a form and a goal. It drives a real Chrome, tries to reach the goal with a kanji-name baseline, then again with name-format test cases that conventional Japanese test data can miss: Latin letters, long names with spaces, a single name with no surname, diacritics, a hyphenated surname. Where a test name is rejected, cut, or altered and the baseline was not, it reports the field, the exact input, what the field kept, the error the page showed, which published guidance the behaviour is inconsistent with, and a proposed repair. Fix a local copy, rerun, and the report shows before and after.
 
 Built for Built with Claude: Japan 2026 (Nov 2 to 8), by a foreign resident of Tokyo whose name does not fit many Japanese forms.
+
+![nanori report: a public Tokyo dental reservation form, six name formats, one rejected](docs/report-preview.png)
+
+Open a saved report without any API call: `runs/yotsuya-dental-3/report.html` (the public finding), `runs/yotsuya-local-before/report.html` and `runs/yotsuya-local-after/report.html` (the controlled repair on a local reproduction). The boundary probe evidence is in `runs/yotsuya-dental-1/diag/`.
 
 ## What it found on a real form
 
 A public dental reservation form in Tokyo (`runs/yotsuya-dental-*`): the Japanese baseline and four of five test names reach the confirmation screen. The 28-character test name "Maria Clara Santos Dela Cruz" is rejected with 「文字数が正しくありません。」 (character count incorrect). The limit is not in the page source, so nanori measured it: with every other field identical, 20 characters are accepted and 21 are rejected (`runs/yotsuya-dental-1/diag/`). The server implementation was not inspected. A labelled local reproduction of that form, repaired by raising the limit (the required check is kept), passes all six cases on rerun. The live site is unchanged.
 
-Across 32 other public Tokyo forms, a model-free probe (`nanori scan`) flagged a handful of further observations pending review (a review screen printing diacritics as HTML entities, a hiragana field rejecting a long-vowel mark, a parent-name field converting Latin letters to full width and capping at five characters). Those are observations, not proven exclusions; see `runs/scan-tokyo-1/scan.html` for the honest categories.
+Across a 32-form sample of public Tokyo forms (the headline site is one of them), a model-free probe (`nanori scan`) flagged a handful of further observations pending review (a review screen printing diacritics as HTML entities, a hiragana field rejecting a long-vowel mark, a parent-name field converting Latin letters to full width and capping at five characters). Those are observations, not proven exclusions; see `runs/scan-tokyo-1/scan.html` for the honest categories.
 
 ## Why name handling matters
 
@@ -21,16 +25,38 @@ Documented context, not nanori test results:
 - PayPay Card tells applicants with long names to omit middle names or trailing parts to fit ten characters per name field. https://www.paypay-card.co.jp/service/004549.html
 - GovTech Tokyo's Input Form Guidance ver 1.1 (March 2026), page 27, asks for one full-name field that fits middle and compound names, acceptance of the scripts people write their names in, spaces allowed, and a sufficient maximum length "because foreign names need more characters". It is guidance for Tokyo Metropolitan Government forms, not a law. https://www.digitalservice.metro.tokyo.lg.jp/documents/d/digitalservice/inputform_guidance_v11
 
-4,281,026 foreign residents lived in Japan as of June 2026 (Immigration Services Agency). That is context for who meets these fields, not a count of people whose names fail.
+4,281,026 foreign residents lived in Japan as of June 2026 ([Immigration Services Agency](https://www.moj.go.jp/isa/publications/press/13_00070.html)). That is context for who meets these fields, not a count of people whose names fail.
 
-## Install and run
+## Before you run it
+
+- Node 20 or newer, Google Chrome installed (Playwright drives the real Chrome channel), an Anthropic API key. Runs make paid API calls: roughly 10 to 20 model calls per name case for navigation (Claude Sonnet) plus one diagnosis call (Claude Opus).
+- Data flow: the browser runs on your machine, but each step sends a screenshot and the page's visible text and element list to the Claude API, and the diagnosis step sends the measured facts. Run artifacts (screenshots, report.json, report.html) are saved locally under `runs/`. Nothing is uploaded anywhere else.
+- Safety: nanori is built to stop at the review screen. Known final actions (送信, 確定, 申込, 予約する, Send, Submit, Register, Book now, Pay, and their accessible labels) are blocked in code (`src/guard.ts`, tested). That is a word list plus accessible-name matching, not a proof: on an unfamiliar site a control labelled "Next" could still submit, so treat the first run on any new site as something to watch, and prefer forms you own. The demonstrated runs did not complete a booking; the send button was never clicked.
+
+## Quick start on the bundled fixture (recommended first run)
 
 ```bash
 npm install
 npx playwright install chrome
-cp .env.example .env        # add your ANTHROPIC_API_KEY
+cp .env.example .env        # put your ANTHROPIC_API_KEY in .env (gitignored)
 npm run build
 ```
+
+Terminal 1, the local test form (a clinic reservation form with three deliberate name rules):
+
+```bash
+npm run fixture
+```
+
+Terminal 2, nanori:
+
+```bash
+node dist/cli.js run http://localhost:4310/ "reach the reservation review screen"
+```
+
+Then open the path it prints (`runs/<id>/report.html`). Expect two names cut by a 10-character limit, one katakana reading rejected for its space, and one single-name case stopped by a required given-name field.
+
+## Running on other forms
 
 ```bash
 # Full run: baseline + name cases, Claude drives the browser, report in runs/<id>/report.html
@@ -49,11 +75,9 @@ node dist/cli.js scan scan/tokyo-forms.txt --headless
 node dist/cli.js cases
 ```
 
-Try it on the bundled fixture first: `npm run fixture` serves a local clinic form on http://localhost:4310/ with three deliberate name rules (katakana-only reading, 10-character names, half-width phone).
-
 ## How a run works
 
-1. Baseline: a Japanese name (kanji with its reading), Tokyo address, Japanese mobile, plain email. Claude (Sonnet) reads each page as an accessibility snapshot plus a screenshot, returns one action at a time through a strict `act` tool, and stops at the goal screen. It never clicks a final submit, confirm, pay or send button; that list is enforced in code, not in the prompt.
+1. Baseline: a Japanese name (kanji with its reading), Tokyo address, Japanese mobile, plain email. Claude (Sonnet) reads each page as an accessibility snapshot plus a screenshot, returns one action at a time through a strict `act` tool, and stops at the goal screen. It is built to stop at the review screen; known final actions are blocked in code (see Before you run it), and uncertain flows stop for review.
 2. Name cases: same form, same contact details, same fixed non-name choices. Only the name and its reading change. Reading fields get the script they ask for (hiragana for ふりがな, katakana for フリガナ); nanori never substitutes the other script to get past an error.
 3. Measurement is code (`src/checks`, unit-tested): after every fill, the field's retained value, native validation message, aria-invalid and visible error text; after a failed confirm click, every invalid field re-read by name/id; at the goal screen, whether each typed value is shown in full, cut, HTML-escaped, or missing. Errors already on screen before a fill are treated as stale.
 4. Diagnosis: Claude (Opus) writes each finding from those measured facts only, with the Tokyo guidance text loaded from the `jp-form-checks` Skill, as structured output. Four classes: site defect supported by evidence, agent limitation, no observed issue, inconclusive. Every finding is marked "proposed, not yet reviewed".
@@ -94,6 +118,8 @@ scripts/        boundary probe, rerender, hook
 ## Limits and future work
 
 - One site at a time, sequential cases. Parallel subagents were not needed for the demo and were left out.
+- The review-screen check matches a typed name value against any name-labelled review row. It does not yet bind each input to its own row, so a name and a reading swapped between the name and reading rows would both still count as shown. The headline evidence is unaffected (its rows hold the right values), but no general row-specific preservation guarantee is claimed.
+- The scan (`nanori scan`) is a probe for forms you have reason to test; it is not an onboarding path. Prefer your own forms or the fixture first.
 - The scan stalls on forms whose other required fields it cannot fill (dates, consent); those are reported as incomplete, not as results.
 - Provider-specific name rules (payment and identity verification flows) and downstream name preservation are future work, to be tested only in an authorised provider environment.
 - Alternate entry paths (documented workarounds) are reported, not attempted.

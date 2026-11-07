@@ -1,7 +1,7 @@
 {
   "name": "nanori",
   "version": "0.1.0",
-  "description": "Test Japanese web forms with the names of real residents, not just Japanese test data.",
+  "description": "Test Japanese web forms with name-format test cases that conventional test data can miss.",
   "main": "index.js",
   "scripts": {
     "test": "vitest run",

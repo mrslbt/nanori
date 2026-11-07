@@ -20,8 +20,7 @@ const NAME = /(氏名|名前|姓|名|name|sei|mei|last|first|family|given|surnam
 const FAMILY = /(姓|セイ|ｾｲ|sei|last|family|surname)/i;
 const GIVEN = /(名|メイ|ﾒｲ|mei|first|given)/i;
 const FULLHINT = /(氏名|お名前|名前|fullname|full_name|your-name|your_name)/i;
-const ADVANCE = /(確認|次へ|次に進む|入力内容|confirm|next|続ける|進む)/i;
-const FORBIDDEN = /(送信|確定|申し?込|予約する|予約を確定|決済|支払|submit|send|purchase|pay|place order)/i;
+import { isReviewAdvance } from "./guard.js";
 
 type Role = "family" | "given" | "full" | "kana_family" | "kana_given" | "kana_full";
 type Script = "katakana" | "hiragana";
@@ -126,7 +125,7 @@ async function probeOne(page: Page, url: string, id: Identity, outDir: string, i
     await fillSupporting(page, elements, named.map((n) => n.e.ref), id);
     // Try to advance to a confirmation screen. Never a final submit.
     const fresh = await snapshotElements(page);
-    const btn = fresh.find((e) => (e.tag === "button" || e.type === "submit" || e.type === "image" || e.tag === "a" || e.tag === "input") && e.text && ADVANCE.test(e.text) && !FORBIDDEN.test(e.text));
+    const btn = fresh.find((e) => (e.tag === "button" || e.type === "submit" || e.type === "image" || e.tag === "a" || e.tag === "input") && isReviewAdvance({ text: e.text, ariaLabel: e.ariaLabel, value: e.tag === "input" ? e.value : null, alt: e.alt, title: e.title }));
     if (btn) {
       const beforeUrl = page.url();
       base.clicked = btn.text ?? "";

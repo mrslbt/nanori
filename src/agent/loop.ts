@@ -33,8 +33,7 @@ const actTool: Anthropic.Tool = {
   },
 };
 
-/** Buttons we never click. Final submits, payments, sends. The safe checkpoint is the screen before these. */
-const FORBIDDEN_BUTTON = /(送信|確定|申し?込|予約する|予約を確定|決済|支払|purchase|pay|submit|confirm booking|place order)/i;
+import { isFinalAction, controlName } from "../guard.js";
 
 export interface LoopOptions {
   url: string;
@@ -211,18 +210,19 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         try { await locator.selectOption({ value: v }); } catch { await locator.selectOption({ label: v }); }
         await page.waitForTimeout(150);
       } else if (action.action === "click") {
-        const label = (el.text ?? el.value ?? "").trim();
-        if (FORBIDDEN_BUTTON.test(label)) {
+        const label = controlName({ text: el.text, ariaLabel: el.ariaLabel, value: el.tag === "input" ? el.value : null, alt: el.alt, title: el.title });
+        const clickable = ["button", "a"].includes(el.tag) || el.role === "button" || (el.tag === "input" && ["submit", "button", "image"].includes(el.type ?? ""));
+        if (clickable && isFinalAction({ text: el.text, ariaLabel: el.ariaLabel, value: el.tag === "input" ? el.value : null, alt: el.alt, title: el.title })) {
           // A safe stop is not proof the goal screen was reached. Verify below like a "done".
           const v = await verifyCheckpoint(page, steps, opts.identity, opts.url);
           outcome = v.verified ? "reached_checkpoint" : "not_determined";
-          stopReason = `safe stop: refused to click "${label}"; ${v.reason}`;
+          stopReason = `safe stop: refused to click "${label || "(unnamed control)"}"; ${v.reason}`;
           step.checkpointModel = v.model;
           if (v.observations.length) step.observations.push(...v.observations);
           step.ok = false;
           step.error = stopReason;
           steps.push(step);
-          messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "refused: final submit" }] });
+          messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "refused: this control reads like a final action; the run stops here" }] });
           break;
         }
         // Re-observe every filled field before leaving the page, so blur-time errors are captured.

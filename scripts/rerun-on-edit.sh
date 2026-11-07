@@ -18,6 +18,7 @@ if [ -f "$lock" ] && [ $(( $(date +%s) - $(stat -f %m "$lock") )) -lt 20 ]; then
 touch "$lock"
 run_id="$(cat .nanori-last-run 2>/dev/null || true)"
 target="$(cat .nanori-local-target 2>/dev/null || true)"
+before="$(cat .nanori-before 2>/dev/null || true)"
 [ -z "$run_id" ] || [ -z "$target" ] && { echo "nanori hook: set .nanori-last-run and .nanori-local-target first"; exit 0; }
 echo "nanori hook: $file changed under local/, rerunning $run_id against $target"
-NANORI_HOOK_RUNNING=1 node dist/cli.js rerun "$run_id" --target "$target" --headless 2>&1 | tail -12
+NANORI_HOOK_RUNNING=1 node dist/cli.js rerun "$run_id" --target "$target" ${before:+--before "$before"} --headless 2>&1 | tail -12

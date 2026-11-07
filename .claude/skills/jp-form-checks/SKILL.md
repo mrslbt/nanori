@@ -33,11 +33,12 @@ Extra facts: `patternRejects` is true when the element's own `pattern` attribute
 Source: https://www.digitalservice.metro.tokyo.lg.jp/documents/d/digitalservice/inputform_guidance_v11
 Scope: guidance for Tokyo Metropolitan Government input forms. Not a law. For other sites, say "inconsistent with this guidance" and nothing stronger.
 
-Page 27, Name (氏名), items as numbered on the page:
-1. One full-name field accommodates middle names and compound names; avoid forcing a two-part split when the person's name does not split that way.
-2. Accept the scripts people actually write their names in (kanji, hiragana, katakana, Latin letters), full or half width.
-3. Allow spaces within names.
+Page 27, Name (氏名), items as numbered on the page (direct statements):
+1. Provide one full-name input (a single field for the whole name).
+2. Support autofill.
+3. Accept kanji, hiragana, katakana and Latin letters, in full or half width, and allow spaces.
 4. Set a sufficient maximum length, because foreign names need more characters.
+Interpretation (ours, not the page's): item 1 helps names without a surname split and compound names; item 3 is about those four scripts, not every writing system, and it does not mention hyphens or apostrophes; item 4 gives no number, so any particular limit we choose in a repair is a demonstration choice.
 Cite the item number only when the quoted behaviour matches; otherwise cite the page and say "analogy".
 The guidance illustrates required name and reading fields; it does not say a reading field must be optional.
 
