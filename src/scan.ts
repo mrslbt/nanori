@@ -1,4 +1,5 @@
-import { chromium, type Page } from "playwright";
+import { launchChrome } from "./preflight.js";
+import type { Page } from "playwright";
 import fs from "node:fs";
 import path from "node:path";
 import type { ElementInfo, Identity } from "./types.js";
@@ -183,7 +184,7 @@ export async function scan(urls: string[], opts: { outDir: string; cases?: strin
   const log = opts.log ?? console.log;
   fs.mkdirSync(opts.outDir, { recursive: true });
   const ids = [baseline, ...(opts.cases?.length ? battery.filter((b) => opts.cases!.includes(b.id)) : battery)];
-  const browser = await chromium.launch({ channel: "chrome", headless: opts.headless ?? false });
+  const browser = await launchChrome(opts.headless ?? false);
   const results: ProbeResult[] = [];
   let idx = 0;
   for (const url of urls) {

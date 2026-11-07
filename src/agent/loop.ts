@@ -77,6 +77,23 @@ Rules:
  * Checkpoint verification = recognition (is this a review screen?) + preservation (is each typed name value shown exactly in its labelled row?).
  * Both are pure functions in src/checkpoint.ts; this only builds the page model. Unknown is never upgraded to verified.
  */
+/**
+ * When errors are showing, observe every field that is now invalid, including required fields the agent left empty
+ * on purpose (single-name case). The page may have re-rendered (refs gone), so re-snapshot and match previously
+ * filled fields by name/id. Adds to step.observations; never duplicates a field already observed on this step.
+ */
+async function observeInvalidFields(page: Page, steps: Step[], step: Step): Promise<void> {
+  const fresh = await snapshotElements(page);
+  const prevObs = steps.flatMap((s) => s.observations);
+  const requestedFor = (e: typeof fresh[number]) => prevObs.find((o) => (o.name && o.name === e.name) || (o.id && o.id === e.id))?.requested ?? "";
+  for (const e of fresh) {
+    if (!["input", "select", "textarea"].includes(e.tag)) continue;
+    const again = await observeField(page, e.ref, requestedFor(e), { name: e.name, id: e.id });
+    const bad = again.ariaInvalid || again.validationMessage || again.visibleErrors.length;
+    if (bad && !step.observations.find((o) => (o.name && o.name === again.name) || o.ref === again.ref)) step.observations.push(again);
+  }
+}
+
 export async function verifyCheckpoint(page: Page, steps: Step[], identity: Identity, startUrl: string): Promise<{ verified: boolean; changed?: boolean; reason: string; observations: FieldObservation[]; model?: Step["checkpointModel"] }> {
   const nameValues = new Set([identity.fullName, identity.familyName, identity.givenName, identity.kanaFull, identity.kanaFamily, identity.kanaGiven, toHiragana(identity.kanaFull), identity.kanaFamily && toHiragana(identity.kanaFamily), identity.kanaGiven && toHiragana(identity.kanaGiven)].filter((v): v is string => !!v).map(norm));
   const latest = new Map<string, FieldObservation>();
@@ -187,8 +204,11 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         outcome = "stopped_before_checkpoint";
         stopReason = action.reason;
         step.pageErrors = await pageErrors(page);
+        // The agent may stop because an error appeared on blur, before any click. Measure what the page shows now,
+        // so the stop is backed by a field observation and not only by the agent's description.
+        if (step.pageErrors.length) await observeInvalidFields(page, steps, step).catch(() => {});
         try {
-          const lastBad = [...steps].reverse().flatMap((s) => s.observations).find((o) => o.visibleErrors.length || o.ariaInvalid || o.validationMessage);
+          const lastBad = [...steps, step].reverse().flatMap((s) => s.observations).find((o) => o.visibleErrors.length || o.ariaInvalid || o.validationMessage);
           if (lastBad) await page.evaluate((k) => { const el = (k.id ? document.getElementById(k.id) : null) ?? (k.name ? document.querySelector(`[name="${CSS.escape(k.name)}"]`) : null); (el as HTMLElement | null)?.scrollIntoView({ block: "center" }); }, { id: lastBad.id, name: lastBad.name });
           await page.waitForTimeout(200);
           const after = path.join(opts.outDir, `step-${String(i).padStart(2, "0")}-after.jpg`);
@@ -244,16 +264,7 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         // If errors are showing after the click, observe every field that is now invalid,
         // including required fields the agent left empty on purpose (single-name case).
         if (step.pageErrors.length) {
-          // The page may have re-rendered (refs gone). Re-snapshot and match previously filled fields by name/id.
-          const fresh = await snapshotElements(page);
-          const prevObs = steps.flatMap((s) => s.observations);
-          const requestedFor = (e: typeof fresh[number]) => prevObs.find((o) => (o.name && o.name === e.name) || (o.id && o.id === e.id))?.requested ?? "";
-          for (const e of fresh) {
-            if (!["input", "select", "textarea"].includes(e.tag)) continue;
-            const again = await observeField(page, e.ref, requestedFor(e), { name: e.name, id: e.id });
-            const bad = again.ariaInvalid || again.validationMessage || again.visibleErrors.length;
-            if (bad && !step.observations.find((o) => (o.name && o.name === again.name) || o.ref === again.ref)) step.observations.push(again);
-          }
+          await observeInvalidFields(page, steps, step);
           resultText = JSON.stringify({ pageErrors: step.pageErrors });
         }
       }

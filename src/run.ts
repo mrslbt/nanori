@@ -1,4 +1,4 @@
-import { chromium } from "playwright";
+import { launchChrome } from "./preflight.js";
 import fs from "node:fs";
 import path from "node:path";
 import type { Identity, RunBundle, RunResult } from "./types.js";
@@ -29,7 +29,7 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
   fs.mkdirSync(dir, { recursive: true });
   const selected: Identity[] = opts.cases?.length ? battery.filter((b) => opts.cases!.includes(b.id)) : battery;
 
-  const browser = await chromium.launch({ channel: "chrome", headless: opts.headless ?? false });
+  const browser = await launchChrome(opts.headless ?? false);
   const one = async (identity: Identity): Promise<RunResult> => {
     log(`\n▶ ${identity.id}: ${identity.fullName}`);
     const context = await browser.newContext({ locale: "ja-JP" });

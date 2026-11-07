@@ -7,6 +7,7 @@ import path from "node:path";
 import { runAll } from "./run.js";
 import { battery } from "./battery.js";
 import { scan } from "./scan.js";
+import { preflight, exitOnSetupError, SetupError } from "./preflight.js";
 
 const program = new Command();
 program.name("nanori").description("Test a Japanese web form with name-format test cases that conventional test data can miss.").version("0.1.0");
@@ -22,6 +23,7 @@ program.command("run")
   .option("--before <runId>", "with --repaired: the saved run to show as 'before' in the repair table")
   .option("--run-id <id>", "fixed run id (default: timestamp)")
   .action(async (url, goal, o) => {
+    await preflight({ url, needsKey: true }).catch(exitOnSetupError);
     const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, comparedTo: o.repaired ? o.before : undefined, runId: o.runId });
     console.log(`\nopen ${path.join(dir, "report.html")}`);
   });
@@ -32,7 +34,10 @@ program.command("rerun")
   .option("--before <runId>", "the run to show as 'before' (default: the run being rerun; use the local before-repair run for a same-reproduction pair)")
   .option("--headless", "run without a visible browser", false)
   .action(async (runId, o) => {
-    const prev = JSON.parse(fs.readFileSync(path.join("runs", runId, "report.json"), "utf8"));
+    const file = path.join("runs", runId, "report.json");
+    if (!fs.existsSync(file)) exitOnSetupError(new SetupError(`No saved run at ${file}. Run ids are the folder names under runs/.`));
+    await preflight({ url: o.target, needsKey: true }).catch(exitOnSetupError);
+    const prev = JSON.parse(fs.readFileSync(file, "utf8"));
     const cases = prev.cases.map((c: any) => c.identity.id);
     const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", repairState: "after", comparedTo: o.before ?? runId, runId: `${runId}-rerun-${Date.now().toString(36)}` });
     console.log(`\nBefore: runs/${o.before ?? runId}/report.html\nAfter:  ${path.join(dir, "report.html")}`);
@@ -45,6 +50,8 @@ program.command("scan")
   .option("--out <dir>", "output directory", `runs/scan-${new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19)}`)
   .description("probe the name fields of many forms, no model in the loop, nothing submitted")
   .action(async (file, o) => {
+    await preflight({ needsKey: false }).catch(exitOnSetupError);
+    if (!fs.existsSync(file)) exitOnSetupError(new SetupError(`No such file: ${file}`));
     const urls = fs.readFileSync(file, "utf8").split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("#"));
     await scan(urls, { outDir: o.out, cases: o.cases, headless: o.headless });
     console.log(`\nopen ${path.join(o.out, "scan.html")}`);
