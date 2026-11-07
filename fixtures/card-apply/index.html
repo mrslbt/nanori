@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><title>LOCAL SIMULATION: クレジットカード申込 お客様情報の入力</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:"Hiragino Sans","Noto Sans JP",sans-serif;margin:0;background:#f3f4f6;color:#222}
+.banner{background:#1d3557;color:#fff;padding:10px 16px;font-size:13px;line-height:1.5}
+.banner strong{display:block;font-size:14px;margin-bottom:2px}
+main{max-width:720px;margin:24px auto;background:#fff;padding:0 0 8px}
+h1{font-size:18px;margin:0;padding:18px 20px;border-bottom:1px solid #e5e7eb}
+.step{font-size:13px;color:#555;padding:10px 20px 0}
+table{width:100%;border-collapse:collapse}th,td{border-top:1px solid #e5e7eb;padding:12px 20px;text-align:left;vertical-align:top}
+th{width:200px;background:#fafafa;font-weight:500}.req{display:inline-block;background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;margin-right:6px}
+input[type=text],input[type=email],input[type=tel]{font-size:15px;padding:8px;width:100%;max-width:440px;box-sizing:border-box;border:1px solid #bbb}
+.hint{font-size:12px;color:#666;margin-top:4px}.error{display:block;color:#d32f2f;font-size:13px;margin-top:6px;font-weight:600}
+.row2{display:flex;gap:12px}.row2>div{flex:1}
+button{display:block;width:calc(100% - 40px);margin:16px 20px 0;font-size:16px;padding:14px;background:#1d3557;color:#fff;border:0}
+#confirm p{padding:0 20px}
+</style></head>
+<body>
+<div class="banner"><strong>Local finance simulation inspired by published name-entry limits. Not a test of PayPay or a bank. No application is submitted.</strong>The name-field limits below (10 characters per name field, 15 per kana field) are taken from PayPay Card's published help for applicants with long names (paypay-card.co.jp/service/004549.html, read 2026-11-08). Whether the real service rejects or cuts the input is not published; this page's error behaviour is our own implementation. BEFORE REPAIR.</div>
+<main>
+<h1>クレジットカード お申込み</h1>
+<div class="step">STEP 1 お客様情報の入力 › STEP 2 入力内容の確認 › STEP 3 お申込み完了</div>
+<form id="f" novalidate>
+<table>
+<tr><th><span class="req">必須</span>お名前（漢字）</th><td><div class="row2"><div><input type="text" name="sei" placeholder="姓" aria-label="姓"><span class="error" id="err-sei" hidden></span></div><div><input type="text" name="mei" placeholder="名" aria-label="名"><span class="error" id="err-mei" hidden></span></div></div><div class="hint">姓・名 各10文字以内</div></td></tr>
+<tr><th><span class="req">必須</span>お名前（フリガナ）</th><td><div class="row2"><div><input type="text" name="seikana" placeholder="セイ" aria-label="セイ"><span class="error" id="err-seikana" hidden></span></div><div><input type="text" name="meikana" placeholder="メイ" aria-label="メイ"><span class="error" id="err-meikana" hidden></span></div></div><div class="hint">全角カタカナ、セイ・メイ 各15文字以内</div></td></tr>
+<tr><th><span class="req">必須</span>メールアドレス</th><td><input type="email" name="email"><span class="error" id="err-email" hidden></span></td></tr>
+<tr><th><span class="req">必須</span>携帯電話番号</th><td><input type="tel" name="tel" placeholder="09012345678"><span class="error" id="err-tel" hidden></span></td></tr>
+<tr><th><span class="req">必須</span>規約への同意</th><td><label><input type="checkbox" name="agree"> 会員規約に同意する（シミュレーション）</label><span class="error" id="err-agree" hidden></span></td></tr>
+</table>
+<button type="submit">入力内容の確認へ</button>
+</form>
+<section id="confirm" hidden>
+<h2 style="font-size:16px;padding:16px 20px 0;margin:0">STEP 2 入力内容の確認</h2>
+<p>入力内容をご確認の上、よろしければ「申し込む」ボタンを押してください。</p>
+<table id="review"></table>
+<button type="button" onclick="alert('LOCAL SIMULATION: 申し込む is disabled. Nothing is sent.')">申し込む</button>
+</section>
+</main>
+<script>
+// Limits taken from the published help (see banner). Error behaviour (reject and keep the typed value) is our choice.
+const NAME_MAX = 10;
+const KANA_MAX = 15;
+const KATA = /^[ァ-ヶー\s　]+$/;
+const len = (s) => [...s].length;
+function show(id, msg){ const e=document.getElementById('err-'+id); e.textContent=msg; e.hidden=!msg; const el=document.querySelector('[name='+id+']'); el.setAttribute('aria-invalid', msg?'true':'false'); return !msg; }
+const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+document.getElementById('f').addEventListener('submit', ev => {
+  ev.preventDefault();
+  const f = ev.target; let ok = true;
+  const nameRule = (v) => !v.trim() ? '入力してください。' : len(v) > NAME_MAX ? `${NAME_MAX}文字以内で入力してください。` : '';
+  const kanaRule = (v) => !v.trim() ? '入力してください。' : !KATA.test(v) ? '全角カタカナで入力してください。' : len(v) > KANA_MAX ? `${KANA_MAX}文字以内で入力してください。` : '';
+  ok &= show('sei', nameRule(f.sei.value)); ok &= show('mei', nameRule(f.mei.value));
+  ok &= show('seikana', kanaRule(f.seikana.value)); ok &= show('meikana', kanaRule(f.meikana.value));
+  ok &= show('email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value) ? '' : 'メールアドレスの形式が正しくありません。');
+  ok &= show('tel', /^0[0-9]{9,10}$/.test(f.tel.value) ? '' : '携帯電話番号は半角数字で入力してください。');
+  ok &= show('agree', f.agree.checked ? '' : '規約に同意してください。');
+  if (!ok) return;
+  const rows = [['お名前（漢字）', f.sei.value + '　' + f.mei.value], ['お名前（フリガナ）', f.seikana.value + '　' + f.meikana.value], ['メールアドレス', f.email.value], ['携帯電話番号', f.tel.value], ['規約への同意', '同意する']];
+  document.getElementById('review').innerHTML = rows.map(r => `<tr><th>${r[0]}</th><td>${esc(r[1])}</td></tr>`).join('');
+  f.hidden = true; document.getElementById('confirm').hidden = false; location.hash = 'confirm';
+});
+</script>
+</body></html>

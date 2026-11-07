@@ -122,7 +122,7 @@ export async function verifyCheckpoint(page: Page, steps: Step[], identity: Iden
   const typedNames = [...latest.values()].filter((o) => nameValues.has(norm(o.requested)));
   const model = await pageModel(page, typedNames.map((o) => ({ name: o.name, id: o.id })), page.url().replace(/#.*$/, "") !== startUrl.replace(/#.*$/, ""));
   const observations: FieldObservation[] = [];
-  const saved = { urlChanged: model.urlChanged, nameInputsPresent: model.nameInputsPresent, headings: model.headings, rows: model.rows };
+  const saved = { urlChanged: model.urlChanged, nameInputsPresent: model.nameInputsPresent, headings: model.headings, rows: model.rows, cues: model.cues };
   const recognised = recogniseCheckpoint(model) === "recognised";
   if (!recognised) return { verified: false, reason: "this screen was not recognised as a review screen (no review heading, or name inputs still present)", observations, model: saved };
   if (!typedNames.length) return { verified: false, reason: "no name value was typed, nothing to verify", observations, model: saved };

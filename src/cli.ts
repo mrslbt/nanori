@@ -22,9 +22,10 @@ program.command("run")
   .option("--repaired", "with --local: this copy has the repair applied (otherwise it is the before state)", false)
   .option("--before <runId>", "with --repaired: the saved run to show as 'before' in the repair table")
   .option("--run-id <id>", "fixed run id (default: timestamp)")
+  .option("--simulation <text>", "with --local: this copy is a simulation built from published rules, not an observed site; the text is printed on the report")
   .action(async (url, goal, o) => {
     await preflight({ url, needsKey: true }).catch(exitOnSetupError);
-    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, comparedTo: o.repaired ? o.before : undefined, runId: o.runId });
+    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, comparedTo: o.repaired ? o.before : undefined, runId: o.runId, simulation: o.simulation });
     console.log(`\nopen ${path.join(dir, "report.html")}`);
   });
 

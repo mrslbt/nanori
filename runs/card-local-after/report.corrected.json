@@ -1,0 +1,624 @@
+{
+  "id": "card-local-after",
+  "url": "http://localhost:4315/",
+  "goal": "reach the confirmation screen (入力内容の確認)",
+  "createdAt": "2026-11-07T17:20:15.311Z",
+  "target": "local_reproduction",
+  "repairState": "after",
+  "comparedTo": "card-local-before",
+  "before": {
+    "id": "card-local-before",
+    "target": "local_reproduction",
+    "outcomes": {
+      "baseline": "reached_checkpoint",
+      "long-name-spaces": "stopped_before_checkpoint"
+    }
+  },
+  "scenario": {
+    "dateRule": "the first selectable date, and if a date must be typed, 2026年11月20日",
+    "timeRule": "the first available time option",
+    "choiceRule": "the first non-empty option in every select, and the first radio in every radio group",
+    "treatment": "虫歯",
+    "symptom": "歯が痛いです。",
+    "message": "nanori による自動入力テストです。送信はしません。",
+    "optionalFields": "fill optional email and address fields with the contact data above; leave other optional fields empty",
+    "age": "35",
+    "birthDate": "1990年1月1日"
+  },
+  "simulation": "Local finance simulation inspired by published name-entry limits (PayPay Card help, paypay-card.co.jp/service/004549.html, read 2026-11-08). Not a test of PayPay or a bank. No application is submitted. The error behaviour is our implementation; the real service's behaviour is not published.",
+  "baseline": {
+    "identity": {
+      "id": "baseline",
+      "tests": "kanji name with its reading",
+      "label": "Kanji name, baseline",
+      "fullName": "山田 太郎",
+      "familyName": "山田",
+      "givenName": "太郎",
+      "kanaFamily": "ヤマダ",
+      "kanaGiven": "タロウ",
+      "kanaFull": "ヤマダ タロウ",
+      "guidance": "n/a (control case)",
+      "email": "test@example.com",
+      "phone": "09012345678",
+      "postal": "1500001",
+      "address": "東京都渋谷区神宮前1-1-1"
+    },
+    "outcome": "reached_checkpoint",
+    "stopReason": "Confirmation screen shows the entered values; only 申し込む remains, so this is a safe checkpoint.",
+    "steps": [
+      {
+        "index": 1,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "fill",
+          "ref": "n1",
+          "value": "山田",
+          "reason": "family name"
+        },
+        "ok": true,
+        "screenshot": "step-01.jpg",
+        "observations": [
+          {
+            "ref": "n1",
+            "label": "必須お名前（漢字）",
+            "name": "sei",
+            "id": null,
+            "requested": "山田",
+            "retained": "山田",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-01-after.jpg"
+      },
+      {
+        "index": 2,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "fill",
+          "ref": "n2",
+          "value": "太郎",
+          "reason": "given name"
+        },
+        "ok": true,
+        "screenshot": "step-02.jpg",
+        "observations": [
+          {
+            "ref": "n2",
+            "label": "必須お名前（漢字）",
+            "name": "mei",
+            "id": null,
+            "requested": "太郎",
+            "retained": "太郎",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-02-after.jpg"
+      },
+      {
+        "index": 3,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "fill",
+          "ref": "n3",
+          "value": "ヤマダ",
+          "reason": "family kana"
+        },
+        "ok": true,
+        "screenshot": "step-03.jpg",
+        "observations": [
+          {
+            "ref": "n3",
+            "label": "必須お名前（フリガナ）",
+            "name": "seikana",
+            "id": null,
+            "requested": "ヤマダ",
+            "retained": "ヤマダ",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-03-after.jpg"
+      },
+      {
+        "index": 4,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "fill",
+          "ref": "n4",
+          "value": "タロウ",
+          "reason": "given kana"
+        },
+        "ok": true,
+        "screenshot": "step-04.jpg",
+        "observations": [
+          {
+            "ref": "n4",
+            "label": "必須お名前（フリガナ）",
+            "name": "meikana",
+            "id": null,
+            "requested": "タロウ",
+            "retained": "タロウ",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-04-after.jpg"
+      },
+      {
+        "index": 5,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "fill",
+          "ref": "n5",
+          "value": "test@example.com",
+          "reason": "email"
+        },
+        "ok": true,
+        "screenshot": "step-05.jpg",
+        "observations": [
+          {
+            "ref": "n5",
+            "label": "必須メールアドレス",
+            "name": "email",
+            "id": null,
+            "requested": "test@example.com",
+            "retained": "test@example.com",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-05-after.jpg"
+      },
+      {
+        "index": 6,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "fill",
+          "ref": "n6",
+          "value": "09012345678",
+          "reason": "phone"
+        },
+        "ok": true,
+        "screenshot": "step-06.jpg",
+        "observations": [
+          {
+            "ref": "n6",
+            "label": "必須携帯電話番号",
+            "name": "tel",
+            "id": null,
+            "requested": "09012345678",
+            "retained": "09012345678",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-06-after.jpg"
+      },
+      {
+        "index": 7,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "click",
+          "ref": "n7",
+          "value": "",
+          "reason": "agree to terms"
+        },
+        "ok": true,
+        "screenshot": "step-07.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-07-after.jpg"
+      },
+      {
+        "index": 8,
+        "url": "http://localhost:4315/",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "click",
+          "ref": "n8",
+          "value": "",
+          "reason": "go to confirmation"
+        },
+        "ok": true,
+        "screenshot": "step-08.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-08-after.jpg"
+      },
+      {
+        "index": 9,
+        "url": "http://localhost:4315/#confirm",
+        "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+        "action": {
+          "action": "done",
+          "ref": "n1",
+          "value": "",
+          "reason": "Confirmation screen shows the entered values; only 申し込む remains, so this is a safe checkpoint."
+        },
+        "ok": true,
+        "screenshot": "step-09.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "checkpointModel": {
+          "urlChanged": false,
+          "nameInputsPresent": false,
+          "headings": [
+            "クレジットカード お申込み",
+            "STEP 2 入力内容の確認",
+            "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力"
+          ],
+          "rows": [
+            {
+              "label": "お名前（漢字）",
+              "value": "山田　太郎"
+            },
+            {
+              "label": "お名前（フリガナ）",
+              "value": "ヤマダ　タロウ"
+            },
+            {
+              "label": "メールアドレス",
+              "value": "test@example.com"
+            },
+            {
+              "label": "携帯電話番号",
+              "value": "09012345678"
+            },
+            {
+              "label": "規約への同意",
+              "value": "同意する"
+            }
+          ],
+          "cues": [
+            "入力内容をご確認の上、よろしければ「申し込む」ボタンを押してください。"
+          ]
+        },
+        "focus": {
+          "x": 0.6,
+          "y": 0.37833333333333335
+        },
+        "screenshotAfter": "step-09-after.jpg"
+      }
+    ],
+    "startedAt": "2026-11-07T17:19:26.188Z",
+    "endedAt": "2026-11-07T17:19:49.383Z",
+    "model": "claude-sonnet-5-5"
+  },
+  "cases": [
+    {
+      "identity": {
+        "id": "long-name-spaces",
+        "tests": "long full name, 28 characters including spaces",
+        "label": "Long full name, 28 characters",
+        "fullName": "Maria Clara Santos Dela Cruz",
+        "familyName": "Dela Cruz",
+        "givenName": "Maria Clara Santos",
+        "kanaFamily": "デラ クルス",
+        "kanaGiven": "マリア クララ サントス",
+        "kanaFull": "マリア クララ サントス デラ クルス",
+        "guidance": "p.27: sufficient max length; middle and compound names fit in one field",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_checkpoint",
+      "stopReason": "Confirmation screen shows all entered values intact; safe checkpoint reached.",
+      "steps": [
+        {
+          "index": 1,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "fill",
+            "ref": "n1",
+            "value": "Dela Cruz",
+            "reason": "family name"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [
+            {
+              "ref": "n1",
+              "label": "必須お名前（漢字）",
+              "name": "sei",
+              "id": null,
+              "requested": "Dela Cruz",
+              "retained": "Dela Cruz",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "fill",
+            "ref": "n2",
+            "value": "Maria Clara Santos",
+            "reason": "given name"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [
+            {
+              "ref": "n2",
+              "label": "必須お名前（漢字）",
+              "name": "mei",
+              "id": null,
+              "requested": "Maria Clara Santos",
+              "retained": "Maria Clara Santos",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "デラ クルス",
+            "reason": "family kana"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": "必須お名前（フリガナ）",
+              "name": "seikana",
+              "id": null,
+              "requested": "デラ クルス",
+              "retained": "デラ クルス",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "fill",
+            "ref": "n4",
+            "value": "マリア クララ サントス",
+            "reason": "given kana"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n4",
+              "label": "必須お名前（フリガナ）",
+              "name": "meikana",
+              "id": null,
+              "requested": "マリア クララ サントス",
+              "retained": "マリア クララ サントス",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "fill",
+            "ref": "n5",
+            "value": "test@example.com",
+            "reason": "email"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n5",
+              "label": "必須メールアドレス",
+              "name": "email",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "fill",
+            "ref": "n6",
+            "value": "09012345678",
+            "reason": "phone"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n6",
+              "label": "必須携帯電話番号",
+              "name": "tel",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "click",
+            "ref": "n7",
+            "value": "",
+            "reason": "agree to terms"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "http://localhost:4315/",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "click",
+            "ref": "n8",
+            "value": "",
+            "reason": "go to confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "http://localhost:4315/#confirm",
+          "title": "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力",
+          "action": {
+            "action": "done",
+            "ref": "n1",
+            "value": "",
+            "reason": "Confirmation screen shows all entered values intact; safe checkpoint reached."
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "checkpointModel": {
+            "urlChanged": false,
+            "nameInputsPresent": false,
+            "headings": [
+              "クレジットカード お申込み",
+              "STEP 2 入力内容の確認",
+              "LOCAL SIMULATION: クレジットカード申込 お客様情報の入力"
+            ],
+            "rows": [
+              {
+                "label": "お名前（漢字）",
+                "value": "Dela Cruz　Maria Clara Santos"
+              },
+              {
+                "label": "お名前（フリガナ）",
+                "value": "デラ クルス　マリア クララ サントス"
+              },
+              {
+                "label": "メールアドレス",
+                "value": "test@example.com"
+              },
+              {
+                "label": "携帯電話番号",
+                "value": "09012345678"
+              },
+              {
+                "label": "規約への同意",
+                "value": "同意する"
+              }
+            ],
+            "cues": [
+              "入力内容をご確認の上、よろしければ「申し込む」ボタンを押してください。"
+            ]
+          },
+          "screenshotAfter": "step-09-after.jpg"
+        }
+      ],
+      "startedAt": "2026-11-07T17:19:49.409Z",
+      "endedAt": "2026-11-07T17:20:12.800Z",
+      "model": "claude-sonnet-5-5"
+    }
+  ],
+  "findings": [],
+  "summary": "0 of 1 name cases stopped before the checkpoint; baseline reached_checkpoint.",
+  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T17:20:46.651Z"
+}

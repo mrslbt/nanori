@@ -30,7 +30,7 @@ Developers, designers, and people building Japanese sites with AI, who want to k
 
 A public dental reservation form in Tokyo (`runs/yotsuya-dental-*`): the Japanese baseline and four of five test names reach the confirmation screen. The 28-character test name "Maria Clara Santos Dela Cruz" is rejected with 「文字数が正しくありません。」 (character count incorrect). The limit is not in the page source, so nanori measured it: with every other field identical, 20 characters are accepted and 21 are rejected (`runs/yotsuya-dental-1/diag/`). The server implementation was not inspected. A labelled local reproduction of that form, repaired by raising the limit (the required check is kept), passes all six cases on rerun. The live site is unchanged.
 
-A second public form, a hotel's accommodation inquiry page (`runs/imperial-hotel-1`), shows a different failure: nothing is rejected. The accented test name "Nguyễn Thị Hương" is accepted at entry, and the confirmation screen then displays it as `Nguy&#7877;n Th&#7883; H&#432;&#417;ng`, literal character codes where the accented letters should be. The baseline's row is shown correctly. nanori's checkpoint check measured the changed row (outcome "reached, name shown changed"), and Claude's proposed cause is double escaping, reproduced from the displayed text and not confirmed in source. Report: [imperial-hotel-1/report.html](https://mrslbt.github.io/nanori/runs/imperial-hotel-1/report.html). No inquiry was sent and no repair was attempted; the form is not ours.
+A second public form, a hotel's accommodation inquiry page (`runs/imperial-hotel-2`), shows a different failure: nothing is rejected. The accented test name "Nguyễn Thị Hương" is accepted at entry, and the confirmation screen then displays it as `Nguy&#7877;n Th&#7883; H&#432;&#417;ng`, literal character codes where the accented letters should be. The baseline's row is shown correctly, and the non-name rows on the confirmation screen match the baseline's, row for row (measured). nanori's checkpoint check measured the changed row (outcome "reached, name shown changed"), and Claude's proposed cause is double escaping, reproduced from the displayed text and not confirmed in source. Report: [imperial-hotel-2/report.html](https://mrslbt.github.io/nanori/runs/imperial-hotel-2/report.html). An earlier pair, `runs/imperial-hotel-1`, shows the same corruption but its two runs differed in an optional check-in date, which its report now says; it is kept as recorded. No inquiry was sent and no repair was attempted; the form is not ours.
 
 Across a 32-form sample of public Tokyo forms (both sites above are in it), a model-free probe (`nanori scan`) flagged a handful of further observations pending review (a hiragana field rejecting a long-vowel mark, a parent-name field converting Latin letters to full width and capping at five characters). Those are observations, not proven exclusions; see `runs/scan-tokyo-1/scan.html` for the honest categories. The hotel lead came from that scan and was then confirmed with a full run.
 
@@ -73,6 +73,32 @@ node dist/cli.js run http://localhost:4310/ "reach the reservation review screen
 ```
 
 Then open the path it prints (`runs/<id>/report.html`). Expect two names cut by a 10-character limit, one katakana reading rejected for its space, and one single-name case stopped by a required given-name field.
+
+## A finance-style example, simulated locally
+
+Financial services publish name-entry limits too. PayPay Card's help tells applicants with long names to omit middle names or trailing parts so that each name field fits 10 characters, and each kana field 15 (https://www.paypay-card.co.jp/service/004549.html, read 2026-11-08). The help does not say whether the real form rejects or cuts the input, and nanori has not tested PayPay or any bank.
+
+`fixtures/card-apply/` is a small fictional card-application name step built on those published limits, with a banner that says so on the page and on its report. Its error behaviour (reject and keep the typed value) is our implementation. `fixtures/card-apply-repaired/` raises both limits to 100 characters, a fixture choice, not a banking standard; required-field checks and output escaping are unchanged.
+
+Reports: [card-local-before](https://mrslbt.github.io/nanori/runs/card-local-before/report.html) and [card-local-after](https://mrslbt.github.io/nanori/runs/card-local-after/report.html). What they show is that nanori measures the simulated limit on the given-name field for "Maria Clara Santos Dela Cruz" (given name 18 characters), and that the same name reaches confirmation intact on the repaired copy. They do not show anything about a real provider.
+
+To reproduce (two more terminals for the two fixture states):
+
+```bash
+NANORI_FIXTURE_DIR=fixtures/card-apply NANORI_FIXTURE_PORT=4314 node dist/fixture-server.js
+```
+
+```bash
+NANORI_FIXTURE_DIR=fixtures/card-apply-repaired NANORI_FIXTURE_PORT=4315 node dist/fixture-server.js
+```
+
+```bash
+node dist/cli.js run http://localhost:4314/ "reach the confirmation screen" --cases long-name-spaces --local --run-id card-local-before --simulation "Local finance simulation inspired by published name-entry limits. Not a test of PayPay or a bank. No application is submitted."
+```
+
+```bash
+node dist/cli.js run http://localhost:4315/ "reach the confirmation screen" --cases long-name-spaces --local --repaired --before card-local-before --run-id card-local-after --simulation "Local finance simulation inspired by published name-entry limits. Not a test of PayPay or a bank. No application is submitted."
+```
 
 ## Running on other forms
 
@@ -126,7 +152,7 @@ src/diagnose.ts Opus writes findings from measured facts
 src/report/     HTML report
 src/scan.ts     model-free name-field probe across many forms
 src/verdict.ts  the one honest sentence at the top of a report
-fixtures/       local clinic form with deliberate name rules
+fixtures/       local clinic form with deliberate name rules; card-apply and card-apply-repaired, the finance simulation
 local/          labelled local reproductions (before / repaired)
 runs/           saved runs: screenshots, report.html, report.json (gitignored except examples)
 scripts/        boundary probe, rerender, hook

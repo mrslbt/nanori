@@ -1,5 +1,5 @@
 import type { RunBundle, RunResult, Finding, Step, FieldObservation } from "../types.js";
-import { norm } from "../checkpoint.js";
+import { norm, defaultContract } from "../checkpoint.js";
 import { identityById } from "../battery.js";
 import { verdict, describe, headline, tally } from "../verdict.js";
 import { checkField } from "../checks/index.js";
@@ -59,7 +59,9 @@ export function renderHtml(input: RunBundle): string {
   const t = tally(b.cases);
   const vtone = b.baseline.outcome !== "reached_checkpoint" ? "warn" : t.stopped || t.changed ? "bad" : t.reached === t.total ? "ok" : "warn";
   const scope = b.target === "local_reproduction"
-    ? (b.repairState === "after" ? "Repair verified on a local reproduction. Original website unchanged." : "Local reproduction, before repair. Original website unchanged.")
+    ? (b.simulation
+      ? (b.repairState === "after" ? "Local simulation, repaired. Not a test of any real provider." : "Local simulation, before repair. Not a test of any real provider.")
+      : (b.repairState === "after" ? "Repair verified on a local reproduction. Original website unchanged." : "Local reproduction, before repair. Original website unchanged."))
     : "Public page. Nothing was submitted.";
 
   // Comparison rows: one per name, task-stage summary instead of raw action columns.
@@ -79,6 +81,18 @@ export function renderHtml(input: RunBundle): string {
       <td class="outcome"><span class="${tone(r.outcome)}">${esc(short)}</span>${note}</td>
       <td>${where}</td></tr>`;
   }).join("");
+
+  // Were the non-name inputs really the same? Compare the non-name rows of each case's confirmation screen with the
+  // baseline's. A shared scenario prompt is an instruction, not proof; this is the measurement.
+  const nonName = (r: RunResult) => { const m = r.steps[r.steps.length - 1]?.checkpointModel; if (!m) return null; const out = new Map<string, string>(); for (const row of m.rows) if (!defaultContract.nameRowLabel.test(row.label)) out.set(norm(row.label), norm(row.value)); return out; };
+  const baseRows = nonName(b.baseline);
+  const inputDiffs = b.cases.map((r) => { const rows = nonName(r); if (!baseRows || !rows) return { r, diffs: null as null | Array<{ label: string; base: string; got: string }> }; const diffs: Array<{ label: string; base: string; got: string }> = []; for (const [label, base] of baseRows) { const got = rows.get(label); if (got !== undefined && got !== base) diffs.push({ label, base, got }); } return { r, diffs }; });
+  const compared = inputDiffs.filter((d) => d.diffs !== null);
+  const differing = compared.filter((d) => d.diffs!.length);
+  const inputsNote = !baseRows ? "Non-name inputs could not be compared: the baseline's confirmation screen was not recorded."
+    : !compared.length ? "Non-name inputs could not be compared on the confirmation screen for any case; cases that stop before it leave no rows to compare."
+    : differing.length ? `Non-name inputs differed from the baseline on the confirmation screen in ${differing.length} ${differing.length === 1 ? "case" : "cases"} (measured): ${differing.map((d) => `${d.r.identity.fullName}: ${d.diffs!.map((x) => `${x.label} was "${x.base || "(empty)"}" in the baseline and "${x.got || "(empty)"}" here`).join("; ")}`).join(". ")}. That pair is not a fully controlled comparison.`
+    : `Non-name values on the confirmation screen matched the baseline's row for row in ${compared.length === b.cases.length ? "every case" : `the ${compared.length} ${compared.length === 1 ? "case" : "cases"} that reached it`} (measured).`;
 
   // Selected finding: the first supported site defect, else the first finding.
   const selected = b.findings.find((f) => f.classification === "site_defect") ?? b.findings[0];
@@ -100,13 +114,14 @@ export function renderHtml(input: RunBundle): string {
     ``,
     `Finding (${CLASS_LABEL[selected.classification]}; proposed by Claude from measured facts, not yet reviewed by a person)`,
     `Field: ${selected.field}`,
-    `Entered: ${selected.requested}`,
-    `Kept by the field: ${selected.retained}`,
+    ...(selected.components?.length ? selected.components.map((c) => `Entered, ${c.field}: ${c.requested}`) : [`Entered: ${selected.requested}`]),
+    `${/review row/i.test(selected.field) ? "Shown on confirmation" : "Kept by the field"}: ${selected.retained}`,
     `The page said: ${selected.errorText || "(no error text)"}`,
     `What happened: ${selected.observation}`,
     `Basis: ${selected.basis}${selected.guidanceRef ? ` (${selected.guidanceRef})` : ""}`,
     ``,
-    `Results in this run (same form, same goal, same non-name inputs; only the name changed)`,
+    `Results in this run (same form, same goal, same contact details)`,
+    inputsNote,
     ...all.map((r) => `- ${r.identity.fullName}${r.identity.id === "baseline" ? " (baseline)" : ""}: ${describe(r.outcome)}`),
     ``,
     `Evidence, paths relative to this report's folder:`,
@@ -122,8 +137,10 @@ export function renderHtml(input: RunBundle): string {
     `- Do not change the test cases to fit the form.`,
     ``,
     `Confirm the fix (run from the nanori folder, with the fixed form being served):`,
-    `node dist/cli.js rerun ${b.id} --target <URL of the fixed form>${b.target === "local_reproduction" ? "" : " --before <run id of the unrepaired local copy, if you made one>"}`,
+    `node dist/cli.js rerun ${b.id} --target <URL of the fixed form>`,
+    ...(b.target === "local_reproduction" ? [] : [`Optional: if you first ran nanori against an unrepaired local copy of this form, add --before <that run id> so the before column shows the local copy instead of this public run.`]),
     `Then open the new runs/<id>/report.html and read the before/after table.`,
+    ...(b.simulation ? [``, `Note: ${b.simulation}`] : []),
   ].join("\n") : "";
 
   const selectedHtml = selected ? `
@@ -137,8 +154,8 @@ export function renderHtml(input: RunBundle): string {
           <button type="button" id="copy-brief" title="Copies this finding as plain text, for Claude Code or an issue">Copy repair brief</button></div>
         <dl class="measured">
           <dt>Field</dt><dd>${esc(selected.field)}</dd>
-          <dt>Entered</dt><dd><code class="big">${esc(selected.requested)}</code></dd>
-          <dt>Kept</dt><dd><code class="big ${selected.retained !== selected.requested ? "diff" : ""}">${esc(selected.retained)}</code></dd>
+          ${selected.components?.length ? selected.components.map((c) => `<dt>Entered, ${esc(c.field)}</dt><dd><code class="big">${esc(c.requested)}</code></dd>`).join("") : `<dt>Entered</dt><dd><code class="big">${esc(selected.requested)}</code></dd>`}
+          <dt>${/review row/i.test(selected.field) ? "Shown on confirmation" : "Kept by the field"}</dt><dd><code class="big ${selected.retained !== selected.requested ? "diff" : ""}">${esc(selected.retained)}</code></dd>
           <dt>The page said</dt><dd><code class="big said" lang="ja">${esc(selected.errorText) || "(no error text)"}</code></dd>
         </dl>
         <p class="sep">The values above were measured by code. What follows was written by Claude from them.</p>
@@ -188,7 +205,7 @@ export function renderHtml(input: RunBundle): string {
 main{max-width:1040px;margin:0 auto;padding:36px 28px 72px}
 a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
 .top{padding-bottom:20px;border-bottom:1px solid var(--rule)}
-.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
+.sim{color:var(--ink);margin-top:6px;max-width:80ch}.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
 #theme{font:14px var(--sans);color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}#theme:hover{color:var(--ink)}.meta{font-size:14px;color:var(--muted);line-height:1.6}.meta .url{overflow-wrap:anywhere}.meta strong{color:var(--text);font-weight:600}
 .verdict{margin:40px 0 8px}.verdict h1{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:-.015em;margin:0;color:var(--ink);text-wrap:balance}.verdict.v-bad h1{color:var(--bad)}.verdict.v-ok h1{color:var(--ok)}.verdict.v-warn h1{color:var(--warn)}
 .verdict p{font-size:17px;margin:10px 0 0;max-width:70ch}
@@ -222,14 +239,14 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 </style></head><body><main>
 <header class="top">
   <div class="brandrow"><div class="brand">nanori</div><button type="button" id="theme" aria-label="Switch colour theme">Dark mode</button></div>
-  <div class="meta"><div class="url">${esc(b.url)}</div><div>Goal: ${esc(b.goal)}</div><div>Run ${esc(b.id)}, ${esc(b.createdAt.replace("T", " ").replace(/\.\d+Z$/, " UTC"))}</div><div><strong>${esc(scope)}</strong></div></div>
+  <div class="meta"><div class="url">${esc(b.url)}</div><div>Goal: ${esc(b.goal)}</div><div>Run ${esc(b.id)}, ${esc(b.createdAt.replace("T", " ").replace(/\.\d+Z$/, " UTC"))}</div><div><strong>${esc(scope)}</strong></div>${b.simulation ? `<div class="sim">${esc(b.simulation)}</div>` : ""}</div>
 </header>
 <section class="verdict v-${vtone}"><h1>${esc(hl.head)}</h1>${hl.support ? `<p>${esc(hl.support)}${b.findings.length ? ` <a href="#finding">See the evidence.</a>` : ""}</p>` : ""}</section>
 
 ${b.before ? beforeAfter : ""}
 ${b.before ? `<details class="cmp"><summary>Comparison table for this run (all cases)</summary>` : ""}
 <h2>Comparison</h2>
-<p class="muted">${b.scenario ? "Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected." : "Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows; see the run log."} Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">${b.scenario ? "Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case." : "Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows."} ${esc(inputsNote)} Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody>${rows}</tbody></table>
 <p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
 ${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ...d }))); return od.length ? `<details class="other"><summary>Other diagnostics (${od.length}, not about names)</summary><ul>${od.map((d) => `<li><span class="muted">${esc(d.r.identity.fullName)} · step ${d.step.index} · ${esc(d.o.label ?? d.o.name)}</span>: ${esc(d.c.kind)}${d.c.detail ? ` <span lang="ja">${esc(d.c.detail)}</span>` : ""}${d.c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}<br><span class="muted">typed "${esc(d.o.requested)}", field kept "${esc(d.o.retained)}"${d.o.diagnostic ? "; uncertain: " + esc(d.o.diagnostic.note) : ""}</span></li>`).join("")}</ul></details>` : ""; })()}

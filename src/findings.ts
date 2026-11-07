@@ -11,8 +11,11 @@ export function mergeFindings(findings: Finding[]): Finding[] {
   for (const f of findings) {
     const row = /review row/i.test(f.field);
     const twin = row ? out.find((o) => o.identity === f.identity && o.stepIndex === f.stepIndex && o.kind === f.kind && o.retained === f.retained && o.classification === f.classification && /review row/i.test(o.field)) : undefined;
-    if (!twin) { out.push({ ...f }); continue; }
-    if (!twin.requested.split(" / ").includes(f.requested)) twin.requested = `${twin.requested} / ${f.requested}`;
+    const fieldOf = (x: Finding) => x.field.replace(/\s*\(review row[^)]*\)/i, "").trim();
+    // Already-merged findings (a saved run rendered again) keep their components.
+    if (!twin) { out.push({ ...f, components: f.components ?? (row ? [{ field: fieldOf(f), requested: f.requested }] : undefined) }); continue; }
+    twin.components = [...(twin.components ?? []), ...(f.components ?? [{ field: fieldOf(f), requested: f.requested }])];
+    twin.requested = twin.components.map((c) => c.requested).join(" ");
     const label = f.field.match(/review row\s*([^)]+)/i)?.[1]?.trim();
     if (label) twin.field = `${label} (review row)`;
   }

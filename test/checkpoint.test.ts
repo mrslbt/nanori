@@ -11,8 +11,14 @@ describe("checkpoint recognition", () => {
   it("a review heading with the inputs gone is recognised", () => {
     expect(recogniseCheckpoint(review([{ label: "お名前", value: "Marsel Bait" }]))).toBe("recognised");
   });
-  it("no review heading, but the page changed, the inputs are gone and a name row is shown: recognised", () => {
-    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["氏名", "フリガナ", "お問い合わせ"], bodyText: "", rows: [{ label: "氏名", value: "山田　太郎" }] })).toBe("recognised");
+  it("no review heading, but a review instruction in a paragraph, the inputs gone and a name row shown: recognised (the hotel)", () => {
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["氏名", "フリガナ", "お問い合わせ"], bodyText: "", rows: [{ label: "氏名", value: "山田　太郎" }], cues: ["入力内容をご確認の上、よろしければ送信ボタンを押してください。"] })).toBe("recognised");
+  });
+  it("a shipping-method step with a read-only name summary and no review instruction: not recognised", () => {
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["配送方法の選択"], bodyText: "配送方法を選択してください", rows: [{ label: "氏名", value: "山田 太郎" }], cues: [] })).toBe("not_recognised");
+  });
+  it("a stray 確認 word is not a review instruction", () => {
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["配送方法の選択"], bodyText: "", rows: [{ label: "氏名", value: "山田 太郎" }], cues: ["在庫を確認中です"] })).toBe("not_recognised");
   });
   it("no review heading and the name inputs still present: not recognised even with a name row", () => {
     expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: true, headings: ["氏名"], bodyText: "", rows: [{ label: "氏名", value: "山田 太郎" }] })).toBe("not_recognised");
@@ -26,6 +32,21 @@ describe("checkpoint recognition", () => {
 });
 
 describe("name preservation", () => {
+  it("a Latin name with only a kana row on the screen is unverified, not changed", () => {
+    const m = review([{ label: "フリガナ", value: "マーセル バイト" }]);
+    expect(checkNamePreserved(m, "Marsel Bait").status).toBe("unknown");
+  });
+  it("a reading with only a name row on the screen is unverified, not changed", () => {
+    const m = review([{ label: "氏名", value: "Marsel Bait" }]);
+    expect(checkNamePreserved(m, "マーセル バイト").status).toBe("unknown");
+  });
+  it("a corrupted 氏名 row is still a change for the Latin name typed into it (the hotel)", () => {
+    const m = review([{ label: "氏名", value: "Nguy&#7877;n　Th&#7883; H&#432;&#417;ng" }, { label: "フリガナ", value: "グエン　ティ フオン" }]);
+    const p = checkNamePreserved(m, "Nguyễn", undefined, ["Thị Hương"]);
+    expect(p.status).toBe("differs");
+    expect(p.shown).toContain("&#7877;");
+    expect(checkNamePreserved(m, "グエン", undefined, ["ティ フオン"]).status).toBe("exact");
+  });
   it("a name shown with XYZ appended is not exact", () => {
     const m = review([{ label: "お名前", value: "Marsel BaitXYZ" }, { label: "ふりがな", value: "まーせる ばいとXYZ" }]);
     expect(checkNamePreserved(m, "Marsel Bait").status).toBe("differs");

@@ -134,12 +134,23 @@ export async function pageModel(page: Page, keys: Array<{ name: string | null; i
     const headings = Array.from(document.querySelectorAll("h1, h2, h3, h4, .title, [class*=title], [class*=heading], legend, th[colspan]")).map(text).filter(Boolean).slice(0, 40);
     headings.push(document.title);
     const rows: Array<{ label: string; value: string }> = [];
-    for (const tr of document.querySelectorAll("tr")) { const th = tr.querySelector("th"); const tds = tr.querySelectorAll("td"); if (th && tds.length) rows.push({ label: text(th), value: Array.from(tds).map(text).join(" ") }); else if (tds.length >= 2) rows.push({ label: text(tds[0]), value: Array.from(tds).slice(1).map(text).join(" ") }); }
-    for (const dt of document.querySelectorAll("dt")) { let dd = dt.nextElementSibling; while (dd && dd.tagName !== "DD") dd = dd.nextElementSibling; if (dd) rows.push({ label: text(dt), value: text(dd) }); }
-    for (const box of document.querySelectorAll("[class*=item], [class*=row], li, p")) { const lab = box.querySelector("[class*=label], [class*=ttl], [class*=title], strong, b, span"); const val = box.querySelector("[class*=value], [class*=data], [class*=text], [class*=content]"); if (lab && val && lab !== val) rows.push({ label: text(lab), value: text(val) }); }
+    // Rows of a hidden entry form behind the review section are not part of the review screen.
+    const shown = (el: Element) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
+    for (const tr of document.querySelectorAll("tr")) { if (!shown(tr)) continue; const th = tr.querySelector("th"); const tds = tr.querySelectorAll("td"); if (th && tds.length) rows.push({ label: text(th), value: Array.from(tds).map(text).join(" ") }); else if (tds.length >= 2) rows.push({ label: text(tds[0]), value: Array.from(tds).slice(1).map(text).join(" ") }); }
+    for (const dt of document.querySelectorAll("dt")) { if (!shown(dt)) continue; let dd = dt.nextElementSibling; while (dd && dd.tagName !== "DD") dd = dd.nextElementSibling; if (dd) rows.push({ label: text(dt), value: text(dd) }); }
+    for (const box of document.querySelectorAll("[class*=item], [class*=row], li, p")) { if (!shown(box)) continue; const lab = box.querySelector("[class*=label], [class*=ttl], [class*=title], strong, b, span"); const val = box.querySelector("[class*=value], [class*=data], [class*=text], [class*=content]"); if (lab && val && lab !== val) rows.push({ label: text(lab), value: text(val) }); }
     // Only visible, editable inputs count: a hidden entry form behind a review section is not "still present".
     const vis = (el: Element | null) => { if (!el) return false; const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && cs.display !== "none" && !(el as HTMLInputElement).disabled && !(el as HTMLInputElement).readOnly; };
     const nameInputsPresent = keys.some((k) => vis(k.id ? document.getElementById(k.id) : null) || (k.name ? Array.from(document.querySelectorAll(`input[name="${CSS.escape(k.name)}"], textarea[name="${CSS.escape(k.name)}"]`)).some(vis) : false));
-    return { urlChanged, nameInputsPresent, headings, bodyText: (document.body?.innerText ?? "").slice(0, 20000), rows: rows.slice(0, 200) };
+    // Review instructions live in ordinary content elements. Keep short, visible, near-leaf texts only.
+    const cueRe = /((入力|登録|申込|申し込み)?内容を?ご?確認|確認の上|ご確認ください|確認してください|よろしければ|please (review|check|confirm)|review your)/i;
+    const cues: string[] = [];
+    for (const el of document.querySelectorAll<HTMLElement>("p, div, li, td, th, span, legend, label, section, h5, h6")) {
+      if (el.children.length > 2) continue;
+      const t = text(el); if (!t || t.length > 160 || !cueRe.test(t)) continue;
+      const r = el.getBoundingClientRect(); if (r.width === 0 || r.height === 0) continue;
+      if (!cues.includes(t)) cues.push(t); if (cues.length >= 10) break;
+    }
+    return { urlChanged, nameInputsPresent, headings, bodyText: (document.body?.innerText ?? "").slice(0, 20000), rows: rows.slice(0, 200), cues };
   }, { keys, urlChanged });
 }

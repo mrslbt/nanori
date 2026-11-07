@@ -13,7 +13,7 @@
 main{max-width:1040px;margin:0 auto;padding:36px 28px 72px}
 a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
 .top{padding-bottom:20px;border-bottom:1px solid var(--rule)}
-.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
+.sim{color:var(--ink);margin-top:6px;max-width:80ch}.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
 #theme{font:14px var(--sans);color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}#theme:hover{color:var(--ink)}.meta{font-size:14px;color:var(--muted);line-height:1.6}.meta .url{overflow-wrap:anywhere}.meta strong{color:var(--text);font-weight:600}
 .verdict{margin:40px 0 8px}.verdict h1{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:-.015em;margin:0;color:var(--ink);text-wrap:balance}.verdict.v-bad h1{color:var(--bad)}.verdict.v-ok h1{color:var(--ok)}.verdict.v-warn h1{color:var(--warn)}
 .verdict p{font-size:17px;margin:10px 0 0;max-width:70ch}
@@ -54,7 +54,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 
 
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name inputs differed from the baseline on the confirmation screen in 1 case (measured): Nguyễn Thị Hương: チェックイン・ご利用日 was &quot;(empty)&quot; in the baseline and &quot;2026年11月20日&quot; here. That pair is not a fully controlled comparison. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen reached showing 山田 太郎 and ヤマダ タロウ; safe checkpoint, not sending. <span class="muted">(13 actions)</span></div></td>
@@ -79,8 +79,8 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
           <button type="button" id="copy-brief" title="Copies this finding as plain text, for Claude Code or an issue">Copy repair brief</button></div>
         <dl class="measured">
           <dt>Field</dt><dd>氏名 (review row)</dd>
-          <dt>Entered</dt><dd><code class="big">Nguyễn / Thị Hương</code></dd>
-          <dt>Kept</dt><dd><code class="big diff">Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng</code></dd>
+          <dt>Entered, NameSei</dt><dd><code class="big">Nguyễn</code></dd><dt>Entered, NameMei</dt><dd><code class="big">Thị Hương</code></dd>
+          <dt>Shown on confirmation</dt><dd><code class="big diff">Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng</code></dd>
           <dt>The page said</dt><dd><code class="big said" lang="ja">(no error text)</code></dd>
         </dl>
         <p class="sep">The values above were measured by code. What follows was written by Claude from them.</p>
@@ -98,13 +98,15 @@ Goal given to the agent: reach the confirmation screen (入力内容の確認)
 
 Finding (Site defect, supported by evidence; proposed by Claude from measured facts, not yet reviewed by a person)
 Field: 氏名 (review row)
-Entered: Nguyễn / Thị Hương
-Kept by the field: Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng
+Entered, NameSei: Nguyễn
+Entered, NameMei: Thị Hương
+Shown on confirmation: Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng
 The page said: (no error text)
 What happened: The surname field accepted Nguyễn without error, but the confirmation screen's 氏名 row displayed it as &quot;Nguy&amp;#7877;n&quot;, showing literal HTML entity codes instead of ễ. The baseline's review row showed 山田 太郎 correctly, and the 'altered' label comes from nanori's checkpoint check rather than from any error message on the site.
 Basis: Page 27 item 3 says name fields should accept Latin letters, and this form did accept the input. The guidance does not directly address how names are displayed on a review screen, so this is cited by analogy only. (GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters in name fields), by analogy only)
 
-Results in this run (same form, same goal, same non-name inputs; only the name changed)
+Results in this run (same form, same goal, same contact details)
+Non-name inputs differed from the baseline on the confirmation screen in 1 case (measured): Nguyễn Thị Hương: チェックイン・ご利用日 was &quot;(empty)&quot; in the baseline and &quot;2026年11月20日&quot; here. That pair is not a fully controlled comparison.
 - 山田 太郎 (baseline): reached the review screen
 - Nguyễn Thị Hương: reached the review screen, name shown changed
 
@@ -121,7 +123,8 @@ Rules for the fix
 - Do not change the test cases to fit the form.
 
 Confirm the fix (run from the nanori folder, with the fixed form being served):
-node dist/cli.js rerun imperial-hotel-1 --target &lt;URL of the fixed form&gt; --before &lt;run id of the unrepaired local copy, if you made one&gt;
+node dist/cli.js rerun imperial-hotel-1 --target &lt;URL of the fixed form&gt;
+Optional: if you first ran nanori against an unrepaired local copy of this form, add --before &lt;that run id&gt; so the before column shows the local copy instead of this public run.
 Then open the new runs/&lt;id&gt;/report.html and read the before/after table.</textarea></details></div>
       </div>
     </section>

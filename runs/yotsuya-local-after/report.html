@@ -13,7 +13,7 @@
 main{max-width:1040px;margin:0 auto;padding:36px 28px 72px}
 a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
 .top{padding-bottom:20px;border-bottom:1px solid var(--rule)}
-.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
+.sim{color:var(--ink);margin-top:6px;max-width:80ch}.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
 #theme{font:14px var(--sans);color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}#theme:hover{color:var(--ink)}.meta{font-size:14px;color:var(--muted);line-height:1.6}.meta .url{overflow-wrap:anywhere}.meta strong{color:var(--text);font-weight:600}
 .verdict{margin:40px 0 8px}.verdict h1{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:-.015em;margin:0;color:var(--ink);text-wrap:balance}.verdict.v-bad h1{color:var(--bad)}.verdict.v-ok h1{color:var(--ok)}.verdict.v-warn h1{color:var(--warn)}
 .verdict p{font-size:17px;margin:10px 0 0;max-width:70ch}
@@ -59,7 +59,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
     <p class="muted">Both columns are the same local reproduction, before and after the repair; the public finding is linked separately. Passing results prove these cases on the reproduction, not the live site. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>
 <details class="cmp"><summary>Comparison table for this run (all cases)</summary>
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name values on the confirmation screen matched the baseline's row for row in every case (measured). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen shown with the name 山田 太郎 accepted; safe checkpoint reached. <span class="muted">(11 actions)</span></div></td>

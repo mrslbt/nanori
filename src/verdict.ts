@@ -17,6 +17,7 @@ export function tally(cases: RunResult[]): Tally {
 /** Headline + supporting line. Never claims "all reached" unless every case was verified reached. */
 export function headline(b: Pick<RunBundle, "baseline" | "cases">): { head: string; support: string } {
   const t = tally(b.cases);
+  if (b.baseline.outcome === "reached_name_changed") return { head: "Comparison inconclusive.", support: "The kanji-name baseline reached the confirmation screen, but its name was displayed differently." };
   if (b.baseline.outcome !== "reached_checkpoint") return { head: "Comparison inconclusive.", support: `The kanji-name baseline did not reach the confirmation screen (${describe(b.baseline.outcome)}).` };
   if (t.total === 0) return { head: "No name cases were run.", support: "" };
   const stoppedCases = b.cases.filter((c) => c.outcome === "stopped_before_checkpoint");
@@ -32,6 +33,7 @@ export function headline(b: Pick<RunBundle, "baseline" | "cases">): { head: stri
 export function verdict(b: Pick<RunBundle, "baseline" | "cases">): string {
   const t = tally(b.cases);
   const noun = (n: number) => (n === 1 ? "name" : "names");
+  if (b.baseline.outcome === "reached_name_changed") return "The baseline (Japanese name) reached the review screen, but its name was displayed differently, so the name comparison is inconclusive.";
   if (b.baseline.outcome !== "reached_checkpoint") {
     return `The baseline (Japanese name) did not reach the review screen (${describe(b.baseline.outcome)}), so the name comparison is inconclusive.`;
   }

@@ -83,7 +83,7 @@ export interface Step {
   observations: FieldObservation[];
   pageErrors: string[];
   /** The review-screen model used for checkpoint verification (saved so the check can be recomputed offline). */
-  checkpointModel?: { urlChanged: boolean; nameInputsPresent: boolean; headings: string[]; rows: Array<{ label: string; value: string }> };
+  checkpointModel?: { urlChanged: boolean; nameInputsPresent: boolean; headings: string[]; rows: Array<{ label: string; value: string }>; cues?: string[] };
 }
 
 /**
@@ -127,6 +127,8 @@ export interface Finding {
   fix: string;
   reviewState: "proposed" | "reviewed";
   screenshot: string;
+  /** When one review row shows values typed into several fields, the typed components by field (set by mergeFindings). */
+  components?: Array<{ field: string; requested: string }>;
 }
 
 export interface RunBundle {
@@ -143,6 +145,8 @@ export interface RunBundle {
   before?: { id: string; target: string; outcomes: Record<string, Outcome> };
   /** For repaired reruns: the public run whose finding this repair answers (cross-report link). */
   publicRun?: string;
+  /** For local simulations built from published rules rather than an observed site: the disclosure to print. */
+  simulation?: string;
   /** Separate boundary probe evidence attached at render time. */
   probe?: { summary: string; href: string };
   /** The fixed non-name scenario the agent was told to use. Absent on runs made before it existed. */

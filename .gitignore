@@ -5,6 +5,9 @@ dist
 runs/*
 !runs/yotsuya-dental-3/
 !runs/imperial-hotel-1/
+!runs/imperial-hotel-2/
+!runs/card-local-before/
+!runs/card-local-after/
 !runs/yotsuya-local-before/
 !runs/yotsuya-local-after/
 !runs/yotsuya-dental-1/

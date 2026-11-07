@@ -10,8 +10,15 @@ describe("mergeFindings", () => {
     const b = f({ id: "F2", field: "NameMei (review row 氏名)", requested: "Thị Hương", retained: "Nguy&#7877;n Th&#7883;" });
     const m = mergeFindings([a, b]);
     expect(m).toHaveLength(1);
-    expect(m[0].requested).toBe("Nguyễn / Thị Hương");
+    expect(m[0].components).toEqual([{ field: "NameSei", requested: "Nguyễn" }, { field: "NameMei", requested: "Thị Hương" }]);
+    expect(m[0].requested).not.toContain("/");
     expect(m[0].field).toBe("氏名 (review row)");
+  });
+  it("is idempotent: merging an already-merged finding keeps its components", () => {
+    const a = f({ id: "F1", field: "NameSei (review row 氏名)", requested: "Nguyễn", retained: "x" });
+    const b = f({ id: "F2", field: "NameMei (review row 氏名)", requested: "Thị Hương", retained: "x" });
+    const once = mergeFindings([a, b]); const twice = mergeFindings(once);
+    expect(twice).toEqual(once);
   });
   it("keeps findings apart when the row text, step, kind or case differs", () => {
     const a = f({ id: "F1", field: "sei (review row 氏名)", retained: "x" });

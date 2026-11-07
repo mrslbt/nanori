@@ -26,6 +26,12 @@ describe("verdict never overstates", () => {
   it("tally counts every outcome", () => {
     expect(tally([run("a", "reached_checkpoint"), run("b", "not_determined")])).toEqual({ total: 2, reached: 1, changed: 0, workaround: 0, stopped: 0, undetermined: 1 });
   });
+  it("a baseline whose name was shown changed is inconclusive and is not described as having failed to reach", () => {
+    const b = { baseline: run("b", "reached_name_changed"), cases: [run("a", "reached_checkpoint")] };
+    expect(headline(b).head).toContain("inconclusive");
+    expect(headline(b).support).toContain("reached the confirmation screen, but its name was displayed differently");
+    expect(verdict(b)).not.toContain("did not reach");
+  });
   it("a name shown changed on the review screen is its own headline, never counted as reached", () => {
     const b = { baseline: run("b", "reached_checkpoint"), cases: [run("a", "reached_checkpoint"), run("c", "reached_name_changed")] };
     expect(tally(b.cases)).toEqual({ total: 2, reached: 1, changed: 1, workaround: 0, stopped: 0, undetermined: 0 });

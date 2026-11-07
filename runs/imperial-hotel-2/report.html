@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>nanori report: imperial-hotel-2</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("nanori-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<style>
+:root{--bg:#fbfaf8;--ink:#17191d;--text:#2b2e34;--muted:#6b6e75;--rule:#e2dfd8;--ok:#1a6b43;--bad:#b8291b;--warn:#8a5a00;--code:#f0eee9;--diff:#f9e3df;--white:#fff;--btn:#17191d;--btntext:#fff;
+--sans:"IBM Plex Sans JP","Hiragino Sans","Noto Sans JP",sans-serif;--mono:"IBM Plex Mono",Menlo,monospace;color-scheme:light}
+:root[data-theme="dark"]{--bg:#141517;--ink:#f0ede6;--text:#cfccc4;--muted:#8f8d86;--rule:#2b2d31;--ok:#6cc495;--bad:#f28b7d;--warn:#dcae4c;--code:#222428;--diff:#4a221d;--white:#1b1d20;--btn:#f0ede6;--btntext:#141517;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141517;--ink:#f0ede6;--text:#cfccc4;--muted:#8f8d86;--rule:#2b2d31;--ok:#6cc495;--bad:#f28b7d;--warn:#dcae4c;--code:#222428;--diff:#4a221d;--white:#1b1d20;--btn:#f0ede6;--btntext:#141517;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--sans)}
+main{max-width:1040px;margin:0 auto;padding:36px 28px 72px}
+a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
+.top{padding-bottom:20px;border-bottom:1px solid var(--rule)}
+.sim{color:var(--ink);margin-top:6px;max-width:80ch}.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
+#theme{font:14px var(--sans);color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}#theme:hover{color:var(--ink)}.meta{font-size:14px;color:var(--muted);line-height:1.6}.meta .url{overflow-wrap:anywhere}.meta strong{color:var(--text);font-weight:600}
+.verdict{margin:40px 0 8px}.verdict h1{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:-.015em;margin:0;color:var(--ink);text-wrap:balance}.verdict.v-bad h1{color:var(--bad)}.verdict.v-ok h1{color:var(--ok)}.verdict.v-warn h1{color:var(--warn)}
+.verdict p{font-size:17px;margin:10px 0 0;max-width:70ch}
+h2{font-size:19px;font-weight:600;color:var(--ink);margin:52px 0 10px}h3{font-size:14px;font-weight:600;margin:28px 0 6px;color:var(--ink)}
+.muted{color:var(--muted);font-size:14px}p.muted{max-width:90ch}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:12px 12px 12px 0;border-bottom:1px solid var(--rule);vertical-align:top}th:last-child,td:last-child{padding-right:0}
+thead th{font-size:14px;font-weight:500;color:var(--muted);padding-top:0}
+.who{font-weight:600;color:var(--ink)}.tests{font:14px var(--mono);color:var(--muted);margin-top:2px}
+table.cmp th:first-child{width:26%}table.cmp th:nth-child(2){width:37%}td.outcome span.ok,td.outcome span.bad,td.outcome span.warn{font-weight:600}.note{font-size:14px;color:var(--muted);margin-top:4px;max-width:40ch}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.why{display:inline;font-weight:400;font-size:14px;color:var(--muted);margin:0;border:0;padding:0}.why summary{display:inline;cursor:pointer;font-weight:400;color:var(--ink);text-decoration:underline;text-underline-offset:3px}.why[open] summary{display:block}
+.where .field{font-weight:600;color:var(--ink)}.where .kind{color:var(--bad);margin-left:6px}.detail{font-size:14px;margin-top:3px}
+.selected{margin:16px 0}
+.pair{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;margin-bottom:24px}.pair figure{margin:0}.pair img{width:100%;height:auto;display:block;border:1px solid var(--rule)}.pair figcaption{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.5}
+.crop{position:relative;overflow:hidden;border:1px solid var(--rule);aspect-ratio:4/3;background:var(--white)}.crop img{width:100%;height:100%;object-fit:cover;transform:scale(2);border:0}
+.clsrow{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}.cls{margin:0 0 4px;flex:1 1 40ch}.cls strong{color:var(--ink)}.site_defect .cls strong{color:var(--bad)}.no_issue .cls strong{color:var(--ok)}
+dl{display:grid;grid-template-columns:150px 1fr;gap:8px 20px;margin:14px 0 0}dt{font-size:14px;color:var(--muted);padding-top:2px}dd{margin:0}
+dl.measured dd{color:var(--ink)}.sep{font-size:14px;color:var(--muted);margin:18px 0 0}
+code{font:14px var(--mono);background:var(--code);padding:1px 6px;word-break:break-all}code.big{font-size:18px;padding:4px 10px;display:inline-block}code.big.diff{background:var(--diff);color:var(--bad)}code.big.said{background:var(--white);border:1px solid var(--rule)}
+details{padding:10px 0;margin:8px 0;border-bottom:1px solid var(--rule)}summary{cursor:pointer;font-weight:500;color:var(--ink)}details.cmp{border:0;padding:0}details.cmp h2{margin-top:16px}
+details.other summary,details.finding summary{font-size:15px}.finding dl{grid-template-columns:140px 1fr}
+.log{font-size:14px;padding-left:22px}.log li{margin:5px 0}.log li.bad{color:var(--bad)}.log .act{font-weight:600}.log ul{margin:2px 0 6px;color:var(--text);font-size:14px}
+table.ba td{font-weight:600}
+.passed{color:var(--ok);font-weight:600;font-size:16px;margin:12px 0}
+#copy-brief{font:600 14px var(--sans);padding:9px 16px;border:1px solid var(--btn);background:var(--btn);color:var(--btntext);cursor:pointer;flex:0 0 auto}#copy-brief:hover{opacity:.9}#copy-brief.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.brief{margin-top:16px}.brief details{border:0;padding:0;margin:0}.brief summary{font-weight:400;font-size:14px;color:var(--muted)}.brief textarea{width:100%;font:13px/1.5 var(--mono);padding:12px;border:1px solid var(--rule);background:var(--white);color:var(--ink);margin-top:8px}
+footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px;max-width:90ch}
+@media (max-width:820px){main{padding:24px 16px 56px}.top{grid-template-columns:1fr;gap:8px}.note{max-width:none}
+ .verdict h1{font-size:24px}.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr;gap:2px 0}dt{padding-top:10px}
+ table:not(.ba){display:block}table:not(.ba) thead{display:none}table:not(.ba) tbody,table:not(.ba) tr{display:block}table:not(.ba) tr{border-bottom:1px solid var(--rule);padding:12px 0}table:not(.ba) th,table:not(.ba) td{display:block;border:0;padding:3px 0;min-width:0}
+ table.ba{display:block;overflow-x:auto;white-space:nowrap}}
+</style></head><body><main>
+<header class="top">
+  <div class="brandrow"><div class="brand">nanori</div><button type="button" id="theme" aria-label="Switch colour theme">Dark mode</button></div>
+  <div class="meta"><div class="url">https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f</div><div>Goal: reach the confirmation screen (入力内容の確認)</div><div>Run imperial-hotel-2, 2026-11-07 17:19:12 UTC</div><div><strong>Public page. Nothing was submitted.</strong></div></div>
+</header>
+<section class="verdict v-bad"><h1>One name was shown changed on the confirmation screen: Letters with accents.</h1><p>The kanji-name baseline reached confirmation with the name shown exactly; this one reached it with the name displayed differently. <a href="#finding">See the evidence.</a></p></section>
+
+
+
+<h2>Comparison</h2>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name values on the confirmation screen matched the baseline's row for row in every case (measured). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
+      <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
+      <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen reached showing 山田 太郎 and ヤマダ タロウ; safe checkpoint, not submitting. <span class="muted">(13 actions)</span></div></td>
+      <td><span class="muted">No measured problem.</span> <a class="muted" href="baseline/step-13-after.jpg" target="_blank">Final screen</a></td></tr><tr class="">
+      <th><div class="who">Letters with accents</div><div class="tests">Nguyễn Thị Hương</div></th>
+      <td class="outcome"><span class="bad">Reached, but the name was shown changed</span><div class="note">Confirmation screen reached. <details class="why"><summary>more</summary>The name is shown as HTML entities (Nguy&amp;#7877;n Th&amp;#7883; H&amp;#432;&amp;#417;ng), so the diacritics are garbled. The katakana reading displays correctly. (name changed: review screen recognised, but a typed name value is shown changed in its review row) (13 actions)</details></div></td>
+      <td><div class="where"><span class="field">NameSei (review row)</span> <span class="kind">altered</span><div class="detail" >review row shows the name as HTML entities (double-escaped): review row &quot;氏名&quot; shows &quot;Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng&quot; <span class="muted">(nanori measurement)</span></div><div class="detail"><a href="diacritics/step-13-after.jpg" target="_blank">Screenshot, step 13</a></div></div></td></tr></tbody></table>
+<p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
+
+
+
+
+<h2>Evidence</h2>
+
+    <section class="selected site_defect" id="finding">
+      <div class="pair">
+        <figure><div class="crop"><img src="diacritics/step-13-after.jpg" style="object-position:60% 36%;transform-origin:60% 36%" alt="Detail: the name field and the error"></div><figcaption>Nguyễn Thị Hương: the same screenshot, magnified around the measured field, nothing edited. <a href="diacritics/step-13-after.jpg" target="_blank">Nguyễn Thị Hương, full screenshot</a></figcaption></figure>
+        <figure><a href="baseline/step-13-after.jpg" target="_blank"><img src="baseline/step-13-after.jpg" alt="Baseline, final screen"></a><figcaption>Baseline 山田 太郎: reached the review screen. <a href="baseline/step-13-after.jpg" target="_blank">Baseline, full screenshot</a></figcaption></figure>
+      </div>
+      <div class="facts">
+        <div class="clsrow"><p class="cls"><strong>Site defect, supported by evidence.</strong> Proposed by Claude from measured facts, not yet reviewed by a person.</p>
+          <button type="button" id="copy-brief" title="Copies this finding as plain text, for Claude Code or an issue">Copy repair brief</button></div>
+        <dl class="measured">
+          <dt>Field</dt><dd>氏名 (review row)</dd>
+          <dt>Entered, NameSei</dt><dd><code class="big">Nguyễn</code></dd><dt>Entered, NameMei</dt><dd><code class="big">Thị Hương</code></dd>
+          <dt>Shown on confirmation</dt><dd><code class="big diff">Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng</code></dd>
+          <dt>The page said</dt><dd><code class="big said" lang="ja">(no error text)</code></dd>
+        </dl>
+        <p class="sep">The values above were measured by code. What follows was written by Claude from them.</p>
+        <dl>
+          <dt>What happened</dt><dd>The confirmation screen's 氏名 row displayed the surname as &quot;Nguy&amp;#7877;n&quot; instead of &quot;Nguyễn&quot;, while the baseline's row showed 山田 太郎 correctly. This is nanori's own measurement comparing the typed value with the review row text; the site showed no error message.</dd>
+          <dt>Why it matters</dt><dd>A person with a name of this shape, such as a Vietnamese name with diacritics, would see their name corrupted on the review screen before sending. The record the site keeps may carry the same corruption.</dd>
+          <dt>Basis</dt><dd>Page 27 item 3 asks name fields to accept Latin letters; it does not explicitly address diacritics or how a name is displayed, so the corrupted display is only inconsistent with this guidance by analogy. The guidance is for Tokyo Metropolitan Government forms and is not law. <span class="muted">(analogy, for review; GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters), by analogy)</span></dd>
+          <dt>Cause</dt><dd>Reproduced from the displayed text, not confirmed in source: the name appears to be double-escaped, with numeric character references such as &amp;#7877; escaped again so they show literally. One possible trigger is a non-UTF-8 form encoding that makes the browser send characters outside the charset as references, which the server then escapes again.</dd>
+          <dt>Proposed repair</dt><dd>Serve and submit the form as UTF-8 (meta charset and accept-charset=&quot;UTF-8&quot;), and HTML-escape the name exactly once when rendering the confirmation row. Keep the existing maxlength=64 and any server-side validation unchanged so invalid input is still rejected.</dd>
+        </dl>
+        <div class="brief"><details><summary>The repair brief as text</summary><textarea id="brief-text" readonly rows="18" spellcheck="false">nanori repair brief
+Run: imperial-hotel-2 (public page, nothing submitted), recorded 2026-11-07T17:19:12.783Z
+Form: https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f
+Goal given to the agent: reach the confirmation screen (入力内容の確認)
+
+Finding (Site defect, supported by evidence; proposed by Claude from measured facts, not yet reviewed by a person)
+Field: 氏名 (review row)
+Entered, NameSei: Nguyễn
+Entered, NameMei: Thị Hương
+Shown on confirmation: Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng
+The page said: (no error text)
+What happened: The confirmation screen's 氏名 row displayed the surname as &quot;Nguy&amp;#7877;n&quot; instead of &quot;Nguyễn&quot;, while the baseline's row showed 山田 太郎 correctly. This is nanori's own measurement comparing the typed value with the review row text; the site showed no error message.
+Basis: Page 27 item 3 asks name fields to accept Latin letters; it does not explicitly address diacritics or how a name is displayed, so the corrupted display is only inconsistent with this guidance by analogy. The guidance is for Tokyo Metropolitan Government forms and is not law. (GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters), by analogy)
+
+Results in this run (same form, same goal, same contact details)
+Non-name values on the confirmation screen matched the baseline's row for row in every case (measured).
+- 山田 太郎 (baseline): reached the review screen
+- Nguyễn Thị Hương: reached the review screen, name shown changed
+
+Evidence, paths relative to this report's folder:
+- failing case: diacritics/step-13-after.jpg
+- baseline: baseline/step-13-after.jpg
+
+Proposed cause (Claude's reading of the measurements, not verified against the form's source): Reproduced from the displayed text, not confirmed in source: the name appears to be double-escaped, with numeric character references such as &amp;#7877; escaped again so they show literally. One possible trigger is a non-UTF-8 form encoding that makes the browser send characters outside the charset as references, which the server then escapes again.
+Proposed repair: Serve and submit the form as UTF-8 (meta charset and accept-charset=&quot;UTF-8&quot;), and HTML-escape the name exactly once when rendering the confirmation row. Keep the existing maxlength=64 and any server-side validation unchanged so invalid input is still rejected.
+
+Rules for the fix
+- Change only a form you own, or a local reproduction of it. Do not touch a third-party website.
+- Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.
+- Do not change the test cases to fit the form.
+
+Confirm the fix (run from the nanori folder, with the fixed form being served):
+node dist/cli.js rerun imperial-hotel-2 --target &lt;URL of the fixed form&gt;
+Optional: if you first ran nanori against an unrepaired local copy of this form, add --before &lt;that run id&gt; so the before column shows the local copy instead of this public run.
+Then open the new runs/&lt;id&gt;/report.html and read the before/after table.</textarea></details></div>
+      </div>
+    </section>
+
+
+
+
+<h2>Run details</h2>
+
+    <details><summary>山田 太郎: 13 actions, reached the review screen</summary>
+    <ol class="log"><li class=""><span class="act">fill</span> n1 <code>山田</code> <span class="muted">family name</span> <a href="baseline/step-01.jpg" target="_blank" aria-label="Step 1, screenshot before">before</a> · <a href="baseline/step-01-after.jpg" target="_blank" aria-label="Step 1, screenshot after">after</a><ul><li><span class="muted">NameSei</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n2 <code>太郎</code> <span class="muted">given name</span> <a href="baseline/step-02.jpg" target="_blank" aria-label="Step 2, screenshot before">before</a> · <a href="baseline/step-02-after.jpg" target="_blank" aria-label="Step 2, screenshot after">after</a><ul><li><span class="muted">NameMei</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n3 <code>ヤマダ</code> <span class="muted">katakana family</span> <a href="baseline/step-03.jpg" target="_blank" aria-label="Step 3, screenshot before">before</a> · <a href="baseline/step-03-after.jpg" target="_blank" aria-label="Step 3, screenshot after">after</a><ul><li><span class="muted">NameSeiKana</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n4 <code>タロウ</code> <span class="muted">katakana given</span> <a href="baseline/step-04.jpg" target="_blank" aria-label="Step 4, screenshot before">before</a> · <a href="baseline/step-04-after.jpg" target="_blank" aria-label="Step 4, screenshot after">after</a><ul><li><span class="muted">NameMeiKana</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n7 <code>test@example.com</code> <span class="muted">email</span> <a href="baseline/step-05.jpg" target="_blank" aria-label="Step 5, screenshot before">before</a> · <a href="baseline/step-05-after.jpg" target="_blank" aria-label="Step 5, screenshot after">after</a><ul><li><span class="muted">email</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n8 <code>test@example.com</code> <span class="muted">confirm email</span> <a href="baseline/step-06.jpg" target="_blank" aria-label="Step 6, screenshot before">before</a> · <a href="baseline/step-06-after.jpg" target="_blank" aria-label="Step 6, screenshot after">after</a><ul><li><span class="muted">email:cf</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n9 <code>1500001</code> <span class="muted">postal code</span> <a href="baseline/step-07.jpg" target="_blank" aria-label="Step 7, screenshot before">before</a> · <a href="baseline/step-07-after.jpg" target="_blank" aria-label="Step 7, screenshot after">after</a><ul><li><span class="muted">ZipCode</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n10 <code>東京都渋谷区神宮前1-1-1</code> <span class="muted">address</span> <a href="baseline/step-08.jpg" target="_blank" aria-label="Step 8, screenshot before">before</a> · <a href="baseline/step-08-after.jpg" target="_blank" aria-label="Step 8, screenshot after">after</a><ul><li><span class="muted">RegidentialAd</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n11 <code>09012345678</code> <span class="muted">phone</span> <a href="baseline/step-09.jpg" target="_blank" aria-label="Step 9, screenshot before">before</a> · <a href="baseline/step-09-after.jpg" target="_blank" aria-label="Step 9, screenshot after">after</a><ul><li><span class="muted">Phone</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n15 <code>nanori による自動入力テストです。送信はしません。</code> <span class="muted">required message</span> <a href="baseline/step-10.jpg" target="_blank" aria-label="Step 10, screenshot before">before</a> · <a href="baseline/step-10-after.jpg" target="_blank" aria-label="Step 10, screenshot after">after</a><ul><li><span class="muted">message</span>: accepted</li></ul></li><li class=""><span class="act">click</span> n17  <span class="muted">agree to privacy policy</span> <a href="baseline/step-11.jpg" target="_blank" aria-label="Step 11, screenshot before">before</a> · <a href="baseline/step-11-after.jpg" target="_blank" aria-label="Step 11, screenshot after">after</a></li><li class=""><span class="act">click</span> n18  <span class="muted">go to confirmation</span> <a href="baseline/step-12.jpg" target="_blank" aria-label="Step 12, screenshot before">before</a> · <a href="baseline/step-12-after.jpg" target="_blank" aria-label="Step 12, screenshot after">after</a></li><li class=""><span class="act">done</span> n1  <span class="muted">Confirmation screen reached showing 山田 太郎 and ヤマダ タロウ; safe checkpoint, not submitting.</span> <a href="baseline/step-13.jpg" target="_blank" aria-label="Step 13, screenshot before">before</a> · <a href="baseline/step-13-after.jpg" target="_blank" aria-label="Step 13, screenshot after">after</a></li></ol></details>
+    <details><summary>Nguyễn Thị Hương: 13 actions, reached the review screen, name shown changed</summary>
+    <ol class="log"><li class=""><span class="act">fill</span> n1 <code>Nguyễn</code> <span class="muted">family name</span> <a href="diacritics/step-01.jpg" target="_blank" aria-label="Step 1, screenshot before">before</a> · <a href="diacritics/step-01-after.jpg" target="_blank" aria-label="Step 1, screenshot after">after</a><ul><li><span class="muted">NameSei</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n2 <code>Thị Hương</code> <span class="muted">given name</span> <a href="diacritics/step-02.jpg" target="_blank" aria-label="Step 2, screenshot before">before</a> · <a href="diacritics/step-02-after.jpg" target="_blank" aria-label="Step 2, screenshot after">after</a><ul><li><span class="muted">NameMei</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n3 <code>グエン</code> <span class="muted">family kana</span> <a href="diacritics/step-03.jpg" target="_blank" aria-label="Step 3, screenshot before">before</a> · <a href="diacritics/step-03-after.jpg" target="_blank" aria-label="Step 3, screenshot after">after</a><ul><li><span class="muted">NameSeiKana</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n4 <code>ティ フオン</code> <span class="muted">given kana</span> <a href="diacritics/step-04.jpg" target="_blank" aria-label="Step 4, screenshot before">before</a> · <a href="diacritics/step-04-after.jpg" target="_blank" aria-label="Step 4, screenshot after">after</a><ul><li><span class="muted">NameMeiKana</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n7 <code>test@example.com</code> <span class="muted">email</span> <a href="diacritics/step-05.jpg" target="_blank" aria-label="Step 5, screenshot before">before</a> · <a href="diacritics/step-05-after.jpg" target="_blank" aria-label="Step 5, screenshot after">after</a><ul><li><span class="muted">email</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n8 <code>test@example.com</code> <span class="muted">email confirm</span> <a href="diacritics/step-06.jpg" target="_blank" aria-label="Step 6, screenshot before">before</a> · <a href="diacritics/step-06-after.jpg" target="_blank" aria-label="Step 6, screenshot after">after</a><ul><li><span class="muted">email:cf</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n9 <code>1500001</code> <span class="muted">postal</span> <a href="diacritics/step-07.jpg" target="_blank" aria-label="Step 7, screenshot before">before</a> · <a href="diacritics/step-07-after.jpg" target="_blank" aria-label="Step 7, screenshot after">after</a><ul><li><span class="muted">ZipCode</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n10 <code>東京都渋谷区神宮前1-1-1</code> <span class="muted">address</span> <a href="diacritics/step-08.jpg" target="_blank" aria-label="Step 8, screenshot before">before</a> · <a href="diacritics/step-08-after.jpg" target="_blank" aria-label="Step 8, screenshot after">after</a><ul><li><span class="muted">RegidentialAd</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n11 <code>09012345678</code> <span class="muted">phone</span> <a href="diacritics/step-09.jpg" target="_blank" aria-label="Step 9, screenshot before">before</a> · <a href="diacritics/step-09-after.jpg" target="_blank" aria-label="Step 9, screenshot after">after</a><ul><li><span class="muted">Phone</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n15 <code>nanori による自動入力テストです。送信はしません。</code> <span class="muted">message</span> <a href="diacritics/step-10.jpg" target="_blank" aria-label="Step 10, screenshot before">before</a> · <a href="diacritics/step-10-after.jpg" target="_blank" aria-label="Step 10, screenshot after">after</a><ul><li><span class="muted">message</span>: accepted</li></ul></li><li class=""><span class="act">click</span> n17  <span class="muted">agree to privacy policy</span> <a href="diacritics/step-11.jpg" target="_blank" aria-label="Step 11, screenshot before">before</a> · <a href="diacritics/step-11-after.jpg" target="_blank" aria-label="Step 11, screenshot after">after</a></li><li class=""><span class="act">click</span> n18  <span class="muted">go to confirmation</span> <a href="diacritics/step-12.jpg" target="_blank" aria-label="Step 12, screenshot before">before</a> · <a href="diacritics/step-12-after.jpg" target="_blank" aria-label="Step 12, screenshot after">after</a></li><li class="bad"><span class="act">done</span> n1  <span class="muted">Confirmation screen reached. The name is shown as HTML entities (Nguy&amp;#7877;n Th&amp;#7883; H&amp;#432;&amp;#417;ng), so the diacritics are garbled. The katakana reading displays correctly.</span> <a href="diacritics/step-13.jpg" target="_blank" aria-label="Step 13, screenshot before">before</a> · <a href="diacritics/step-13-after.jpg" target="_blank" aria-label="Step 13, screenshot after">after</a><ul><li><span class="muted">NameSei (review row)</span>: altered <span lang="ja">review row shows the name as HTML entities (double-escaped): review row &quot;氏名&quot; shows &quot;Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng&quot;</span> <em>(nanori measurement)</em></li><li><span class="muted">NameMei (review row)</span>: altered <span lang="ja">review row shows the name as HTML entities (double-escaped): review row &quot;氏名&quot; shows &quot;Nguy&amp;#7877;n　Th&amp;#7883; H&amp;#432;&amp;#417;ng&quot;</span> <em>(nanori measurement)</em></li></ul></li></ol></details>
+
+<footer>Measurements (retained value, validation message, aria-invalid, visible error text, checkpoint rendering) are made by code. Classifications marked "proposed" were written by Claude from those measurements and have not been reviewed by a person. Guidance cited: GovTech Tokyo Input Form Guidance ver 1.1 (March 2026), scoped to Tokyo Metropolitan Government forms; for other sites we say only "inconsistent with this guidance". nanori does not attempt alternate entry paths; where a page documents one, it is reported as documented but untested. Nothing was submitted.</footer>
+</main>
+<script>
+(function(){var btn=document.getElementById("theme"),root=document.documentElement;function cur(){var a=root.getAttribute("data-theme");return a||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}
+function label(){btn.textContent=cur()==="dark"?"Light mode":"Dark mode"}label();
+btn.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";root.setAttribute("data-theme",n);try{localStorage.setItem("nanori-theme",n)}catch(e){}label()})})();
+(function(){var b=document.getElementById("copy-brief"),t=document.getElementById("brief-text");if(!b||!t)return;
+b.addEventListener("click",function(){var done=function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy repair brief";b.classList.remove("done")},2000)};
+var fail=function(){t.closest("details").open=true;t.focus();t.select();b.textContent="Copy the text below"};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.value).then(done,fail)}else{fail()}})})();
+</script>
+</body></html>
