@@ -82,6 +82,41 @@ export function renderHtml(b: RunBundle): string {
   const selShot = selRun ? evidenceShot(selRun, selStep) : null;
   const baseShot = evidenceShot(b.baseline, undefined);
 
+  // Repair brief: a self-contained block the developer can paste into Claude Code or an issue.
+  const brief = selected ? [
+    `nanori repair brief`,
+    `Run: ${b.id} (${b.target === "local_reproduction" ? "local reproduction" + (b.repairState ? ", " + b.repairState + " repair" : "") : "public page, nothing submitted"}), recorded ${b.createdAt}`,
+    `Form: ${b.url}`,
+    `Goal given to the agent: ${b.goal}`,
+    ``,
+    `Finding (${CLASS_LABEL[selected.classification]}; proposed by Claude from measured facts, not yet reviewed by a person)`,
+    `Field: ${selected.field}`,
+    `Entered: ${selected.requested}`,
+    `Kept by the field: ${selected.retained}`,
+    `The page said: ${selected.errorText || "(no error text)"}`,
+    `What happened: ${selected.observation}`,
+    `Basis: ${selected.basis}${selected.guidanceRef ? ` (${selected.guidanceRef})` : ""}`,
+    ``,
+    `Results in this run (same form, same goal, same non-name inputs; only the name changed)`,
+    ...all.map((r) => `- ${r.identity.fullName}${r.identity.id === "baseline" ? " (baseline)" : ""}: ${describe(r.outcome)}`),
+    ``,
+    `Evidence, paths relative to this report's folder:`,
+    `- failing case: ${selShot ?? "(none)"}`,
+    `- baseline: ${baseShot ?? "(none)"}`,
+    ``,
+    `Proposed cause (Claude's reading of the measurements, not verified against the form's source): ${selected.cause}`,
+    `Proposed repair: ${selected.fix}`,
+    ``,
+    `Rules for the fix`,
+    `- Change only a form you own, or a local reproduction of it. Do not touch a third-party website.`,
+    `- Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.`,
+    `- Do not change the test cases to fit the form.`,
+    ``,
+    `Confirm the fix (run from the nanori folder, with the fixed form being served):`,
+    `node dist/cli.js rerun ${b.id} --target <URL of the fixed form>${b.target === "local_reproduction" ? "" : " --before <run id of the unrepaired local copy, if you made one>"}`,
+    `Then open the new runs/<id>/report.html and read the before/after table.`,
+  ].join("\n") : "";
+
   const selectedHtml = selected ? `
     <section class="selected ${selected.classification}">
       <div class="pair">
@@ -101,6 +136,11 @@ export function renderHtml(b: RunBundle): string {
           <dt>Cause</dt><dd>${esc(selected.cause)}</dd>
           <dt>Proposed repair</dt><dd>${esc(selected.fix)}</dd>
         </dl>
+        <div class="brief">
+          <button type="button" id="copy-brief">Copy repair brief</button>
+          <span class="muted">Everything above as plain text, ready to paste into Claude Code or an issue.</span>
+          <details><summary>show the text</summary><textarea id="brief-text" readonly rows="18" spellcheck="false">${esc(brief)}</textarea></details>
+        </div>
       </div>
     </section>` : `<p class="muted">No findings.</p>`;
 
@@ -153,6 +193,7 @@ td.outcome{white-space:normal}
 @media (max-width:800px){.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr}.verdict .head{font-size:21px}
  table:not(.ba){display:block}table:not(.ba) thead{display:none}table:not(.ba) tbody,table:not(.ba) tr{display:block}table:not(.ba) tr{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 12px;background:#fff}table:not(.ba) th,table:not(.ba) td{display:block;border:0;padding:4px 0;min-width:0}td.num{text-align:left}
  table.ba{display:block;overflow-x:auto;white-space:nowrap}.meta{word-break:break-all}}
+.brief{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}.brief button{font:inherit;font-weight:600;padding:8px 14px;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:6px;cursor:pointer}.brief button.done{background:var(--ok);border-color:var(--ok)}.brief details{flex-basis:100%}.brief textarea{width:100%;font:13px/1.45 ui-monospace,Menlo,monospace;padding:10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box}
 footer{margin-top:48px;color:var(--muted);font-size:13px}
 </style></head><body><main>
 <h1>nanori</h1>
@@ -180,5 +221,12 @@ ${b.probe ? `<p class="muted">Separate boundary probe (same page, fixed inputs, 
 ${log}
 
 <footer>Measurements (retained value, validation message, aria-invalid, visible error text, checkpoint rendering) are made by code. Classifications marked "proposed" were written by Claude from those measurements and have not been reviewed by a person. Guidance cited: GovTech Tokyo Input Form Guidance ver 1.1 (March 2026), scoped to Tokyo Metropolitan Government forms; for other sites we say only "inconsistent with this guidance". nanori does not attempt alternate entry paths; where a page documents one, it is reported as documented but untested. Nothing was submitted.</footer>
-</main></body></html>`;
+</main>
+<script>
+(function(){var b=document.getElementById("copy-brief"),t=document.getElementById("brief-text");if(!b||!t)return;
+b.addEventListener("click",function(){var done=function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy repair brief";b.classList.remove("done")},2000)};
+var fail=function(){t.closest("details").open=true;t.focus();t.select();b.textContent="Select and copy the text below"};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.value).then(done,fail)}else{fail()}})})();
+</script>
+</body></html>`;
 }

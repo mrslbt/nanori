@@ -18,7 +18,7 @@ td.outcome{font-weight:600;white-space:nowrap}td.ok,.ok{color:var(--ok)}td.bad,.
 .site_defect .badge{background:var(--badbg);color:var(--bad)}.no_issue .badge{background:var(--okbg);color:var(--ok)}.agent_limit .badge{background:#eceff3;color:#374151}
 .rev{color:var(--muted);font-size:13px;margin-left:8px}dl{display:grid;grid-template-columns:160px 1fr;gap:8px 16px;margin:16px 0 0}dt{color:var(--muted);font-size:14px}dd{margin:0}
 code{font:14px ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f1ea;padding:1px 6px;border-radius:4px;word-break:break-all}code.big{font-size:20px;padding:4px 10px}
-.muted{color:var(--muted);font-size:14px}details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}
+.muted{color:var(--muted);font-size:14px}details{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;margin:10px 0}summary{cursor:pointer;font-weight:600}details.cmp{padding:4px 16px}details.cmp h2{margin-top:12px}
 .finding dl{grid-template-columns:140px 1fr}.log{font-size:14px;padding-left:20px}.log li{margin:4px 0}.log li.bad{color:var(--bad)}.log .act{font-weight:600}.log ul{margin:2px 0 6px;color:var(--ink)}
 table.ba td{font-weight:600}.verdict .head{font-size:26px;font-weight:600;line-height:1.3}.verdict .support{font-size:16px;color:var(--muted);margin-top:6px}
 .crop{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;aspect-ratio:4/3;background:#fff}.crop img{position:absolute;left:50%;top:50%;width:200%;max-width:none;transform:translate(-50%,-50%)}
@@ -27,12 +27,15 @@ td.outcome{white-space:normal}
 @media (max-width:800px){.pair{grid-template-columns:1fr}dl{grid-template-columns:1fr}.verdict .head{font-size:21px}
  table:not(.ba){display:block}table:not(.ba) thead{display:none}table:not(.ba) tbody,table:not(.ba) tr{display:block}table:not(.ba) tr{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 12px;background:#fff}table:not(.ba) th,table:not(.ba) td{display:block;border:0;padding:4px 0;min-width:0}td.num{text-align:left}
  table.ba{display:block;overflow-x:auto;white-space:nowrap}.meta{word-break:break-all}}
+.brief{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}.brief button{font:inherit;font-weight:600;padding:8px 14px;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:6px;cursor:pointer}.brief button.done{background:var(--ok);border-color:var(--ok)}.brief details{flex-basis:100%}.brief textarea{width:100%;font:13px/1.45 ui-monospace,Menlo,monospace;padding:10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);box-sizing:border-box}
 footer{margin-top:48px;color:var(--muted);font-size:13px}
 </style></head><body><main>
 <h1>nanori</h1>
 <div class="meta">https://yotsuya-haisya.com/contact/ · goal: reach the confirmation screen (入力内容の確認) · recorded run yotsuya-dental-3 on 2026-11-07T08:27:57.625Z</div>
 <p><span class="scope">Public page. Nothing was submitted.</span></p>
 <div class="verdict"><div class="head">One test was rejected: Long full name, 28 characters.</div><div class="support">Kanji-name baseline + 4 other cases reached confirmation; this one did not.</div></div>
+
+
 
 <h2>Comparison</h2>
 <p class="muted">Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
@@ -92,6 +95,46 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
           <dt>Cause</dt><dd>The DOM shows no maxlength or pattern attribute on the field, so the length limit is enforced by script or server; this cause is reproduced from behaviour, not confirmed in source. The limit lies somewhere between 17 and 27 characters, because 16-character names were accepted and the 28-character name was rejected.</dd>
           <dt>Proposed repair</dt><dd>Raise the name length limit in the validation that emits 文字数が正しくありません。 to a generous bound (for example 1 to 100 characters), and keep rejecting empty or overlong input. This is a suggested change based on behaviour; it has not been verified against the site's own code.</dd>
         </dl>
+        <div class="brief">
+          <button type="button" id="copy-brief">Copy repair brief</button>
+          <span class="muted">Everything above as plain text, ready to paste into Claude Code or an issue.</span>
+          <details><summary>show the text</summary><textarea id="brief-text" readonly rows="18" spellcheck="false">nanori repair brief
+Run: yotsuya-dental-3 (public page, nothing submitted), recorded 2026-11-07T08:27:57.625Z
+Form: https://yotsuya-haisya.com/contact/
+Goal given to the agent: reach the confirmation screen (入力内容の確認)
+
+Finding (Site defect, supported by evidence; proposed by Claude from measured facts, not yet reviewed by a person)
+Field: 必須お名前 (name=flname)
+Entered: Maria Clara Santos Dela Cruz
+Kept by the field: Maria Clara Santos Dela Cruz
+The page said: 文字数が正しくありません。
+What happened: The single お名前 field kept the full 28-character value &quot;Maria Clara Santos Dela Cruz&quot; but showed the site error 文字数が正しくありません。 (character count incorrect), and the form did not reach the confirmation screen. The Japanese baseline and shorter Latin names with spaces, such as &quot;Ana García-López&quot; and &quot;Nguyễn Thị Hương&quot; (16 characters each), all reached confirmation.
+Basis: Rejecting a name only because of its length is inconsistent with p.27 item 4 of the GovTech Tokyo guidance, which asks for a sufficient maximum length because foreign names need more characters. This guidance is scoped to Tokyo Metropolitan Government forms and is not a law. (GovTech Tokyo Input Form Guidance v1.1, p.27 item 4 (sufficient maximum length))
+
+Results in this run (same form, same goal, same non-name inputs; only the name changed)
+- 山田 太郎 (baseline): reached the review screen
+- Marsel Bait: reached the review screen
+- Maria Clara Santos Dela Cruz: stopped before the review screen
+- Sukarno: reached the review screen
+- Nguyễn Thị Hương: reached the review screen
+- Ana García-López: reached the review screen
+
+Evidence, paths relative to this report's folder:
+- failing case: long-name-spaces/step-16-after.jpg
+- baseline: baseline/step-17.jpg
+
+Proposed cause (Claude's reading of the measurements, not verified against the form's source): The DOM shows no maxlength or pattern attribute on the field, so the length limit is enforced by script or server; this cause is reproduced from behaviour, not confirmed in source. The limit lies somewhere between 17 and 27 characters, because 16-character names were accepted and the 28-character name was rejected.
+Proposed repair: Raise the name length limit in the validation that emits 文字数が正しくありません。 to a generous bound (for example 1 to 100 characters), and keep rejecting empty or overlong input. This is a suggested change based on behaviour; it has not been verified against the site's own code.
+
+Rules for the fix
+- Change only a form you own, or a local reproduction of it. Do not touch a third-party website.
+- Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.
+- Do not change the test cases to fit the form.
+
+Confirm the fix (run from the nanori folder, with the fixed form being served):
+node dist/cli.js rerun yotsuya-dental-3 --target &lt;URL of the fixed form&gt; --before &lt;run id of the unrepaired local copy, if you made one&gt;
+Then open the new runs/&lt;id&gt;/report.html and read the before/after table.</textarea></details>
+        </div>
       </div>
     </section>
 
@@ -114,4 +157,11 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
     <ol class="log"><li class=""><span class="act">click</span> n18  <span class="muted">First radio in inquiry type group</span> <a href="hyphen-compound/step-01.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-01-after.jpg" target="_blank">after</a></li><li class=""><span class="act">click</span> n21  <span class="muted">Open date picker to choose first selectable date</span> <a href="hyphen-compound/step-02.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-02-after.jpg" target="_blank">after</a></li><li class=""><span class="act">click</span> n245  <span class="muted">First selectable date (Nov 7)</span> <a href="hyphen-compound/step-03.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-03-after.jpg" target="_blank">after</a></li><li class=""><span class="act">select</span> n22 <code>10:00 ～</code> <span class="muted">First available time</span> <a href="hyphen-compound/step-04.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-04-after.jpg" target="_blank">after</a></li><li class=""><span class="act">select</span> n23 <code>虫歯</code> <span class="muted">Treatment 虫歯</span> <a href="hyphen-compound/step-05.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-05-after.jpg" target="_blank">after</a></li><li class=""><span class="act">fill</span> n24 <code>歯が痛いです。</code> <span class="muted">Symptoms</span> <a href="hyphen-compound/step-06.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-06-after.jpg" target="_blank">after</a><ul><li><span class="muted">必須どんな症状ですか？</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n25 <code>Ana García-López</code> <span class="muted">Full name in single name field</span> <a href="hyphen-compound/step-07.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-07-after.jpg" target="_blank">after</a><ul><li><span class="muted">必須お名前</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n26 <code>あな がるしあ ろぺす</code> <span class="muted">Hiragana reading for ふりがな</span> <a href="hyphen-compound/step-08.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-08-after.jpg" target="_blank">after</a><ul><li><span class="muted">必須ふりがな</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n27 <code>09012345678</code> <span class="muted">Phone</span> <a href="hyphen-compound/step-09.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-09-after.jpg" target="_blank">after</a><ul><li><span class="muted">必須電話番号</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n28 <code>test@example.com</code> <span class="muted">Optional email</span> <a href="hyphen-compound/step-10.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-10-after.jpg" target="_blank">after</a><ul><li><span class="muted">任意メール</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n29 <code>test@example.com</code> <span class="muted">Email confirmation</span> <a href="hyphen-compound/step-11.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-11-after.jpg" target="_blank">after</a><ul><li><span class="muted">任意メール確認入力</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n30 <code>1500001</code> <span class="muted">Optional postal code</span> <a href="hyphen-compound/step-12.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-12-after.jpg" target="_blank">after</a><ul><li><span class="muted">任意郵便番号</span>: accepted</li></ul></li><li class=""><span class="act">fill</span> n31 <code>東京都渋谷区神宮前1-1-1</code> <span class="muted">Optional address</span> <a href="hyphen-compound/step-13.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-13-after.jpg" target="_blank">after</a><ul><li><span class="muted">任意住所</span>: accepted</li></ul></li><li class=""><span class="act">click</span> n32  <span class="muted">Optional gender radio: first option is the rule for radios</span> <a href="hyphen-compound/step-14.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-14-after.jpg" target="_blank">after</a></li><li class=""><span class="act">fill</span> n34 <code>35</code> <span class="muted">Age 35</span> <a href="hyphen-compound/step-15.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-15-after.jpg" target="_blank">after</a><ul><li><span class="muted">任意年齢</span>: accepted</li></ul></li><li class=""><span class="act">click</span> n35  <span class="muted">Proceed to confirmation screen</span> <a href="hyphen-compound/step-16.jpg" target="_blank">before</a> · <a href="hyphen-compound/step-16-after.jpg" target="_blank">after</a></li><li class=""><span class="act">done</span> n15  <span class="muted">Confirmation screen reached; name Ana García-López and reading shown accepted. Not sending.</span> <a href="hyphen-compound/step-17.jpg" target="_blank">before</a></li></ol></details>
 
 <footer>Measurements (retained value, validation message, aria-invalid, visible error text, checkpoint rendering) are made by code. Classifications marked "proposed" were written by Claude from those measurements and have not been reviewed by a person. Guidance cited: GovTech Tokyo Input Form Guidance ver 1.1 (March 2026), scoped to Tokyo Metropolitan Government forms; for other sites we say only "inconsistent with this guidance". nanori does not attempt alternate entry paths; where a page documents one, it is reported as documented but untested. Nothing was submitted.</footer>
-</main></body></html>
+</main>
+<script>
+(function(){var b=document.getElementById("copy-brief"),t=document.getElementById("brief-text");if(!b||!t)return;
+b.addEventListener("click",function(){var done=function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy repair brief";b.classList.remove("done")},2000)};
+var fail=function(){t.closest("details").open=true;t.focus();t.select();b.textContent="Select and copy the text below"};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.value).then(done,fail)}else{fail()}})})();
+</script>
+</body></html>
