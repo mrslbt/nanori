@@ -1,11 +1,12 @@
 import type { RunBundle, RunResult, Outcome } from "./types.js";
 
-export interface Tally { total: number; reached: number; workaround: number; stopped: number; undetermined: number }
+export interface Tally { total: number; reached: number; changed: number; workaround: number; stopped: number; undetermined: number }
 
 export function tally(cases: RunResult[]): Tally {
-  const t: Tally = { total: cases.length, reached: 0, workaround: 0, stopped: 0, undetermined: 0 };
+  const t: Tally = { total: cases.length, reached: 0, changed: 0, workaround: 0, stopped: 0, undetermined: 0 };
   for (const c of cases) {
     if (c.outcome === "reached_checkpoint") t.reached++;
+    else if (c.outcome === "reached_name_changed") t.changed++;
     else if (c.outcome === "reached_with_workaround") t.workaround++;
     else if (c.outcome === "stopped_before_checkpoint") t.stopped++;
     else t.undetermined++;
@@ -21,7 +22,9 @@ export function headline(b: Pick<RunBundle, "baseline" | "cases">): { head: stri
   const stoppedCases = b.cases.filter((c) => c.outcome === "stopped_before_checkpoint");
   const names = stoppedCases.map((c) => (c.identity as any).label ?? c.identity.tests);
   if (t.reached === t.total) return { head: "All tested name formats reached confirmation.", support: `Kanji-name baseline + ${t.total} other ${t.total === 1 ? "case" : "cases"} reached the confirmation screen.` };
-  if (t.stopped === 1 && t.undetermined === 0 && t.workaround === 0) return { head: `One test was rejected: ${names[0]}.`, support: `Kanji-name baseline + ${t.reached} other ${t.reached === 1 ? "case" : "cases"} reached confirmation; this one did not.` };
+  if (t.stopped === 1 && t.changed === 0 && t.undetermined === 0 && t.workaround === 0) return { head: `One test was rejected: ${names[0]}.`, support: `Kanji-name baseline + ${t.reached} other ${t.reached === 1 ? "case" : "cases"} reached confirmation; this one did not.` };
+  const changedCases = b.cases.filter((c) => c.outcome === "reached_name_changed").map((c) => (c.identity as any).label ?? c.identity.tests);
+  if (t.changed === 1 && t.stopped === 0 && t.undetermined === 0 && t.workaround === 0) return { head: `One name was shown changed on the confirmation screen: ${changedCases[0]}.`, support: `${t.reached ? `Kanji-name baseline + ${t.reached} other ${t.reached === 1 ? "case" : "cases"}` : "The kanji-name baseline"} reached confirmation with the name shown exactly; this one reached it with the name displayed differently.` };
   return { head: verdict(b), support: "" };
 }
 
@@ -36,6 +39,7 @@ export function verdict(b: Pick<RunBundle, "baseline" | "cases">): string {
   if (t.reached === t.total) return `All ${t.total} tested ${noun(t.total)} reached the review screen, as the baseline did.`;
   const parts: string[] = [];
   if (t.stopped) parts.push(`${t.stopped} of ${t.total} tested ${noun(t.total)} could not reach the review screen`);
+  if (t.changed) parts.push(`${t.changed} reached it with the name shown changed`);
   if (t.undetermined) parts.push(`${t.undetermined} ${t.undetermined === 1 ? "run was" : "runs were"} not determined`);
   if (t.workaround) parts.push(`${t.workaround} reached it only with a workaround`);
   if (t.reached) parts.push(`${t.reached} reached it`);
@@ -43,5 +47,5 @@ export function verdict(b: Pick<RunBundle, "baseline" | "cases">): string {
 }
 
 export function describe(o: Outcome): string {
-  return { reached_checkpoint: "reached the review screen", reached_with_workaround: "reached with a workaround", stopped_before_checkpoint: "stopped before the review screen", not_determined: "not determined" }[o];
+  return { reached_checkpoint: "reached the review screen", reached_name_changed: "reached the review screen, name shown changed", reached_with_workaround: "reached with a workaround", stopped_before_checkpoint: "stopped before the review screen", not_determined: "not determined" }[o];
 }

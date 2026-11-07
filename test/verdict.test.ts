@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { verdict, tally } from "../src/verdict.js";
+import { verdict, tally, headline } from "../src/verdict.js";
 import type { RunResult, Identity } from "../src/types.js";
 const id = (i: string): Identity => ({ id: i, tests: "", fullName: i, familyName: null, givenName: null, kanaFamily: null, kanaGiven: null, kanaFull: "", email: "", phone: "", postal: "", address: "", guidance: "" });
 const run = (i: string, outcome: RunResult["outcome"]): RunResult => ({ identity: id(i), outcome, stopReason: "", steps: [], startedAt: "", endedAt: "", model: "" });
@@ -24,6 +24,13 @@ describe("verdict never overstates", () => {
     expect(verdict({ baseline: run("b", "not_determined"), cases: [run("a", "reached_checkpoint")] })).toContain("inconclusive");
   });
   it("tally counts every outcome", () => {
-    expect(tally([run("a", "reached_checkpoint"), run("b", "not_determined")])).toEqual({ total: 2, reached: 1, workaround: 0, stopped: 0, undetermined: 1 });
+    expect(tally([run("a", "reached_checkpoint"), run("b", "not_determined")])).toEqual({ total: 2, reached: 1, changed: 0, workaround: 0, stopped: 0, undetermined: 1 });
+  });
+  it("a name shown changed on the review screen is its own headline, never counted as reached", () => {
+    const b = { baseline: run("b", "reached_checkpoint"), cases: [run("a", "reached_checkpoint"), run("c", "reached_name_changed")] };
+    expect(tally(b.cases)).toEqual({ total: 2, reached: 1, changed: 1, workaround: 0, stopped: 0, undetermined: 0 });
+    expect(verdict(b)).not.toMatch(/All .* reached/);
+    expect(verdict(b)).toContain("name shown changed");
+    expect(headline(b).head).toContain("shown changed");
   });
 });

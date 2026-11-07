@@ -14,7 +14,7 @@ const CLASS_LABEL: Record<Finding["classification"], string> = {
 };
 
 function tone(o: RunResult["outcome"]) {
-  return o === "reached_checkpoint" ? "ok" : o === "stopped_before_checkpoint" ? "bad" : "warn";
+  return o === "reached_checkpoint" ? "ok" : o === "stopped_before_checkpoint" || o === "reached_name_changed" ? "bad" : "warn";
 }
 
 /** Is this observation about a name field? Decided by the typed value matching one of the identity's name values, or the field label. */
@@ -65,7 +65,7 @@ export function renderHtml(b: RunBundle): string {
     const where = p
       ? `<div class="where"><span class="field">${esc(p.field)}</span> <span class="kind">${esc(p.kind)}</span>${p.detail ? `<div class="detail" ${p.source === "site" ? 'lang="ja"' : ""}>${esc(p.detail)}${p.source === "nanori" ? ' <span class="muted">(nanori measurement)</span>' : ""}</div>` : ""}</div>`
       : `<span class="muted">no measured problem</span>`;
-    const short = r.outcome === "reached_checkpoint" ? "Confirmation screen reached" : r.outcome === "stopped_before_checkpoint" ? "Stopped: test input rejected" : r.outcome === "reached_with_workaround" ? "Reached with a workaround" : "Not determined";
+    const short = r.outcome === "reached_checkpoint" ? "Confirmation screen reached" : r.outcome === "stopped_before_checkpoint" ? "Stopped: test input rejected" : r.outcome === "reached_name_changed" ? "Reached, but the name was shown changed" : r.outcome === "reached_with_workaround" ? "Reached with a workaround" : "Not determined";
     const label = (r.identity as any).label ?? identityById(r.identity.id)?.label ?? r.identity.tests;
     return `<tr class="${r.identity.id === "baseline" ? "baseline" : ""}">
       <th><div class="who">${esc(label)}</div><div class="tests">${esc(r.identity.fullName)}${r.identity.id === "baseline" ? "" : r.identity.id === "latin-own" ? " · creator's name" : " · test input"}</div></th>

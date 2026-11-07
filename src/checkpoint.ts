@@ -29,9 +29,14 @@ export const norm = (t: string) => t.normalize("NFC").replace(/[\s　]+/g, " ").
 
 export type Recognition = "recognised" | "not_recognised";
 export function recogniseCheckpoint(m: PageModel, c: CheckpointContract = defaultContract): Recognition {
+  if (m.nameInputsPresent) return "not_recognised";
   const headingOk = m.headings.some((h) => c.heading.test(h));
-  // A review screen has no editable name inputs and announces itself; a URL change alone proves nothing.
-  return headingOk && !m.nameInputsPresent ? "recognised" : "not_recognised";
+  if (headingOk) return "recognised";
+  // Some review screens announce themselves only in a paragraph ("please check your entries"), not a heading.
+  // Then the structure must prove it: the page changed, the name inputs are gone, and a labelled name row
+  // shows a non-empty value. A URL change alone, or rows without the inputs gone, proves nothing.
+  const nameRowShown = m.rows.some((r) => c.nameRowLabel.test(r.label) && norm(r.value).length > 0);
+  return m.urlChanged && nameRowShown ? "recognised" : "not_recognised";
 }
 
 export type Preservation = { status: "exact" | "differs" | "unknown"; shown: string | null; note: string };

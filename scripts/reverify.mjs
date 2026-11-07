@@ -18,7 +18,7 @@ for (const dir of process.argv.slice(2)) {
     let recomputed;
     if (recogniseCheckpoint(model) !== "recognised") recomputed = "not_determined";
     else if (!typed.length) recomputed = "not_determined";
-    else recomputed = typed.every((o) => checkNamePreserved(model, o.requested, undefined, typed.filter((x) => x !== o).map((x) => x.requested)).status === "exact") ? "reached_checkpoint" : "not_determined";
+    else { const st = typed.map((o) => checkNamePreserved(model, o.requested, undefined, typed.filter((x) => x !== o).map((x) => x.requested)).status); recomputed = st.every((s) => s === "exact") ? "reached_checkpoint" : st.includes("differs") ? "reached_name_changed" : "not_determined"; }
     const saved = r.outcome === "stopped_before_checkpoint" ? r.outcome : r.outcome; // rejections are not checkpoint claims
     const applies = r.outcome !== "stopped_before_checkpoint";
     out.push({ case: r.identity.id, saved: r.outcome, recomputed: applies ? recomputed : "n/a (stopped before checkpoint)", changed: applies && recomputed !== r.outcome, rows: last.checkpointModel.rows.filter((x) => /(名前|氏名|ふりがな|フリガナ)/.test(x.label)) });

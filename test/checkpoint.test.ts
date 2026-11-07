@@ -11,6 +11,15 @@ describe("checkpoint recognition", () => {
   it("a review heading with the inputs gone is recognised", () => {
     expect(recogniseCheckpoint(review([{ label: "お名前", value: "Marsel Bait" }]))).toBe("recognised");
   });
+  it("no review heading, but the page changed, the inputs are gone and a name row is shown: recognised", () => {
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["氏名", "フリガナ", "お問い合わせ"], bodyText: "", rows: [{ label: "氏名", value: "山田　太郎" }] })).toBe("recognised");
+  });
+  it("no review heading and the name inputs still present: not recognised even with a name row", () => {
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: true, headings: ["氏名"], bodyText: "", rows: [{ label: "氏名", value: "山田 太郎" }] })).toBe("not_recognised");
+  });
+  it("no review heading and the URL did not change: not recognised", () => {
+    expect(recogniseCheckpoint({ urlChanged: false, nameInputsPresent: false, headings: ["氏名"], bodyText: "", rows: [{ label: "氏名", value: "山田 太郎" }] })).toBe("not_recognised");
+  });
   it("a URL change alone is not enough", () => {
     expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["エラー"], bodyText: "", rows: [] })).toBe("not_recognised");
   });

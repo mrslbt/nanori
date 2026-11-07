@@ -1,0 +1,1050 @@
+{
+  "id": "imperial-hotel-1",
+  "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+  "goal": "reach the confirmation screen (入力内容の確認)",
+  "createdAt": "2026-11-07T16:26:42.773Z",
+  "target": "public",
+  "scenario": {
+    "dateRule": "the first selectable date, and if a date must be typed, 2026年11月20日",
+    "timeRule": "the first available time option",
+    "choiceRule": "the first non-empty option in every select, and the first radio in every radio group",
+    "treatment": "虫歯",
+    "symptom": "歯が痛いです。",
+    "message": "nanori による自動入力テストです。送信はしません。",
+    "optionalFields": "fill optional email and address fields with the contact data above; leave other optional fields empty",
+    "age": "35",
+    "birthDate": "1990年1月1日"
+  },
+  "baseline": {
+    "identity": {
+      "id": "baseline",
+      "tests": "kanji name with its reading",
+      "label": "Kanji name, baseline",
+      "fullName": "山田 太郎",
+      "familyName": "山田",
+      "givenName": "太郎",
+      "kanaFamily": "ヤマダ",
+      "kanaGiven": "タロウ",
+      "kanaFull": "ヤマダ タロウ",
+      "guidance": "n/a (control case)",
+      "email": "test@example.com",
+      "phone": "09012345678",
+      "postal": "1500001",
+      "address": "東京都渋谷区神宮前1-1-1"
+    },
+    "outcome": "reached_checkpoint",
+    "stopReason": "Confirmation screen reached showing 山田 太郎 and ヤマダ タロウ; safe checkpoint, not sending.",
+    "steps": [
+      {
+        "index": 1,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n1",
+          "value": "山田",
+          "reason": "family name"
+        },
+        "ok": true,
+        "screenshot": "step-01.jpg",
+        "observations": [
+          {
+            "ref": "n1",
+            "label": null,
+            "name": "NameSei",
+            "id": null,
+            "requested": "山田",
+            "retained": "山田",
+            "maxlength": 64,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-01-after.jpg"
+      },
+      {
+        "index": 2,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n2",
+          "value": "太郎",
+          "reason": "given name"
+        },
+        "ok": true,
+        "screenshot": "step-02.jpg",
+        "observations": [
+          {
+            "ref": "n2",
+            "label": null,
+            "name": "NameMei",
+            "id": null,
+            "requested": "太郎",
+            "retained": "太郎",
+            "maxlength": 64,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-02-after.jpg"
+      },
+      {
+        "index": 3,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n3",
+          "value": "ヤマダ",
+          "reason": "family kana"
+        },
+        "ok": true,
+        "screenshot": "step-03.jpg",
+        "observations": [
+          {
+            "ref": "n3",
+            "label": null,
+            "name": "NameSeiKana",
+            "id": null,
+            "requested": "ヤマダ",
+            "retained": "ヤマダ",
+            "maxlength": 64,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-03-after.jpg"
+      },
+      {
+        "index": 4,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n4",
+          "value": "タロウ",
+          "reason": "given kana"
+        },
+        "ok": true,
+        "screenshot": "step-04.jpg",
+        "observations": [
+          {
+            "ref": "n4",
+            "label": null,
+            "name": "NameMeiKana",
+            "id": null,
+            "requested": "タロウ",
+            "retained": "タロウ",
+            "maxlength": 64,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-04-after.jpg"
+      },
+      {
+        "index": 5,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n7",
+          "value": "test@example.com",
+          "reason": "email"
+        },
+        "ok": true,
+        "screenshot": "step-05.jpg",
+        "observations": [
+          {
+            "ref": "n7",
+            "label": null,
+            "name": "email",
+            "id": null,
+            "requested": "test@example.com",
+            "retained": "test@example.com",
+            "maxlength": 129,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-05-after.jpg"
+      },
+      {
+        "index": 6,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n8",
+          "value": "test@example.com",
+          "reason": "email confirm"
+        },
+        "ok": true,
+        "screenshot": "step-06.jpg",
+        "observations": [
+          {
+            "ref": "n8",
+            "label": null,
+            "name": "email:cf",
+            "id": null,
+            "requested": "test@example.com",
+            "retained": "test@example.com",
+            "maxlength": 129,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-06-after.jpg"
+      },
+      {
+        "index": 7,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n9",
+          "value": "1500001",
+          "reason": "postal code"
+        },
+        "ok": true,
+        "screenshot": "step-07.jpg",
+        "observations": [
+          {
+            "ref": "n9",
+            "label": null,
+            "name": "ZipCode",
+            "id": null,
+            "requested": "1500001",
+            "retained": "1500001",
+            "maxlength": 32,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-07-after.jpg"
+      },
+      {
+        "index": 8,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n10",
+          "value": "東京都渋谷区神宮前1-1-1",
+          "reason": "address"
+        },
+        "ok": true,
+        "screenshot": "step-08.jpg",
+        "observations": [
+          {
+            "ref": "n10",
+            "label": null,
+            "name": "RegidentialAd",
+            "id": null,
+            "requested": "東京都渋谷区神宮前1-1-1",
+            "retained": "東京都渋谷区神宮前1-1-1",
+            "maxlength": 64,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-08-after.jpg"
+      },
+      {
+        "index": 9,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n11",
+          "value": "09012345678",
+          "reason": "phone"
+        },
+        "ok": true,
+        "screenshot": "step-09.jpg",
+        "observations": [
+          {
+            "ref": "n11",
+            "label": null,
+            "name": "Phone",
+            "id": null,
+            "requested": "09012345678",
+            "retained": "09012345678",
+            "maxlength": 64,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-09-after.jpg"
+      },
+      {
+        "index": 10,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "fill",
+          "ref": "n15",
+          "value": "nanori による自動入力テストです。送信はしません。",
+          "reason": "required message"
+        },
+        "ok": true,
+        "screenshot": "step-10.jpg",
+        "observations": [
+          {
+            "ref": "n15",
+            "label": null,
+            "name": "message",
+            "id": null,
+            "requested": "nanori による自動入力テストです。送信はしません。",
+            "retained": "nanori による自動入力テストです。送信はしません。",
+            "maxlength": null,
+            "pattern": null,
+            "required": false,
+            "validationMessage": "",
+            "ariaInvalid": false,
+            "visibleErrors": []
+          }
+        ],
+        "pageErrors": [],
+        "screenshotAfter": "step-10-after.jpg"
+      },
+      {
+        "index": 11,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "click",
+          "ref": "n17",
+          "value": "",
+          "reason": "agree to privacy policy"
+        },
+        "ok": true,
+        "screenshot": "step-11.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-11-after.jpg"
+      },
+      {
+        "index": 12,
+        "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+        "title": "お問い合わせ｜帝国ホテル 東京",
+        "action": {
+          "action": "click",
+          "ref": "n18",
+          "value": "",
+          "reason": "go to confirmation"
+        },
+        "ok": true,
+        "screenshot": "step-12.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "screenshotAfter": "step-12-after.jpg"
+      },
+      {
+        "index": 13,
+        "url": "https://reg34.smp.ne.jp/regist/Reg2",
+        "title": "お問い合わせ｜帝国ホテル　東京",
+        "action": {
+          "action": "done",
+          "ref": "n1",
+          "value": "",
+          "reason": "Confirmation screen reached showing 山田 太郎 and ヤマダ タロウ; safe checkpoint, not sending."
+        },
+        "ok": true,
+        "screenshot": "step-13.jpg",
+        "observations": [],
+        "pageErrors": [],
+        "checkpointModel": {
+          "urlChanged": true,
+          "nameInputsPresent": false,
+          "headings": [
+            "氏名",
+            "フリガナ",
+            "会社名",
+            "メールアドレス",
+            "郵便番号",
+            "ご住所",
+            "電話番号",
+            "Fax",
+            "お問い合わせ",
+            "チェックイン・ご利用日",
+            "ご希望の泊数をご入力ください。",
+            "お問い合わせ内容",
+            "当社では、当社ウェブサイトでの体験を向上させ、コンテンツや広告をパーソナライズし、トラフィックを分析するためにクッキーを使用しています。当社は、お客様の当社ウェブサイトのご利用に関する情報を、当社の広告、分析パートナーと共有しており、そのパートナーは、お客様が提供した他の情報や、お客様のサービス利用から収集した他の情報と組み合わせることがあります。当社ウェブサイトのクッキー設定をカスタマイズするには、「クッキー設定」をクリックしてください。 Privacy Policy\nクッキー設定 OK",
+            "プライバシー設定センター",
+            "同意の設定を管理する",
+            "必須クッキー",
+            "パフォーマンスクッキー",
+            "機能性クッキー",
+            "ターゲティングクッキー",
+            "クッキーリスト",
+            "お問い合わせ｜帝国ホテル　東京"
+          ],
+          "rows": [
+            {
+              "label": "氏名",
+              "value": "山田　太郎"
+            },
+            {
+              "label": "フリガナ",
+              "value": "ヤマダ　タロウ"
+            },
+            {
+              "label": "会社名",
+              "value": ""
+            },
+            {
+              "label": "メールアドレス",
+              "value": "test@example.com"
+            },
+            {
+              "label": "郵便番号",
+              "value": "1500001"
+            },
+            {
+              "label": "ご住所",
+              "value": "東京都渋谷区神宮前1-1-1"
+            },
+            {
+              "label": "電話番号",
+              "value": "09012345678"
+            },
+            {
+              "label": "Fax",
+              "value": ""
+            },
+            {
+              "label": "お問い合わせ",
+              "value": "帝国ホテル東京　宿泊のご予約やご滞在の各種手配に利用に関するお問い合わせ"
+            },
+            {
+              "label": "チェックイン・ご利用日",
+              "value": ""
+            },
+            {
+              "label": "ご希望の泊数をご入力ください。",
+              "value": "泊"
+            },
+            {
+              "label": "お問い合わせ内容",
+              "value": "nanori による自動入力テストです。送信はしません。"
+            }
+          ]
+        }
+      }
+    ],
+    "startedAt": "2026-11-07T16:25:17.141Z",
+    "endedAt": "2026-11-07T16:25:54.556Z",
+    "model": "claude-sonnet-5-5"
+  },
+  "cases": [
+    {
+      "identity": {
+        "id": "diacritics",
+        "tests": "letters with accents",
+        "label": "Letters with accents",
+        "fullName": "Nguyễn Thị Hương",
+        "familyName": "Nguyễn",
+        "givenName": "Thị Hương",
+        "kanaFamily": "グエン",
+        "kanaGiven": "ティ フオン",
+        "kanaFull": "グエン ティ フオン",
+        "guidance": "p.27: multiple scripts accepted in name fields",
+        "email": "test@example.com",
+        "phone": "09012345678",
+        "postal": "1500001",
+        "address": "東京都渋谷区神宮前1-1-1"
+      },
+      "outcome": "reached_name_changed",
+      "stopReason": "Confirmation screen reached. The name shows as HTML entities (Nguy&#7877;n Th&#7883; H&#432;&#417;ng), so the diacritics are not rendered correctly. Safe checkpoint, not submitted. (name changed: review screen recognised, but a typed name value is shown changed in its review row)",
+      "steps": [
+        {
+          "index": 1,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n1",
+            "value": "Nguyễn",
+            "reason": "Family name"
+          },
+          "ok": true,
+          "screenshot": "step-01.jpg",
+          "observations": [
+            {
+              "ref": "n1",
+              "label": null,
+              "name": "NameSei",
+              "id": null,
+              "requested": "Nguyễn",
+              "retained": "Nguyễn",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-01-after.jpg"
+        },
+        {
+          "index": 2,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n2",
+            "value": "Thị Hương",
+            "reason": "Given name"
+          },
+          "ok": true,
+          "screenshot": "step-02.jpg",
+          "observations": [
+            {
+              "ref": "n2",
+              "label": null,
+              "name": "NameMei",
+              "id": null,
+              "requested": "Thị Hương",
+              "retained": "Thị Hương",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-02-after.jpg"
+        },
+        {
+          "index": 3,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n3",
+            "value": "グエン",
+            "reason": "Katakana family reading"
+          },
+          "ok": true,
+          "screenshot": "step-03.jpg",
+          "observations": [
+            {
+              "ref": "n3",
+              "label": null,
+              "name": "NameSeiKana",
+              "id": null,
+              "requested": "グエン",
+              "retained": "グエン",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-03-after.jpg"
+        },
+        {
+          "index": 4,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n4",
+            "value": "ティ フオン",
+            "reason": "Katakana given reading"
+          },
+          "ok": true,
+          "screenshot": "step-04.jpg",
+          "observations": [
+            {
+              "ref": "n4",
+              "label": null,
+              "name": "NameMeiKana",
+              "id": null,
+              "requested": "ティ フオン",
+              "retained": "ティ フオン",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-04-after.jpg"
+        },
+        {
+          "index": 5,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n7",
+            "value": "test@example.com",
+            "reason": "Email"
+          },
+          "ok": true,
+          "screenshot": "step-05.jpg",
+          "observations": [
+            {
+              "ref": "n7",
+              "label": null,
+              "name": "email",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": 129,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-05-after.jpg"
+        },
+        {
+          "index": 6,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n8",
+            "value": "test@example.com",
+            "reason": "Email confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-06.jpg",
+          "observations": [
+            {
+              "ref": "n8",
+              "label": null,
+              "name": "email:cf",
+              "id": null,
+              "requested": "test@example.com",
+              "retained": "test@example.com",
+              "maxlength": 129,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-06-after.jpg"
+        },
+        {
+          "index": 7,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n9",
+            "value": "1500001",
+            "reason": "Postal code"
+          },
+          "ok": true,
+          "screenshot": "step-07.jpg",
+          "observations": [
+            {
+              "ref": "n9",
+              "label": null,
+              "name": "ZipCode",
+              "id": null,
+              "requested": "1500001",
+              "retained": "1500001",
+              "maxlength": 32,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-07-after.jpg"
+        },
+        {
+          "index": 8,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n10",
+            "value": "東京都渋谷区神宮前1-1-1",
+            "reason": "Address"
+          },
+          "ok": true,
+          "screenshot": "step-08.jpg",
+          "observations": [
+            {
+              "ref": "n10",
+              "label": null,
+              "name": "RegidentialAd",
+              "id": null,
+              "requested": "東京都渋谷区神宮前1-1-1",
+              "retained": "東京都渋谷区神宮前1-1-1",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-08-after.jpg"
+        },
+        {
+          "index": 9,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n11",
+            "value": "09012345678",
+            "reason": "Phone"
+          },
+          "ok": true,
+          "screenshot": "step-09.jpg",
+          "observations": [
+            {
+              "ref": "n11",
+              "label": null,
+              "name": "Phone",
+              "id": null,
+              "requested": "09012345678",
+              "retained": "09012345678",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-09-after.jpg"
+        },
+        {
+          "index": 10,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n13",
+            "value": "2026年11月20日",
+            "reason": "Date"
+          },
+          "ok": true,
+          "screenshot": "step-10.jpg",
+          "observations": [
+            {
+              "ref": "n13",
+              "label": null,
+              "name": "checkin",
+              "id": null,
+              "requested": "2026年11月20日",
+              "retained": "2026年11月20日",
+              "maxlength": 32,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-10-after.jpg"
+        },
+        {
+          "index": 11,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "fill",
+            "ref": "n15",
+            "value": "nanori による自動入力テストです。送信はしません。",
+            "reason": "Message"
+          },
+          "ok": true,
+          "screenshot": "step-11.jpg",
+          "observations": [
+            {
+              "ref": "n15",
+              "label": null,
+              "name": "message",
+              "id": null,
+              "requested": "nanori による自動入力テストです。送信はしません。",
+              "retained": "nanori による自動入力テストです。送信はしません。",
+              "maxlength": null,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": []
+            }
+          ],
+          "pageErrors": [],
+          "screenshotAfter": "step-11-after.jpg"
+        },
+        {
+          "index": 12,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "click",
+            "ref": "n17",
+            "value": "",
+            "reason": "Agree to privacy policy"
+          },
+          "ok": true,
+          "screenshot": "step-12.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-12-after.jpg"
+        },
+        {
+          "index": 13,
+          "url": "https://reg34.smp.ne.jp/regist/is?SMPFORM=nhrh-tfohq-e442ee78a4c692b49d3514c224b3805f",
+          "title": "お問い合わせ｜帝国ホテル 東京",
+          "action": {
+            "action": "click",
+            "ref": "n18",
+            "value": "",
+            "reason": "Go to confirmation"
+          },
+          "ok": true,
+          "screenshot": "step-13.jpg",
+          "observations": [],
+          "pageErrors": [],
+          "screenshotAfter": "step-13-after.jpg"
+        },
+        {
+          "index": 14,
+          "url": "https://reg34.smp.ne.jp/regist/Reg2",
+          "title": "お問い合わせ｜帝国ホテル　東京",
+          "action": {
+            "action": "done",
+            "ref": "n1",
+            "value": "",
+            "reason": "Confirmation screen reached. The name shows as HTML entities (Nguy&#7877;n Th&#7883; H&#432;&#417;ng), so the diacritics are not rendered correctly. Safe checkpoint, not submitted."
+          },
+          "ok": true,
+          "screenshot": "step-14.jpg",
+          "observations": [
+            {
+              "ref": "n1@checkpoint",
+              "label": "NameSei (review row)",
+              "name": "NameSei",
+              "id": null,
+              "requested": "Nguyễn",
+              "retained": "Nguy&#7877;n　Th&#7883; H&#432;&#417;ng",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [],
+              "diagnostic": {
+                "kind": "checkpoint_escaped",
+                "note": "review row shows the name as HTML entities (double-escaped): review row \"氏名\" shows \"Nguy&#7877;n　Th&#7883; H&#432;&#417;ng\""
+              }
+            },
+            {
+              "ref": "n2@checkpoint",
+              "label": "NameMei (review row)",
+              "name": "NameMei",
+              "id": null,
+              "requested": "Thị Hương",
+              "retained": "Nguy&#7877;n　Th&#7883; H&#432;&#417;ng",
+              "maxlength": 64,
+              "pattern": null,
+              "required": false,
+              "validationMessage": "",
+              "ariaInvalid": false,
+              "visibleErrors": [],
+              "diagnostic": {
+                "kind": "checkpoint_escaped",
+                "note": "review row shows the name as HTML entities (double-escaped): review row \"氏名\" shows \"Nguy&#7877;n　Th&#7883; H&#432;&#417;ng\""
+              }
+            }
+          ],
+          "pageErrors": [],
+          "checkpointModel": {
+            "urlChanged": true,
+            "nameInputsPresent": false,
+            "headings": [
+              "氏名",
+              "フリガナ",
+              "会社名",
+              "メールアドレス",
+              "郵便番号",
+              "ご住所",
+              "電話番号",
+              "Fax",
+              "お問い合わせ",
+              "チェックイン・ご利用日",
+              "ご希望の泊数をご入力ください。",
+              "お問い合わせ内容",
+              "当社では、当社ウェブサイトでの体験を向上させ、コンテンツや広告をパーソナライズし、トラフィックを分析するためにクッキーを使用しています。当社は、お客様の当社ウェブサイトのご利用に関する情報を、当社の広告、分析パートナーと共有しており、そのパートナーは、お客様が提供した他の情報や、お客様のサービス利用から収集した他の情報と組み合わせることがあります。当社ウェブサイトのクッキー設定をカスタマイズするには、「クッキー設定」をクリックしてください。 Privacy Policy\nクッキー設定 OK",
+              "プライバシー設定センター",
+              "同意の設定を管理する",
+              "必須クッキー",
+              "パフォーマンスクッキー",
+              "機能性クッキー",
+              "ターゲティングクッキー",
+              "クッキーリスト",
+              "お問い合わせ｜帝国ホテル　東京"
+            ],
+            "rows": [
+              {
+                "label": "氏名",
+                "value": "Nguy&#7877;n　Th&#7883; H&#432;&#417;ng"
+              },
+              {
+                "label": "フリガナ",
+                "value": "グエン　ティ フオン"
+              },
+              {
+                "label": "会社名",
+                "value": ""
+              },
+              {
+                "label": "メールアドレス",
+                "value": "test@example.com"
+              },
+              {
+                "label": "郵便番号",
+                "value": "1500001"
+              },
+              {
+                "label": "ご住所",
+                "value": "東京都渋谷区神宮前1-1-1"
+              },
+              {
+                "label": "電話番号",
+                "value": "09012345678"
+              },
+              {
+                "label": "Fax",
+                "value": ""
+              },
+              {
+                "label": "お問い合わせ",
+                "value": "帝国ホテル東京　宿泊のご予約やご滞在の各種手配に利用に関するお問い合わせ"
+              },
+              {
+                "label": "チェックイン・ご利用日",
+                "value": "2026年11月20日"
+              },
+              {
+                "label": "ご希望の泊数をご入力ください。",
+                "value": "泊"
+              },
+              {
+                "label": "お問い合わせ内容",
+                "value": "nanori による自動入力テストです。送信はしません。"
+              }
+            ]
+          }
+        }
+      ],
+      "startedAt": "2026-11-07T16:25:54.594Z",
+      "endedAt": "2026-11-07T16:26:26.292Z",
+      "model": "claude-sonnet-5-5"
+    }
+  ],
+  "findings": [
+    {
+      "identity": "diacritics",
+      "stepIndex": 14,
+      "field": "NameSei (review row 氏名)",
+      "kind": "altered",
+      "requested": "Nguyễn",
+      "retained": "Nguy&#7877;n　Th&#7883; H&#432;&#417;ng",
+      "errorText": "",
+      "classification": "site_defect",
+      "guidance": "analogy",
+      "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters in name fields), by analogy only",
+      "observation": "The surname field accepted Nguyễn without error, but the confirmation screen's 氏名 row displayed it as \"Nguy&#7877;n\", showing literal HTML entity codes instead of ễ. The baseline's review row showed 山田 太郎 correctly, and the 'altered' label comes from nanori's checkpoint check rather than from any error message on the site.",
+      "relevance": "A person with a name of this shape, such as a Vietnamese name with stacked diacritics, is an intended user of a registration form. They would see their name corrupted on the screen meant for checking it before sending.",
+      "basis": "Page 27 item 3 says name fields should accept Latin letters, and this form did accept the input. The guidance does not directly address how names are displayed on a review screen, so this is cited by analogy only.",
+      "cause": "The likely cause is double escaping: non-ASCII characters appear to be converted to numeric character references and then HTML-escaped again when the review page is rendered. This is reproduced from the displayed text and not confirmed in source.",
+      "fix": "Escape name values exactly once at output: store and pass the raw UTF-8 string, drop any pre-encoding to &#NNNN; references, and keep a single HTML-escape in the confirmation template. Keep the existing maxlength=64 and any other validation unchanged so genuinely invalid input is still rejected.",
+      "screenshot": "step-14.jpg",
+      "id": "F1",
+      "reviewState": "proposed"
+    },
+    {
+      "identity": "diacritics",
+      "stepIndex": 14,
+      "field": "NameMei (review row 氏名)",
+      "kind": "altered",
+      "requested": "Thị Hương",
+      "retained": "Nguy&#7877;n　Th&#7883; H&#432;&#417;ng",
+      "errorText": "",
+      "classification": "site_defect",
+      "guidance": "analogy",
+      "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters in name fields), by analogy only",
+      "observation": "The given-name field accepted Thị Hương without error, but the confirmation screen's 氏名 row displayed it as \"Th&#7883; H&#432;&#417;ng\", showing literal HTML entity codes instead of ị, ư and ơ. The baseline's review row showed its name correctly, and the 'altered' label comes from nanori's checkpoint check rather than from any error message on the site.",
+      "relevance": "A person with a name of this shape, with a multi-part given name and diacritics, is an intended user of this form. They would be asked to confirm a garbled version of their name.",
+      "basis": "Page 27 item 3 says name fields should accept Latin letters, and the input step did accept them. The guidance does not speak directly to review-screen rendering, so this is cited by analogy only.",
+      "cause": "This looks like the same double escaping, where characters outside ASCII are entity-encoded and then escaped again on output; the plain-ASCII space and letters were unaffected. This is reproduced from the displayed text and not confirmed in source.",
+      "fix": "Remove the extra encoding step so the confirmation page renders the stored UTF-8 value with a single HTML-escape, and make sure the page and form submission both declare charset UTF-8. Keep maxlength=64 and any other validation in place.",
+      "screenshot": "step-14.jpg",
+      "id": "F2",
+      "reviewState": "proposed"
+    }
+  ],
+  "summary": "0 of 1 name cases stopped before the checkpoint; baseline reached_checkpoint.",
+  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T16:27:12.065Z"
+}
