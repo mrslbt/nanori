@@ -54,7 +54,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 
 
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name values on the confirmation screen matched the baseline's row for row in the 4 cases that reached it (measured). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. The observed non-name rows on the confirmation screen matched the baseline's row for row in the 4 cases that reached it (measured; this compares the rows the screen shows, not hidden inputs or the actions taken). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen 入力内容の確認 is showing the entered values, including the name 山田 太郎 and reading やまだ たろう. <details class="why"><summary>more</summary>Only the final send button remains, so this is a safe checkpoint. (17 actions)</details></div></td>
@@ -117,7 +117,7 @@ What happened: The single お名前 field kept the full 28-character value &quot
 Basis: Rejecting a name only because of its length is inconsistent with p.27 item 4 of the GovTech Tokyo guidance, which asks for a sufficient maximum length because foreign names need more characters. This guidance is scoped to Tokyo Metropolitan Government forms and is not a law. (GovTech Tokyo Input Form Guidance v1.1, p.27 item 4 (sufficient maximum length))
 
 Results in this run (same form, same goal, same contact details)
-Non-name values on the confirmation screen matched the baseline's row for row in the 4 cases that reached it (measured).
+The observed non-name rows on the confirmation screen matched the baseline's row for row in the 4 cases that reached it (measured; this compares the rows the screen shows, not hidden inputs or the actions taken).
 - 山田 太郎 (baseline): reached the review screen
 - Marsel Bait: reached the review screen
 - Maria Clara Santos Dela Cruz: stopped before the review screen
@@ -133,6 +133,7 @@ Proposed cause (Claude's reading of the measurements, not verified against the f
 Proposed repair: Raise the name length limit in the validation that emits 文字数が正しくありません。 to a generous bound (for example 1 to 100 characters), and keep rejecting empty or overlong input. This is a suggested change based on behaviour; it has not been verified against the site's own code.
 
 Rules for the fix
+- Inspect this project's framework and the actual source of the validation before editing. Implement the change in the existing components, schema or server rules as appropriate. Do not assume plain HTML, or that a client-side attribute is the only restriction; the cause above was inferred from browser behaviour, not from source. If the relevant source is unavailable, propose the repair rather than claiming an exact patch.
 - Change only a form you own, or a local reproduction of it. Do not touch a third-party website.
 - Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.
 - Do not change the test cases to fit the form.

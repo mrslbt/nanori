@@ -92,7 +92,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
           <dt>Proposed repair</dt><dd>Raise the length check for the name fields (client script and server) from 10 to a generous limit such as 50 characters (a demonstration choice), while still rejecting empty values and strings over that limit. Better still, offer one full-name field per p.27 item 1; verify on a local reproduction, not the live site.</dd>
         </dl>
         <div class="brief"><details><summary>The repair brief as text</summary><textarea id="brief-text" readonly rows="18" spellcheck="false">nanori repair brief
-Run: card-local-before (local reproduction, before repair), recorded 2026-11-07T17:18:47.139Z
+Run: card-local-before (local simulation, before repair), recorded 2026-11-07T17:18:47.139Z
 Form: http://localhost:4314/
 Goal given to the agent: reach the confirmation screen (入力内容の確認)
 
@@ -117,6 +117,7 @@ Proposed cause (Claude's reading of the measurements, not verified against the f
 Proposed repair: Raise the length check for the name fields (client script and server) from 10 to a generous limit such as 50 characters (a demonstration choice), while still rejecting empty values and strings over that limit. Better still, offer one full-name field per p.27 item 1; verify on a local reproduction, not the live site.
 
 Rules for the fix
+- Inspect this project's framework and the actual source of the validation before editing. Implement the change in the existing components, schema or server rules as appropriate. Do not assume plain HTML, or that a client-side attribute is the only restriction; the cause above was inferred from browser behaviour, not from source. If the relevant source is unavailable, propose the repair rather than claiming an exact patch.
 - Change only a form you own, or a local reproduction of it. Do not touch a third-party website.
 - Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.
 - Do not change the test cases to fit the form.

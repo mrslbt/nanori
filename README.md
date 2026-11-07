@@ -21,7 +21,7 @@ Developers, designers, and people building Japanese sites with AI, who want to k
 ## What happens in a run
 
 1. A kanji-name baseline fills the form and reaches the review screen.
-2. The same form is run again with name-format test cases; only the name and its reading change.
+2. The same form is run again with name-format test cases. The agent is told to keep every non-name choice the same; the report then compares the non-name rows of each confirmation screen with the baseline's and says whether they matched (measured), rather than assuming it.
 3. Measurements are code: what each field kept, what the page said, whether the review screen was reached and shows the name exactly.
 4. Claude writes the finding from those measurements and proposes a repair.
 5. You repair your own form (or a local reproduction), and the same cases rerun.
@@ -82,7 +82,7 @@ Financial services publish name-entry limits too. PayPay Card's help tells appli
 
 Reports: [card-local-before](https://mrslbt.github.io/nanori/runs/card-local-before/report.html) and [card-local-after](https://mrslbt.github.io/nanori/runs/card-local-after/report.html). What they show is that nanori measures the simulated limit on the given-name field for "Maria Clara Santos Dela Cruz" (given name 18 characters), and that the same name reaches confirmation intact on the repaired copy. They do not show anything about a real provider.
 
-To reproduce (two more terminals for the two fixture states):
+To reproduce (two more terminals for the two fixture states; the run ids below are new on purpose, nanori refuses to write into an existing run folder, so the bundled evidence stays as recorded):
 
 ```bash
 NANORI_FIXTURE_DIR=fixtures/card-apply NANORI_FIXTURE_PORT=4314 node dist/fixture-server.js
@@ -93,11 +93,11 @@ NANORI_FIXTURE_DIR=fixtures/card-apply-repaired NANORI_FIXTURE_PORT=4315 node di
 ```
 
 ```bash
-node dist/cli.js run http://localhost:4314/ "reach the confirmation screen" --cases long-name-spaces --local --run-id card-local-before --simulation "Local finance simulation inspired by published name-entry limits. Not a test of PayPay or a bank. No application is submitted."
+node dist/cli.js run http://localhost:4314/ "reach the confirmation screen" --cases long-name-spaces --local --run-id card-example-before --simulation "Local finance simulation inspired by published name-entry limits. Not a test of PayPay or a bank. No application is submitted."
 ```
 
 ```bash
-node dist/cli.js run http://localhost:4315/ "reach the confirmation screen" --cases long-name-spaces --local --repaired --before card-local-before --run-id card-local-after --simulation "Local finance simulation inspired by published name-entry limits. Not a test of PayPay or a bank. No application is submitted."
+node dist/cli.js run http://localhost:4315/ "reach the confirmation screen" --cases long-name-spaces --local --repaired --before card-example-before --run-id card-example-after --simulation "Local finance simulation inspired by published name-entry limits. Not a test of PayPay or a bank. No application is submitted."
 ```
 
 ## Running on other forms
@@ -122,12 +122,12 @@ node dist/cli.js cases
 ## How Claude works, and what is code
 
 1. Baseline: a Japanese name (kanji with its reading), Tokyo address, Japanese mobile, plain email. Claude (Sonnet) reads each page as an accessibility snapshot plus a screenshot, returns one action at a time through a strict `act` tool, and stops at the goal screen. It is built to stop at the review screen; known final actions are blocked in code (see Before you run it), and uncertain flows stop for review.
-2. Name cases: same form, same contact details, same fixed non-name choices. Only the name and its reading change. Reading fields get the script they ask for (hiragana for ふりがな, katakana for フリガナ); nanori never substitutes the other script to get past an error.
+2. Name cases: same form, same contact details, the same fixed non-name choices as instructions to the agent; whether they were in fact the same is measured afterwards on the confirmation screen and stated on the report. Reading fields get the script they ask for (hiragana for ふりがな, katakana for フリガナ); nanori never substitutes the other script to get past an error.
 3. Measurement is code (`src/checks`, unit-tested): after every fill, the field's retained value, native validation message, aria-invalid and visible error text; after a failed confirm click, every invalid field re-read by name/id; at the goal screen, whether each typed value is shown in full, cut, HTML-escaped, or missing. Errors already on screen before a fill are treated as stale.
 4. Diagnosis: Claude (Opus) writes each finding from those measured facts only, with the Tokyo guidance text loaded from the `jp-form-checks` Skill, as structured output. Four classes: site defect supported by evidence, agent limitation, no observed issue, inconclusive. Every finding is marked "proposed, not yet reviewed".
 5. Report: `report.html` (verdict, comparison, selected finding with paired screenshots, before/after when it is a rerun, collapsed action log) and `report.json`.
 
-Run outcomes are: reached the review screen (verified: typed values shown on it), stopped before it (a measured rejection), not determined (step budget, no progress, or a safe stop that could not be verified). "Reached with a workaround" exists as a label but nanori does not attempt alternate entry paths yet; where a page documents one, the finding says so.
+Run outcomes are: reached the review screen (verified: typed values shown on it), reached it with the name shown changed (the screen was recognised but a typed name is displayed differently in its row), stopped before it (a measured rejection), not determined (step budget, no progress, or a safe stop that could not be verified). "Reached with a workaround" exists as a label but nanori does not attempt alternate entry paths yet; where a page documents one, the finding says so.
 
 ## What nanori will not claim
 

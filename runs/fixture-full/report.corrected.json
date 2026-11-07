@@ -1310,5 +1310,5 @@
     }
   ],
   "summary": "4 of 5 name cases stopped before the checkpoint; baseline reached_checkpoint.",
-  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T17:20:46.653Z"
+  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T17:40:48.804Z"
 }

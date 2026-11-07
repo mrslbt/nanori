@@ -620,5 +620,5 @@
   ],
   "findings": [],
   "summary": "0 of 1 name cases stopped before the checkpoint; baseline reached_checkpoint.",
-  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T17:22:23.473Z"
+  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T17:40:48.802Z"
 }

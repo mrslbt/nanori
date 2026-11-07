@@ -53,13 +53,13 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 
 
     <h2>Repair verification</h2>
-    <table class="ba"><thead><tr><th>Name format</th><th>Before (card-local-before, local reproduction, before repair)</th><th>After (this run, local reproduction, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
+    <table class="ba"><thead><tr><th>Name format</th><th>Before (card-local-before, local simulation, before repair)</th><th>After (this run, local simulation, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
     <tr><th>山田 太郎</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Maria Clara Santos Dela Cruz</th><td class="bad">stopped before the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr>
     </tbody></table>
     <p class="muted">Both columns are the same local simulation, before and after the repair. There is no real site behind it. Passing results prove these cases on the simulation only. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>
 <details class="cmp"><summary>Comparison table for this run (all cases)</summary>
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name values on the confirmation screen matched the baseline's row for row in every case (measured). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. The observed non-name rows on the confirmation screen matched the baseline's row for row in every case (measured; this compares the rows the screen shows, not hidden inputs or the actions taken). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen shows the entered values; only 申し込む remains, so this is a safe checkpoint. <span class="muted">(9 actions)</span></div></td>

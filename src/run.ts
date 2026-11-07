@@ -1,4 +1,4 @@
-import { launchChrome } from "./preflight.js";
+import { launchChrome, SetupError } from "./preflight.js";
 import { mergeFindings } from "./findings.js";
 import fs from "node:fs";
 import path from "node:path";
@@ -29,6 +29,7 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
   const runsDir = opts.runsDir ?? path.resolve("runs");
   const id = opts.runId ?? new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const dir = path.join(runsDir, id);
+  if (fs.existsSync(dir)) throw new SetupError(`runs/${id} already exists. Choose another --run-id, or move that folder away first; nanori never overwrites recorded evidence.`);
   fs.mkdirSync(dir, { recursive: true });
   const selected: Identity[] = opts.cases?.length ? battery.filter((b) => opts.cases!.includes(b.id)) : battery;
 

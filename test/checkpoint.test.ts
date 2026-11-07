@@ -17,6 +17,16 @@ describe("checkpoint recognition", () => {
   it("a shipping-method step with a read-only name summary and no review instruction: not recognised", () => {
     expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["配送方法の選択"], bodyText: "配送方法を選択してください", rows: [{ label: "氏名", value: "山田 太郎" }], cues: [] })).toBe("not_recognised");
   });
+  it("a hidden review heading does not count: the browser never puts it in the model, and a generic instruction is not enough", () => {
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["配送方法の選択"], bodyText: "", rows: [{ label: "氏名", value: "山田 太郎" }], cues: ["配送先をご確認ください"] })).toBe("not_recognised");
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["在庫確認"], bodyText: "", rows: [{ label: "氏名", value: "山田 太郎" }], cues: [] })).toBe("not_recognised");
+  });
+  it("the demonstrated review screens still recognise: dental heading, clinic heading, finance paragraph", () => {
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["入力内容の確認"], bodyText: "", rows: [{ label: "お名前", value: "x" }] })).toBe("recognised");
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["3. 入力内容の確認"], bodyText: "", rows: [{ label: "お名前", value: "x" }] })).toBe("recognised");
+    expect(recogniseCheckpoint({ urlChanged: false, nameInputsPresent: false, headings: ["クレジットカード お申込み"], bodyText: "", rows: [{ label: "お名前（漢字）", value: "x" }], cues: ["入力内容をご確認の上、よろしければ「申し込む」ボタンを押してください。"] })).toBe("not_recognised");
+    expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["クレジットカード お申込み"], bodyText: "", rows: [{ label: "お名前（漢字）", value: "x" }], cues: ["入力内容をご確認の上、よろしければ「申し込む」ボタンを押してください。"] })).toBe("recognised");
+  });
   it("a stray 確認 word is not a review instruction", () => {
     expect(recogniseCheckpoint({ urlChanged: true, nameInputsPresent: false, headings: ["配送方法の選択"], bodyText: "", rows: [{ label: "氏名", value: "山田 太郎" }], cues: ["在庫を確認中です"] })).toBe("not_recognised");
   });

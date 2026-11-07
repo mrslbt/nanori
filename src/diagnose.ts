@@ -69,7 +69,7 @@ Rules for classification:
 - nanori does not attempt alternate entry paths. If the page documents one, say it is documented but untested.
 - no_issue: nothing happened.
 Guidance relation: "applicable" only when the guidance text you quote directly covers the behaviour; "analogy" when it is close but scoped differently; "none" otherwise. Say "inconsistent with the guidance", never "violates" or "required by law".
-Keep the original Japanese error text verbatim in errorText. Write observation, relevance, basis, cause and fix in plain English, two sentences max each. The fix is a concrete code change (pattern, maxlength, optional field), and must keep genuinely invalid input rejected.
+Keep the original Japanese error text verbatim in errorText. Write observation, relevance, basis, cause and fix in plain English, two sentences max each. The fix is a proposed change described from the observed browser behaviour (for example: raise the length limit that produces this error; stop requiring a separate given name; accept this script), not a patch: you have not seen the application's source, so do not assume plain HTML, a client-side attribute, or any framework, and say that the real validation may live in components, a schema, or server rules. It must keep genuinely invalid input rejected.
 
 Return JSON only: an array of findings with keys: identity, stepIndex, field, kind, requested, retained, errorText, classification, guidance, guidanceRef, observation, relevance, basis, cause, fix, screenshot.`;
 

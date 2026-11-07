@@ -1,0 +1,36 @@
+{
+  "reverifiedAt": "2026-11-07T17:40:29.325Z",
+  "logic": "src/checkpoint.ts at HEAD",
+  "results": [
+    {
+      "case": "baseline",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "必須お名前（漢字）",
+          "value": "姓・名 各10文字以内"
+        },
+        {
+          "label": "必須お名前（フリガナ）",
+          "value": "全角カタカナ、セイ・メイ 各15文字以内"
+        },
+        {
+          "label": "お名前（漢字）",
+          "value": "山田　太郎"
+        },
+        {
+          "label": "お名前（フリガナ）",
+          "value": "ヤマダ　タロウ"
+        }
+      ]
+    },
+    {
+      "case": "long-name-spaces",
+      "saved": "stopped_before_checkpoint",
+      "recomputed": "n/a (no model saved)",
+      "changed": false
+    }
+  ]
+}

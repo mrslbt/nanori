@@ -1,0 +1,38 @@
+{
+  "reverifiedAt": "2026-11-07T17:40:29.326Z",
+  "logic": "src/checkpoint.ts at HEAD",
+  "results": [
+    {
+      "case": "baseline",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "お名前（漢字）",
+          "value": "山田　太郎"
+        },
+        {
+          "label": "お名前（フリガナ）",
+          "value": "ヤマダ　タロウ"
+        }
+      ]
+    },
+    {
+      "case": "long-name-spaces",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "お名前（漢字）",
+          "value": "Dela Cruz　Maria Clara Santos"
+        },
+        {
+          "label": "お名前（フリガナ）",
+          "value": "デラ クルス　マリア クララ サントス"
+        }
+      ]
+    }
+  ]
+}

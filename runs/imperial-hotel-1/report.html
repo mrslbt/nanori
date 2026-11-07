@@ -54,7 +54,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 
 
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name inputs differed from the baseline on the confirmation screen in 1 case (measured): Nguyễn Thị Hương: チェックイン・ご利用日 was &quot;(empty)&quot; in the baseline and &quot;2026年11月20日&quot; here. That pair is not a fully controlled comparison. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Identical non-name inputs could not be established for 1 case (measured on the confirmation screen): Nguyễn Thị Hương: チェックイン・ご利用日 was &quot;(empty)&quot; in the baseline and &quot;2026年11月20日&quot; here. That pair is not a fully controlled comparison. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen reached showing 山田 太郎 and ヤマダ タロウ; safe checkpoint, not sending. <span class="muted">(13 actions)</span></div></td>
@@ -106,7 +106,7 @@ What happened: The surname field accepted Nguyễn without error, but the confir
 Basis: Page 27 item 3 says name fields should accept Latin letters, and this form did accept the input. The guidance does not directly address how names are displayed on a review screen, so this is cited by analogy only. (GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters in name fields), by analogy only)
 
 Results in this run (same form, same goal, same contact details)
-Non-name inputs differed from the baseline on the confirmation screen in 1 case (measured): Nguyễn Thị Hương: チェックイン・ご利用日 was &quot;(empty)&quot; in the baseline and &quot;2026年11月20日&quot; here. That pair is not a fully controlled comparison.
+Identical non-name inputs could not be established for 1 case (measured on the confirmation screen): Nguyễn Thị Hương: チェックイン・ご利用日 was &quot;(empty)&quot; in the baseline and &quot;2026年11月20日&quot; here. That pair is not a fully controlled comparison.
 - 山田 太郎 (baseline): reached the review screen
 - Nguyễn Thị Hương: reached the review screen, name shown changed
 
@@ -118,6 +118,7 @@ Proposed cause (Claude's reading of the measurements, not verified against the f
 Proposed repair: Escape name values exactly once at output: store and pass the raw UTF-8 string, drop any pre-encoding to &amp;#NNNN; references, and keep a single HTML-escape in the confirmation template. Keep the existing maxlength=64 and any other validation unchanged so genuinely invalid input is still rejected.
 
 Rules for the fix
+- Inspect this project's framework and the actual source of the validation before editing. Implement the change in the existing components, schema or server rules as appropriate. Do not assume plain HTML, or that a client-side attribute is the only restriction; the cause above was inferred from browser behaviour, not from source. If the relevant source is unavailable, propose the repair rather than claiming an exact patch.
 - Change only a form you own, or a local reproduction of it. Do not touch a third-party website.
 - Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.
 - Do not change the test cases to fit the form.

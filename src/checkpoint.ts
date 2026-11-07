@@ -27,9 +27,10 @@ export interface CheckpointContract {
 }
 /** Default contract for Japanese forms: a review heading and a name row. Site adapters can narrow it. */
 export const defaultContract: CheckpointContract = {
-  heading: /(入力内容の確認|入力内容をご確認|確認画面|ご確認ください|内容確認|確認)/,
+  // A bare 確認 ("在庫確認") or a generic ご確認ください ("配送先をご確認ください") is not a review of the entered form.
+  heading: /((入力|登録|申込|申し込み|予約|ご予約)?内容の?ご?確認|入力内容をご確認|確認画面|内容確認|confirmation|review your)/i,
   nameRowLabel: /(お名前|氏名|名前|姓名|フリガナ|ふりがな|カナ|かな|セイ|メイ|name|kana|furigana)/i,
-  cue: /((入力|登録|申込|申し込み)?内容を?ご?確認|確認の上|ご確認ください|確認してください|よろしければ|please (review|check|confirm)|review your)/i,
+  cue: /((入力|登録|申込|申し込み|予約|ご予約|以下|下記)の?内容を?ご?確認|内容に(お)?間違い|よろしければ[^。]*(送信|申し?込|登録|確定|予約)|please (review|check) your|review your (entries|information|details|application))/i,
   kanaRowLabel: /(フリガナ|ふりがな|カナ|かな|セイ|メイ|kana|furigana|reading)/i,
 };
 export const isKanaValue = (v: string) => /^[ァ-ヶぁ-ん゛゜ー\s\u3000]+$/.test(v);

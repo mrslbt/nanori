@@ -4,6 +4,7 @@ import { identityById } from "../battery.js";
 import { verdict, describe, headline, tally } from "../verdict.js";
 import { checkField } from "../checks/index.js";
 import { mergeFindings } from "../findings.js";
+import { nonNameRows, compareRows } from "../compare.js";
 
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 
@@ -58,11 +59,13 @@ export function renderHtml(input: RunBundle): string {
   const hl = headline(b);
   const t = tally(b.cases);
   const vtone = b.baseline.outcome !== "reached_checkpoint" ? "warn" : t.stopped || t.changed ? "bad" : t.reached === t.total ? "ok" : "warn";
+  const allReached = b.baseline.outcome === "reached_checkpoint" && b.cases.length > 0 && b.cases.every((c) => c.outcome === "reached_checkpoint");
   const scope = b.target === "local_reproduction"
     ? (b.simulation
-      ? (b.repairState === "after" ? "Local simulation, repaired. Not a test of any real provider." : "Local simulation, before repair. Not a test of any real provider.")
-      : (b.repairState === "after" ? "Repair verified on a local reproduction. Original website unchanged." : "Local reproduction, before repair. Original website unchanged."))
+      ? (b.repairState === "after" ? (allReached ? "Local simulation, repaired. Not a test of any real provider." : "Local simulation, repaired copy; the repair is not verified by this run. Not a test of any real provider.") : "Local simulation, before repair. Not a test of any real provider.")
+      : (b.repairState === "after" ? (allReached ? "Repair verified on a local reproduction. Original website unchanged." : "Local reproduction, repaired copy; the repair is not verified by this run. Original website unchanged.") : "Local reproduction, before repair. Original website unchanged."))
     : "Public page. Nothing was submitted.";
+  const copyKind = b.simulation ? "local simulation" : "local reproduction";
 
   // Comparison rows: one per name, task-stage summary instead of raw action columns.
   const rows = all.map((r) => {
@@ -84,15 +87,13 @@ export function renderHtml(input: RunBundle): string {
 
   // Were the non-name inputs really the same? Compare the non-name rows of each case's confirmation screen with the
   // baseline's. A shared scenario prompt is an instruction, not proof; this is the measurement.
-  const nonName = (r: RunResult) => { const m = r.steps[r.steps.length - 1]?.checkpointModel; if (!m) return null; const out = new Map<string, string>(); for (const row of m.rows) if (!defaultContract.nameRowLabel.test(row.label)) out.set(norm(row.label), norm(row.value)); return out; };
-  const baseRows = nonName(b.baseline);
-  const inputDiffs = b.cases.map((r) => { const rows = nonName(r); if (!baseRows || !rows) return { r, diffs: null as null | Array<{ label: string; base: string; got: string }> }; const diffs: Array<{ label: string; base: string; got: string }> = []; for (const [label, base] of baseRows) { const got = rows.get(label); if (got !== undefined && got !== base) diffs.push({ label, base, got }); } return { r, diffs }; });
-  const compared = inputDiffs.filter((d) => d.diffs !== null);
-  const differing = compared.filter((d) => d.diffs!.length);
-  const inputsNote = !baseRows ? "Non-name inputs could not be compared: the baseline's confirmation screen was not recorded."
+  const baseRows = nonNameRows(b.baseline);
+  const compared = b.cases.map((r) => ({ r, rows: nonNameRows(r) })).filter((x) => x.rows !== null).map((x) => ({ r: x.r, c: compareRows(baseRows ?? [], x.rows!) }));
+  const unmatched = compared.filter((x) => x.c.status !== "match");
+  const inputsNote = !baseRows ? "Non-name inputs could not be compared: the baseline's confirmation screen was not recognised or not recorded."
     : !compared.length ? "Non-name inputs could not be compared on the confirmation screen for any case; cases that stop before it leave no rows to compare."
-    : differing.length ? `Non-name inputs differed from the baseline on the confirmation screen in ${differing.length} ${differing.length === 1 ? "case" : "cases"} (measured): ${differing.map((d) => `${d.r.identity.fullName}: ${d.diffs!.map((x) => `${x.label} was "${x.base || "(empty)"}" in the baseline and "${x.got || "(empty)"}" here`).join("; ")}`).join(". ")}. That pair is not a fully controlled comparison.`
-    : `Non-name values on the confirmation screen matched the baseline's row for row in ${compared.length === b.cases.length ? "every case" : `the ${compared.length} ${compared.length === 1 ? "case" : "cases"} that reached it`} (measured).`;
+    : unmatched.length ? `Identical non-name inputs could not be established for ${unmatched.length} ${unmatched.length === 1 ? "case" : "cases"} (measured on the confirmation screen): ${unmatched.map((x) => `${x.r.identity.fullName}: ${x.c.note}`).join(". ")}. ${unmatched.some((x) => x.c.status === "values_differ") ? "That pair is not a fully controlled comparison." : ""}`.trim()
+    : `The observed non-name rows on the confirmation screen matched the baseline's row for row in ${compared.length === b.cases.length ? "every case" : `the ${compared.length} ${compared.length === 1 ? "case" : "cases"} that reached it`} (measured; this compares the rows the screen shows, not hidden inputs or the actions taken).`;
 
   // Selected finding: the first supported site defect, else the first finding.
   const selected = b.findings.find((f) => f.classification === "site_defect") ?? b.findings[0];
@@ -108,7 +109,7 @@ export function renderHtml(input: RunBundle): string {
   // Repair brief: a self-contained block the developer can paste into Claude Code or an issue.
   const brief = selected ? [
     `nanori repair brief`,
-    `Run: ${b.id} (${b.target === "local_reproduction" ? "local reproduction" + (b.repairState ? ", " + b.repairState + " repair" : "") : "public page, nothing submitted"}), recorded ${b.createdAt}`,
+    `Run: ${b.id} (${b.target === "local_reproduction" ? copyKind + (b.repairState ? ", " + b.repairState + " repair" : "") : "public page, nothing submitted"}), recorded ${b.createdAt}`,
     `Form: ${b.url}`,
     `Goal given to the agent: ${b.goal}`,
     ``,
@@ -132,6 +133,7 @@ export function renderHtml(input: RunBundle): string {
     `Proposed repair: ${selected.fix}`,
     ``,
     `Rules for the fix`,
+    `- Inspect this project's framework and the actual source of the validation before editing. Implement the change in the existing components, schema or server rules as appropriate. Do not assume plain HTML, or that a client-side attribute is the only restriction; the cause above was inferred from browser behaviour, not from source. If the relevant source is unavailable, propose the repair rather than claiming an exact patch.`,
     `- Change only a form you own, or a local reproduction of it. Do not touch a third-party website.`,
     `- Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.`,
     `- Do not change the test cases to fit the form.`,
@@ -180,7 +182,7 @@ export function renderHtml(input: RunBundle): string {
   // Before / after when this run is a repair rerun.
   const beforeAfter = b.before ? `
     <h2>Repair verification</h2>
-    <table class="ba"><thead><tr><th>Name format</th><th>Before (${esc(b.before.id)}, ${esc(b.before.target === "public" ? "public page" : "local reproduction, before repair")})</th><th>After (this run, local reproduction, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
+    <table class="ba"><thead><tr><th>Name format</th><th>Before (${esc(b.before.id)}, ${esc(b.before.target === "public" ? "public page" : `${copyKind}, before repair`)})</th><th>After (this run, ${esc(copyKind)}, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
     ${all.map((r) => { const bo = b.before!.outcomes[r.identity.id]; const intact = !r.steps.flatMap((s) => s.observations).some((o) => o.diagnostic && !/not a name finding/.test(o.diagnostic.note)); return `<tr><th>${esc(r.identity.fullName)}</th><td class="${tone(bo ?? "not_determined")}">${esc(bo ? describe(bo) : "not run")}</td><td class="${tone(r.outcome)}">${esc(describe(r.outcome))}</td><td>${r.outcome === "reached_checkpoint" ? (intact ? "yes" : "see diagnostics") : "n/a"}</td></tr>`; }).join("")}
     </tbody></table>
     <p class="muted">${b.before.target === "public" ? `"Before" is the saved public run; "after" is this run on the repaired local copy.` : b.simulation ? `Both columns are the same local simulation, before and after the repair. There is no real site behind it.` : `Both columns are the same local reproduction, before and after the repair${b.publicRun ? "; the public finding is linked separately" : ""}.`} ${b.simulation ? "Passing results prove these cases on the simulation only." : "Passing results prove these cases on the reproduction, not the live site."} "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>` : "";
@@ -254,7 +256,7 @@ ${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ..
 ${b.before ? `</details>` : ""}
 
 <h2>Evidence</h2>
-${b.findings.length ? selectedHtml : `<p class="passed">${esc(b.before ? `Every case reached the confirmation screen on the repaired ${b.simulation ? "simulation" : "reproduction"}, with each name shown exactly in its review row. No name finding; no error text was recorded.` : "No findings.")}</p>`}
+${b.findings.length ? selectedHtml : `${b.before && allReached ? `<p class="passed">${esc(`Every case reached the confirmation screen on the repaired ${b.simulation ? "simulation" : "reproduction"}, with each name shown exactly in its review row. No name finding; no error text was recorded.`)}</p>` : `<p class="muted">No diagnosis was produced for this run${allReached ? "" : ", and not every case reached the confirmation screen"}. The recorded outcomes above are the result; see the run details for what happened.</p>`}`}
 ${others ? `<h3 class="muted">Other findings</h3>${others}` : ""}
 ${b.publicRun ? `<p class="muted">The public finding this repair answers: <a href="../${esc(b.publicRun)}/report.html">${esc(b.publicRun)}/report.html</a>.</p>` : ""}
 ${b.probe ? `<p class="muted">Separate boundary probe (same page, fixed inputs, only the name length varied): ${esc(b.probe.summary)} <a href="${esc(b.probe.href)}" target="_blank">probe evidence</a>. The model-written cause above was captured before this probe and is left as recorded.</p>` : ""}

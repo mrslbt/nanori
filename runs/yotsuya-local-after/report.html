@@ -59,7 +59,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
     <p class="muted">Both columns are the same local reproduction, before and after the repair; the public finding is linked separately. Passing results prove these cases on the reproduction, not the live site. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>
 <details class="cmp"><summary>Comparison table for this run (all cases)</summary>
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name values on the confirmation screen matched the baseline's row for row in every case (measured). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. The observed non-name rows on the confirmation screen matched the baseline's row for row in every case (measured; this compares the rows the screen shows, not hidden inputs or the actions taken). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen shown with the name 山田 太郎 accepted; safe checkpoint reached. <span class="muted">(11 actions)</span></div></td>
@@ -85,7 +85,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 </details>
 
 <h2>Evidence</h2>
-<p class="passed">Every case reached the confirmation screen on the repaired reproduction, with each name shown exactly in its review row. No name finding; no site error text was recorded.</p>
+<p class="passed">Every case reached the confirmation screen on the repaired reproduction, with each name shown exactly in its review row. No name finding; no error text was recorded.</p>
 
 <p class="muted">The public finding this repair answers: <a href="../yotsuya-dental-3/report.html">yotsuya-dental-3/report.html</a>.</p>
 

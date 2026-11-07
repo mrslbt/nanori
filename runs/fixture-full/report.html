@@ -54,7 +54,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 
 
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows. Non-name inputs could not be compared: the baseline's confirmation screen was not recorded. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows. Non-name inputs could not be compared: the baseline's confirmation screen was not recognised or not recorded. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Safe checkpoint reached: review screen shows the entered values correctly. <span class="muted">(11 actions)</span></div></td>
@@ -117,7 +117,7 @@ What happened: The 名 field silently kept only the first 10 of 18 characters, c
 Basis: This is inconsistent with p.27 item 3 of the GovTech Tokyo guidance, which says to set a sufficient maximum length because foreign names need more characters. The guidance covers Tokyo Metropolitan Government forms, so for this site it is a reference, not a requirement. (GovTech Tokyo Input Form Guidance v1.1, p.27 Name, item 3 (sufficient maximum length); item 1 (middle and compound names))
 
 Results in this run (same form, same goal, same contact details)
-Non-name inputs could not be compared: the baseline's confirmation screen was not recorded.
+Non-name inputs could not be compared: the baseline's confirmation screen was not recognised or not recorded.
 - 山田 太郎 (baseline): reached the review screen
 - Marsel Bait: reached the review screen
 - Maria Clara Santos Dela Cruz: stopped before the review screen
@@ -133,6 +133,7 @@ Proposed cause (Claude's reading of the measurements, not verified against the f
 Proposed repair: Raise the limit, for example maxlength=&quot;50&quot; on the 名 input, and apply the same limit in server-side validation. Keep the field required so that empty input is still rejected.
 
 Rules for the fix
+- Inspect this project's framework and the actual source of the validation before editing. Implement the change in the existing components, schema or server rules as appropriate. Do not assume plain HTML, or that a client-side attribute is the only restriction; the cause above was inferred from browser behaviour, not from source. If the relevant source is unavailable, propose the repair rather than claiming an exact patch.
 - Change only a form you own, or a local reproduction of it. Do not touch a third-party website.
 - Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.
 - Do not change the test cases to fit the form.

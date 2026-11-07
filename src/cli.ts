@@ -8,6 +8,7 @@ import { runAll } from "./run.js";
 import { battery } from "./battery.js";
 import { scan } from "./scan.js";
 import { preflight, exitOnSetupError, SetupError } from "./preflight.js";
+import { rerunOptions } from "./rerun.js";
 
 const program = new Command();
 program.name("nanori").description("Test a Japanese web form with name-format test cases that conventional test data can miss.").version("0.1.0");
@@ -25,7 +26,7 @@ program.command("run")
   .option("--simulation <text>", "with --local: this copy is a simulation built from published rules, not an observed site; the text is printed on the report")
   .action(async (url, goal, o) => {
     await preflight({ url, needsKey: true }).catch(exitOnSetupError);
-    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, comparedTo: o.repaired ? o.before : undefined, runId: o.runId, simulation: o.simulation });
+    const { dir } = await runAll({ url, goal, cases: o.cases, headless: o.headless, maxSteps: o.maxSteps, target: o.local ? "local_reproduction" : "public", repairState: o.local ? (o.repaired ? "after" : "before") : undefined, comparedTo: o.repaired ? o.before : undefined, runId: o.runId, simulation: o.simulation }).catch(exitOnSetupError);
     console.log(`\nopen ${path.join(dir, "report.html")}`);
   });
 
@@ -39,8 +40,7 @@ program.command("rerun")
     if (!fs.existsSync(file)) exitOnSetupError(new SetupError(`No saved run at ${file}. Run ids are the folder names under runs/.`));
     await preflight({ url: o.target, needsKey: true }).catch(exitOnSetupError);
     const prev = JSON.parse(fs.readFileSync(file, "utf8"));
-    const cases = prev.cases.map((c: any) => c.identity.id);
-    const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", repairState: "after", comparedTo: o.before ?? runId, runId: `${runId}-rerun-${Date.now().toString(36)}` });
+    const { dir } = await runAll(rerunOptions(prev, o, `${runId}-rerun-${Date.now().toString(36)}`)).catch(exitOnSetupError);
     console.log(`\nBefore: runs/${o.before ?? runId}/report.html\nAfter:  ${path.join(dir, "report.html")}`);
   });
 

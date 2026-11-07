@@ -54,7 +54,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 
 
 <h2>Comparison</h2>
-<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name values on the confirmation screen matched the baseline's row for row in every case (measured). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
+<p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. The observed non-name rows on the confirmation screen matched the baseline's row for row in every case (measured; this compares the rows the screen shows, not hidden inputs or the actions taken). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody><tr class="baseline">
       <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
       <td class="outcome"><span class="ok">Confirmation screen reached</span><div class="note">Confirmation screen reached showing 山田 太郎 and ヤマダ タロウ; safe checkpoint, not submitting. <span class="muted">(13 actions)</span></div></td>
@@ -106,7 +106,7 @@ What happened: The confirmation screen's 氏名 row displayed the surname as &qu
 Basis: Page 27 item 3 asks name fields to accept Latin letters; it does not explicitly address diacritics or how a name is displayed, so the corrupted display is only inconsistent with this guidance by analogy. The guidance is for Tokyo Metropolitan Government forms and is not law. (GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters), by analogy)
 
 Results in this run (same form, same goal, same contact details)
-Non-name values on the confirmation screen matched the baseline's row for row in every case (measured).
+The observed non-name rows on the confirmation screen matched the baseline's row for row in every case (measured; this compares the rows the screen shows, not hidden inputs or the actions taken).
 - 山田 太郎 (baseline): reached the review screen
 - Nguyễn Thị Hương: reached the review screen, name shown changed
 
@@ -118,6 +118,7 @@ Proposed cause (Claude's reading of the measurements, not verified against the f
 Proposed repair: Serve and submit the form as UTF-8 (meta charset and accept-charset=&quot;UTF-8&quot;), and HTML-escape the name exactly once when rendering the confirmation row. Keep the existing maxlength=64 and any server-side validation unchanged so invalid input is still rejected.
 
 Rules for the fix
+- Inspect this project's framework and the actual source of the validation before editing. Implement the change in the existing components, schema or server rules as appropriate. Do not assume plain HTML, or that a client-side attribute is the only restriction; the cause above was inferred from browser behaviour, not from source. If the relevant source is unavailable, propose the repair rather than claiming an exact patch.
 - Change only a form you own, or a local reproduction of it. Do not touch a third-party website.
 - Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.
 - Do not change the test cases to fit the form.
