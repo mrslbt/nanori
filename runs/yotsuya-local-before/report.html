@@ -10,7 +10,7 @@ h1{font-size:28px;margin:0 0 4px}h2{font-size:20px;margin:40px 0 12px}
 .scope{display:inline-block;background:var(--warnbg);color:var(--warn);padding:6px 12px;border-radius:6px;font-size:14px;font-weight:600}
 table{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--line)}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}thead th{font-size:13px;color:var(--muted);font-weight:500}
 tr.baseline th{border-left:4px solid var(--ink)}.who{font-weight:600}.tests{font-size:13px;color:var(--muted)}
-td.outcome{font-weight:600;white-space:nowrap}td.ok,.ok{color:var(--ok)}td.bad,.bad{color:var(--bad)}td.warn,.warn{color:var(--warn)}.why{font-weight:400;font-size:12px;color:var(--muted);white-space:normal;max-width:260px}
+td.outcome{font-weight:600;white-space:nowrap}td.ok,.ok{color:var(--ok)}td.bad,.bad{color:var(--bad)}td.warn,.warn{color:var(--warn)}.why{font-weight:400;font-size:12px;color:var(--muted);white-space:normal;max-width:260px;border:0;background:none;padding:0;margin:4px 0 0}.why summary{font-weight:400;cursor:pointer}
 .where .field{font-weight:600}.where .kind{font-size:12px;background:var(--badbg);color:var(--bad);padding:1px 8px;border-radius:999px;margin-left:6px}.detail{font-size:14px;margin-top:4px}td.num{text-align:right;color:var(--muted)}
 .selected{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px;margin:16px 0}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}.pair figure{margin:0}.pair img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px}.pair figcaption{font-size:13px;color:var(--muted);margin-top:6px}
@@ -30,37 +30,39 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 
 <h2>Comparison</h2>
 <p class="muted">Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected. Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
-<table><thead><tr><th>Name</th><th>Outcome</th><th>First measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody><tr class="baseline">
-      <th><div class="who">山田 太郎</div><div class="tests">Japanese baseline (control)</div></th>
-      <td class="outcome ok">reached the review screen<div class="why">Confirmation screen reached; safe checkpoint, not submitting.</div></td>
+<table><thead><tr><th>Name format</th><th>Outcome</th><th>Name check: first measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody><tr class="baseline">
+      <th><div class="who">Kanji name, baseline</div><div class="tests">山田 太郎</div></th>
+      <td class="outcome ok">Confirmation screen reached<details class="why"><summary>agent note</summary>Confirmation screen reached; safe checkpoint, not submitting.</details></td>
       <td><span class="muted">no measured problem</span></td>
       <td class="num">11</td>
       <td><a href="baseline/step-11.jpg" target="_blank">screenshot</a></td></tr><tr class="">
-      <th><div class="who">Marsel Bait</div><div class="tests">Latin letters only, no kanji, space between given and family name · test case</div></th>
-      <td class="outcome ok">reached the review screen<div class="why">Confirmation screen reached; name accepted. Safe checkpoint, not submitting.</div></td>
+      <th><div class="who">Latin letters, creator's name</div><div class="tests">Marsel Bait · creator's name</div></th>
+      <td class="outcome ok">Confirmation screen reached<details class="why"><summary>agent note</summary>Confirmation screen reached; name accepted. Safe checkpoint, not submitting.</details></td>
       <td><span class="muted">no measured problem</span></td>
       <td class="num">11</td>
       <td><a href="latin-own/step-11.jpg" target="_blank">screenshot</a></td></tr><tr class="">
-      <th><div class="who">Maria Clara Santos Dela Cruz</div><div class="tests">Long name with two middle names and spaces · test case</div></th>
-      <td class="outcome bad">stopped before the review screen<div class="why">お名前 field rejected the full name &quot;Maria Clara Santos Dela Cruz&quot; (27 characters) with &quot;文字数が正しくありません。&quot;. The page says the maximum is 20 characters. I did not change the name.</div></td>
+      <th><div class="who">Long full name, 28 characters</div><div class="tests">Maria Clara Santos Dela Cruz · test input</div></th>
+      <td class="outcome bad">Stopped: test input rejected<details class="why"><summary>agent note</summary>お名前 field rejected the full name &quot;Maria Clara Santos Dela Cruz&quot; (27 characters) with &quot;文字数が正しくありません。&quot;. The page says the maximum is 20 characters. I did not change the name.</details></td>
       <td><div class="where"><span class="field">必須お名前</span> <span class="kind">rejected</span><div class="detail" lang="ja">文字数が正しくありません。</div></div></td>
       <td class="num">11</td>
       <td><a href="long-name-spaces/step-10-after.jpg" target="_blank">screenshot</a></td></tr><tr class="">
-      <th><div class="who">Sukarno</div><div class="tests">Single name, no family name at all · test case</div></th>
-      <td class="outcome ok">reached the review screen<div class="why">Confirmation screen 入力内容の確認 is showing with the name Sukarno and the reading すかるの. I did not click 送信する.</div></td>
+      <th><div class="who">Single name</div><div class="tests">Sukarno · test input</div></th>
+      <td class="outcome ok">Confirmation screen reached<details class="why"><summary>agent note</summary>Confirmation screen 入力内容の確認 is showing with the name Sukarno and the reading すかるの. I did not click 送信する.</details></td>
       <td><span class="muted">no measured problem</span></td>
       <td class="num">10</td>
       <td><a href="single-name/step-10.jpg" target="_blank">screenshot</a></td></tr><tr class="">
-      <th><div class="who">Nguyễn Thị Hương</div><div class="tests">Latin letters with diacritics · test case</div></th>
-      <td class="outcome ok">reached the review screen<div class="why">Confirmation screen reached; only 送信する remains, so this is a safe checkpoint. The screenshot shows the name as &quot;Nguyêñ Thị Hương&quot;, which differs from the entered &quot;Nguyễn&quot;. The page text shows &quot;Nguyễn&quot;, so the difference may only be a rendering issue.</div></td>
+      <th><div class="who">Letters with accents</div><div class="tests">Nguyễn Thị Hương · test input</div></th>
+      <td class="outcome ok">Confirmation screen reached<details class="why"><summary>agent note</summary>Confirmation screen reached; only 送信する remains, so this is a safe checkpoint. The screenshot shows the name as &quot;Nguyêñ Thị Hương&quot;, which differs from the entered &quot;Nguyễn&quot;. The page text shows &quot;Nguyễn&quot;, so the difference may only be a rendering issue.</details></td>
       <td><span class="muted">no measured problem</span></td>
       <td class="num">11</td>
       <td><a href="diacritics/step-11.jpg" target="_blank">screenshot</a></td></tr><tr class="">
-      <th><div class="who">Ana García-López</div><div class="tests">Hyphenated compound family name · test case</div></th>
-      <td class="outcome ok">reached the review screen<div class="why">Confirmation screen reached; the form has a single name field, so I entered the full name there. The reading field was filled in hiragana. I did not click 送信する.</div></td>
+      <th><div class="who">Accents and a hyphen</div><div class="tests">Ana García-López · test input</div></th>
+      <td class="outcome ok">Confirmation screen reached<details class="why"><summary>agent note</summary>Confirmation screen reached; the form has a single name field, so I entered the full name there. The reading field was filled in hiragana. I did not click 送信する.</details></td>
       <td><span class="muted">no measured problem</span></td>
       <td class="num">10</td>
       <td><a href="hyphen-compound/step-10.jpg" target="_blank">screenshot</a></td></tr></tbody></table>
+<p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
+<details class="other"><summary>Other diagnostics (5, not name findings; kept in the data)</summary><ul><li><span class="muted">山田 太郎 · step 11 · 必須どんな症状ですか？ (as shown on checkpoint screen)</span>: not_verified <span lang="ja">this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span> <em>(nanori measurement)</em><br><span class="muted">typed "歯が痛いです。", field kept ""; uncertain: this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span></li><li><span class="muted">Marsel Bait · step 11 · 必須どんな症状ですか？ (as shown on checkpoint screen)</span>: not_verified <span lang="ja">this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span> <em>(nanori measurement)</em><br><span class="muted">typed "歯が痛いです。", field kept ""; uncertain: this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span></li><li><span class="muted">Sukarno · step 10 · 必須どんな症状ですか？ (as shown on checkpoint screen)</span>: not_verified <span lang="ja">this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span> <em>(nanori measurement)</em><br><span class="muted">typed "歯が痛いです。", field kept ""; uncertain: this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span></li><li><span class="muted">Nguyễn Thị Hương · step 11 · 必須どんな症状ですか？ (as shown on checkpoint screen)</span>: not_verified <span lang="ja">this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span> <em>(nanori measurement)</em><br><span class="muted">typed "歯が痛いです。", field kept ""; uncertain: this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span></li><li><span class="muted">Ana García-López · step 10 · 必須どんな症状ですか？ (as shown on checkpoint screen)</span>: not_verified <span lang="ja">this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span> <em>(nanori measurement)</em><br><span class="muted">typed "歯が痛いです。", field kept ""; uncertain: this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)</span></li></ul></details>
 
 <h2>Evidence</h2>
 

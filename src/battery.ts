@@ -10,7 +10,8 @@ const common = {
 /** Baseline: a typical Japanese customer. Everything else in the battery keeps these contact details. */
 export const baseline: Identity = {
   id: "baseline",
-  tests: "Japanese name, kanji with katakana reading",
+  tests: "kanji name with its reading",
+  label: "Kanji name, baseline",
   fullName: "山田 太郎",
   familyName: "山田",
   givenName: "太郎",
@@ -22,13 +23,15 @@ export const baseline: Identity = {
 };
 
 /**
- * Name-format test cases. These are test fixtures, not verified legal identities.
+ * Name-format test cases. Except for the creator's own name, they are sample inputs, not research participants
+ * and not verified legal identities. No nationality, biography or job is attached to any of them.
  * Labelled by the property they test. Contact details are identical to the baseline.
  */
 export const battery: Identity[] = [
   {
     id: "latin-own",
-    tests: "Latin letters only, no kanji, space between given and family name",
+    tests: "Latin letters, no kanji; the creator's own name and reading as he uses them on Japanese forms",
+    label: "Latin letters, creator's name",
     fullName: "Marsel Bait",
     familyName: "Bait",
     givenName: "Marsel",
@@ -40,7 +43,8 @@ export const battery: Identity[] = [
   },
   {
     id: "long-name-spaces",
-    tests: "Long name with two middle names and spaces",
+    tests: "long full name, 28 characters including spaces",
+    label: "Long full name, 28 characters",
     fullName: "Maria Clara Santos Dela Cruz",
     familyName: "Dela Cruz",
     givenName: "Maria Clara Santos",
@@ -52,7 +56,8 @@ export const battery: Identity[] = [
   },
   {
     id: "single-name",
-    tests: "Single name, no family name at all",
+    tests: "single name, no separate surname in this test",
+    label: "Single name",
     fullName: "Sukarno",
     familyName: null,
     givenName: "Sukarno",
@@ -64,7 +69,8 @@ export const battery: Identity[] = [
   },
   {
     id: "diacritics",
-    tests: "Latin letters with diacritics",
+    tests: "letters with accents",
+    label: "Letters with accents",
     fullName: "Nguyễn Thị Hương",
     familyName: "Nguyễn",
     givenName: "Thị Hương",
@@ -76,7 +82,8 @@ export const battery: Identity[] = [
   },
   {
     id: "hyphen-compound",
-    tests: "Hyphenated compound family name",
+    tests: "accents and a hyphen (a failure here would not isolate the hyphen)",
+    label: "Accents and a hyphen",
     fullName: "Ana García-López",
     familyName: "García-López",
     givenName: "Ana",

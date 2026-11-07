@@ -12,7 +12,8 @@ const SAMPLE = "Maria Clara Santos Dela Cruz Garcia Lopez Fernandez";
 const browser = await chromium.launch({ channel: "chrome", headless: true });
 const attempts = [];
 async function attempt(n) {
-  const value = SAMPLE.slice(0, n).trimEnd(); // never end on a space: that would test whitespace, not length
+  // Exact-length strings that never end on a space (a trailing space would test whitespace, not length).
+  let value = SAMPLE.slice(0, n); if (value.endsWith(" ")) value = SAMPLE.slice(0, n + 1).replace(/ (\S)$/, "$1").slice(0, n);
   const ctx = await browser.newContext({ locale: "ja-JP" });
   const page = await ctx.newPage();
   await page.setViewportSize({ width: 1200, height: 900 });
@@ -39,7 +40,7 @@ async function attempt(n) {
   const shot = `len-${String(n).padStart(2, "0")}.jpg`;
   await page.screenshot({ path: path.join(outDir, shot), type: "jpeg", quality: 55, fullPage: true }).catch(() => {});
   await ctx.close();
-  const rec = { n, value, clicked, retained: state.retained, fieldErrors: state.fieldErrors, allErrors: state.allErrors, checkpointReached, valueShownOnPage: state.valueShown, screenshot: shot };
+  const rec = { requestedLength: n, actualLength: [...value].length, n, value, clicked, retained: state.retained, fieldErrors: state.fieldErrors, allErrors: state.allErrors, checkpointReached, valueShownOnPage: state.valueShown, screenshot: shot };
   attempts.push(rec);
   console.log(JSON.stringify(rec));
   // accepted = checkpoint reached with no field error; rejected = field error present and checkpoint not reached; else undetermined

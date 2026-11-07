@@ -28,11 +28,12 @@ program.command("run")
 program.command("rerun")
   .argument("<runId>", "a previous run id under ./runs")
   .requiredOption("--target <url>", "where to rerun (usually the local reproduction). Explicit on purpose: never silently compare two sites.")
+  .option("--before <runId>", "the run to show as 'before' (default: the run being rerun; use the local before-repair run for a same-reproduction pair)")
   .option("--headless", "run without a visible browser", false)
   .action(async (runId, o) => {
     const prev = JSON.parse(fs.readFileSync(path.join("runs", runId, "report.json"), "utf8"));
     const cases = prev.cases.map((c: any) => c.identity.id);
-    const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", repairState: "after", comparedTo: runId, runId: `${runId}-rerun-${Date.now().toString(36)}` });
+    const { dir } = await runAll({ url: o.target, goal: prev.goal, cases, headless: o.headless, target: "local_reproduction", repairState: "after", comparedTo: o.before ?? runId, runId: `${runId}-rerun-${Date.now().toString(36)}` });
     console.log(`\nBefore: runs/${runId}/report.html\nAfter:  ${path.join(dir, "report.html")}`);
   });
 

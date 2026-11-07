@@ -122,3 +122,18 @@ export async function visibleText(page: Page, max = 3000): Promise<string> {
   const t = await page.evaluate(() => document.body?.innerText ?? "");
   return t.replace(/\n{3,}/g, "\n\n").slice(0, max);
 }
+
+/** Extract the review-screen model: headings, labelled rows (table/dl/label-value pairs), whether the given name inputs still exist. */
+export async function pageModel(page: Page, keys: Array<{ name: string | null; id: string | null }>, urlChanged: boolean) {
+  return page.evaluate(({ keys, urlChanged }) => {
+    const text = (el: Element | null) => (el ? ((el as HTMLElement).innerText ?? el.textContent ?? "").trim() : "");
+    const headings = Array.from(document.querySelectorAll("h1, h2, h3, h4, .title, [class*=title], [class*=heading], legend, th[colspan]")).map(text).filter(Boolean).slice(0, 40);
+    headings.push(document.title);
+    const rows: Array<{ label: string; value: string }> = [];
+    for (const tr of document.querySelectorAll("tr")) { const th = tr.querySelector("th"); const tds = tr.querySelectorAll("td"); if (th && tds.length) rows.push({ label: text(th), value: Array.from(tds).map(text).join(" ") }); else if (tds.length >= 2) rows.push({ label: text(tds[0]), value: Array.from(tds).slice(1).map(text).join(" ") }); }
+    for (const dt of document.querySelectorAll("dt")) { let dd = dt.nextElementSibling; while (dd && dd.tagName !== "DD") dd = dd.nextElementSibling; if (dd) rows.push({ label: text(dt), value: text(dd) }); }
+    for (const box of document.querySelectorAll("[class*=item], [class*=row], li, p")) { const lab = box.querySelector("[class*=label], [class*=ttl], [class*=title], strong, b, span"); const val = box.querySelector("[class*=value], [class*=data], [class*=text], [class*=content]"); if (lab && val && lab !== val) rows.push({ label: text(lab), value: text(val) }); }
+    const nameInputsPresent = keys.some((k) => (k.id && document.getElementById(k.id)) || (k.name && document.querySelector(`input[name="${CSS.escape(k.name)}"], textarea[name="${CSS.escape(k.name)}"]`)));
+    return { urlChanged, nameInputsPresent, headings, bodyText: (document.body?.innerText ?? "").slice(0, 20000), rows: rows.slice(0, 200) };
+  }, { keys, urlChanged });
+}

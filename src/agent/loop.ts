@@ -4,8 +4,9 @@ import fs from "node:fs";
 import path from "node:path";
 import type { BrowserContext, Page } from "playwright";
 import type { Action, Identity, RunResult, Step, FieldObservation, Outcome } from "../types.js";
-import { snapshotElements, observeField, pageErrors, visibleText } from "./page.js";
+import { snapshotElements, observeField, pageErrors, visibleText, pageModel } from "./page.js";
 import { toHiragana } from "../kana.js";
+import { recogniseCheckpoint, checkNamePreserved, norm } from "../checkpoint.js";
 import { scenario } from "../battery.js";
 
 const ActionSchema = z.object({
@@ -74,38 +75,27 @@ Rules:
 }
 
 /**
- * Checkpoint verification: for the latest value typed into each field, is it shown on this screen
- * in full, cut, HTML-escaped, or missing? Returns nanori diagnostics (never site error text).
- * Verified = at least one typed value is shown in full and none is missing.
+ * Checkpoint verification = recognition (is this a review screen?) + preservation (is each typed name value shown exactly in its labelled row?).
+ * Both are pure functions in src/checkpoint.ts; this only builds the page model. Unknown is never upgraded to verified.
  */
-export async function verifyCheckpoint(page: Page, steps: Step[], identity: Identity): Promise<{ verified: boolean; observations: FieldObservation[] }> {
-  const norm = (t: string) => t.normalize("NFC").replace(/[\s\u3000]+/g, " ");
-  const shown = norm(await page.evaluate(() => document.body?.innerText ?? ""));
-  // The values that must be echoed on the goal screen are the name values. Other fields (a symptom box, a time) are often not echoed; those only produce low-weight diagnostics.
+export async function verifyCheckpoint(page: Page, steps: Step[], identity: Identity, startUrl: string): Promise<{ verified: boolean; reason: string; observations: FieldObservation[] }> {
   const nameValues = new Set([identity.fullName, identity.familyName, identity.givenName, identity.kanaFull, identity.kanaFamily, identity.kanaGiven, toHiragana(identity.kanaFull), identity.kanaFamily && toHiragana(identity.kanaFamily), identity.kanaGiven && toHiragana(identity.kanaGiven)].filter((v): v is string => !!v).map(norm));
-  const isName = (v: string) => nameValues.has(norm(v));
-  // Latest value per field (by name/id), so corrected entries replace earlier ones.
   const latest = new Map<string, FieldObservation>();
   for (const o of steps.flatMap((s) => s.observations)) { if (o.requested && !o.diagnostic) latest.set(o.name ?? o.id ?? o.ref, o); }
+  const typedNames = [...latest.values()].filter((o) => nameValues.has(norm(o.requested)));
+  const model = await pageModel(page, typedNames.map((o) => ({ name: o.name, id: o.id })), page.url().replace(/#.*$/, "") !== startUrl.replace(/#.*$/, ""));
   const observations: FieldObservation[] = [];
-  let nameShown = 0, nameProblem = 0;
-  for (const prev of latest.values()) {
-    const req = norm(prev.requested);
-    if ([...req].length < 2) continue;
-    const name = isName(prev.requested);
-    if (shown.includes(req)) { if (name) nameShown++; continue; }
-    if (name) nameProblem++;
-    const entity = req.replace(/[^\x00-\x7F]/g, (c) => `&#${c.codePointAt(0)!};`);
-    let cut = 0;
-    for (let n = [...req].length - 1; n >= Math.max(3, Math.ceil([...req].length / 2)); n--) { if (shown.includes([...req].slice(0, n).join(""))) { cut = n; break; } }
-    let diag: NonNullable<FieldObservation["diagnostic"]>, retained: string;
-    if (entity !== req && shown.includes(entity)) { retained = entity; diag = { kind: "checkpoint_escaped", note: "the checkpoint screen shows this value as HTML entities" }; }
-    else if (cut) { retained = [...req].slice(0, cut).join(""); diag = { kind: "checkpoint_truncated", note: `the checkpoint screen shows only the first ${cut} of ${[...req].length} characters (prefix match; verify against the review row)` }; }
-    else { retained = ""; diag = { kind: "checkpoint_missing", note: name ? "this name value was not found on the checkpoint screen" : "this value is not echoed on the checkpoint screen (many forms do not echo every field; not a name finding)" }; }
-    observations.push({ ...prev, ref: prev.ref + "@checkpoint", label: (prev.label ?? prev.name ?? "") + " (as shown on checkpoint screen)", retained, validationMessage: "", ariaInvalid: false, visibleErrors: [], diagnostic: diag });
+  const recognised = recogniseCheckpoint(model) === "recognised";
+  if (!recognised) return { verified: false, reason: "this screen was not recognised as a review screen (no review heading, or name inputs still present)", observations };
+  if (!typedNames.length) return { verified: false, reason: "no name value was typed, nothing to verify", observations };
+  let allExact = true;
+  for (const o of typedNames) {
+    const p = checkNamePreserved(model, o.requested);
+    if (p.status === "exact") continue;
+    allExact = false;
+    observations.push({ ...o, ref: o.ref + "@checkpoint", label: (o.label ?? o.name ?? "") + " (review row)", retained: p.shown ?? "", validationMessage: "", ariaInvalid: false, visibleErrors: [], diagnostic: { kind: p.status === "differs" ? "checkpoint_truncated" : "checkpoint_not_verified", note: (p.status === "differs" ? "review row differs from the typed value: " : "could not verify: ") + p.note } });
   }
-  // Verified = every typed name value is shown in full on this screen, and at least one was typed.
-  return { verified: nameShown > 0 && nameProblem === 0, observations };
+  return { verified: allExact, reason: allExact ? "review screen recognised; every typed name value shown exactly in its review row" : "review screen recognised, but a name value is not shown exactly", observations };
 }
 
 export async function runLoop(context: BrowserContext, opts: LoopOptions): Promise<RunResult> {
@@ -176,9 +166,9 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
     try {
       if (action.action === "done") {
         // The model saying "done" is a claim. Verify: the typed name values must appear on this screen.
-        const v = await verifyCheckpoint(page, steps, opts.identity);
+        const v = await verifyCheckpoint(page, steps, opts.identity, opts.url);
         outcome = v.verified ? "reached_checkpoint" : "not_determined";
-        stopReason = action.reason + (v.verified ? "" : " (not verified: typed values not found on this screen)");
+        stopReason = action.reason + (v.verified ? "" : ` (not verified: ${v.reason})`);
         step.observations.push(...v.observations);
         steps.push(step);
         messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "ok" }] });
@@ -221,9 +211,9 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         const label = (el.text ?? el.value ?? "").trim();
         if (FORBIDDEN_BUTTON.test(label)) {
           // A safe stop is not proof the goal screen was reached. Verify below like a "done".
-          const v = await verifyCheckpoint(page, steps, opts.identity);
+          const v = await verifyCheckpoint(page, steps, opts.identity, opts.url);
           outcome = v.verified ? "reached_checkpoint" : "not_determined";
-          stopReason = `safe stop: refused to click "${label}"` + (v.verified ? "; typed values are shown on this screen" : "; could not verify this is the goal screen");
+          stopReason = `safe stop: refused to click "${label}"; ${v.reason}`;
           if (v.observations.length) step.observations.push(...v.observations);
           step.ok = false;
           step.error = stopReason;

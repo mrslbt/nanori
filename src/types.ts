@@ -3,6 +3,8 @@ export interface Identity {
   id: string;
   /** What this case tests, in plain words. */
   tests: string;
+  /** Short display label for reports and video. */
+  label: string;
   fullName: string;
   familyName: string | null;
   givenName: string | null;

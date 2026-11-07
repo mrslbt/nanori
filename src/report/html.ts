@@ -1,4 +1,6 @@
-import type { RunBundle, RunResult, Finding, Step } from "../types.js";
+import type { RunBundle, RunResult, Finding, Step, FieldObservation } from "../types.js";
+import { norm } from "../checkpoint.js";
+import { identityById } from "../battery.js";
 import { verdict, describe } from "../verdict.js";
 import { checkField } from "../checks/index.js";
 
@@ -15,17 +17,32 @@ function tone(o: RunResult["outcome"]) {
   return o === "reached_checkpoint" ? "ok" : o === "stopped_before_checkpoint" ? "bad" : "warn";
 }
 
-/** The step where a run first hit a measured problem, if any. */
+/** Is this observation about a name field? Decided by the typed value matching one of the identity's name values, or the field label. */
+function isNameObservation(o: FieldObservation, r: RunResult): boolean {
+  const id = r.identity;
+  const vals = [id.fullName, id.familyName, id.givenName, id.kanaFull, id.kanaFamily, id.kanaGiven].filter(Boolean).map((v) => norm(v!));
+  const hira = vals.map((v) => v.replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60)));
+  if (vals.includes(norm(o.requested)) || hira.includes(norm(o.requested))) return true;
+  return /(氏名|名前|姓|名|フリガナ|ふりがな|セイ|メイ|カナ|name|kana)/i.test(o.label ?? o.name ?? "");
+}
+
+/** The step where a run first hit a measured NAME problem, if any. Non-name observations go to "Other diagnostics". */
 function firstProblem(r: RunResult): { step: Step; field: string; detail: string; kind: string; source: string } | null {
   for (const s of r.steps) {
     for (const o of s.observations) {
+      if (!isNameObservation(o, r)) continue;
       const c = checkField(o);
-      if (o.diagnostic?.kind === "checkpoint_missing" && /not a name finding/.test(o.diagnostic.note)) continue;
       if (c.kind !== "accepted" && c.kind !== "not_verified") return { step: s, field: o.label ?? o.name ?? o.ref, detail: c.detail, kind: c.kind, source: c.source ?? "site" };
     }
   }
   const stuck = r.steps.find((s) => s.action.action === "stuck");
   return stuck ? { step: stuck, field: "", detail: stuck.action.reason, kind: "agent stopped", source: "agent" } : null;
+}
+
+function otherDiagnostics(r: RunResult): Array<{ step: Step; o: FieldObservation; c: ReturnType<typeof checkField> }> {
+  const out: Array<{ step: Step; o: FieldObservation; c: ReturnType<typeof checkField> }> = [];
+  for (const s of r.steps) for (const o of s.observations) { if (isNameObservation(o, r)) continue; const c = checkField(o); if (c.kind !== "accepted") out.push({ step: s, o, c }); }
+  return out;
 }
 
 function evidenceShot(r: RunResult, s: Step | undefined): string | null {
@@ -47,9 +64,11 @@ export function renderHtml(b: RunBundle): string {
     const where = p
       ? `<div class="where"><span class="field">${esc(p.field)}</span> <span class="kind">${esc(p.kind)}</span>${p.detail ? `<div class="detail" ${p.source === "site" ? 'lang="ja"' : ""}>${esc(p.detail)}${p.source === "nanori" ? ' <span class="muted">(nanori measurement)</span>' : ""}</div>` : ""}</div>`
       : `<span class="muted">no measured problem</span>`;
+    const short = r.outcome === "reached_checkpoint" ? "Confirmation screen reached" : r.outcome === "stopped_before_checkpoint" ? "Stopped: test input rejected" : r.outcome === "reached_with_workaround" ? "Reached with a workaround" : "Not determined";
+    const label = (r.identity as any).label ?? identityById(r.identity.id)?.label ?? r.identity.tests;
     return `<tr class="${r.identity.id === "baseline" ? "baseline" : ""}">
-      <th><div class="who">${esc(r.identity.fullName)}</div><div class="tests">${r.identity.id === "baseline" ? "Japanese baseline (control)" : esc(r.identity.tests) + " · test case"}</div></th>
-      <td class="outcome ${tone(r.outcome)}">${esc(describe(r.outcome))}<div class="why">${esc(r.stopReason)}</div></td>
+      <th><div class="who">${esc(label)}</div><div class="tests">${esc(r.identity.fullName)}${r.identity.id === "baseline" ? "" : r.identity.id === "latin-own" ? " · creator's name" : " · test input"}</div></th>
+      <td class="outcome ${tone(r.outcome)}">${esc(short)}<details class="why"><summary>agent note</summary>${esc(r.stopReason)}</details></td>
       <td>${where}</td>
       <td class="num">${r.steps.length}</td>
       <td>${shot ? `<a href="${esc(shot)}" target="_blank">screenshot</a>` : ""}</td></tr>`;
@@ -95,10 +114,10 @@ export function renderHtml(b: RunBundle): string {
   const beforeAfter = b.before ? `
     <h2>Repair verification</h2>
     <p class="scope">${esc(scope)}</p>
-    <table class="ba"><thead><tr><th>Name</th><th>Before (${esc(b.before.id)}, ${esc(b.before.target)})</th><th>After (this run, local reproduction)</th><th>Value shown intact</th></tr></thead><tbody>
+    <table class="ba"><thead><tr><th>Name format</th><th>Before (${esc(b.before.id)}, ${esc(b.before.target === "public" ? "public page" : "local reproduction, before repair")})</th><th>After (this run, local reproduction, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
     ${all.map((r) => { const bo = b.before!.outcomes[r.identity.id]; const intact = !r.steps.flatMap((s) => s.observations).some((o) => o.diagnostic && !/not a name finding/.test(o.diagnostic.note)); return `<tr><th>${esc(r.identity.fullName)}</th><td class="${tone(bo ?? "not_determined")}">${esc(bo ? describe(bo) : "not run")}</td><td class="${tone(r.outcome)}">${esc(describe(r.outcome))}</td><td>${r.outcome === "reached_checkpoint" ? (intact ? "yes" : "see diagnostics") : "n/a"}</td></tr>`; }).join("")}
     </tbody></table>
-    <p class="muted">"Before" is the saved public run; "after" is this run on the repaired local copy. Two passing results prove these cases on the reproduction, not the live site. Genuinely invalid input must still be rejected; see the local copy's banner for what was changed.</p>` : "";
+    <p class="muted">${b.before.target === "public" ? `"Before" is the saved public run; "after" is this run on the repaired local copy.` : `Both columns are the same local reproduction, before and after the repair; the public finding is linked separately.`} Passing results prove these cases on the reproduction, not the live site. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>` : "";
 
   // Run details: the full action log, collapsed.
   const log = all.map((r) => `
@@ -117,7 +136,7 @@ h1{font-size:28px;margin:0 0 4px}h2{font-size:20px;margin:40px 0 12px}
 .scope{display:inline-block;background:var(--warnbg);color:var(--warn);padding:6px 12px;border-radius:6px;font-size:14px;font-weight:600}
 table{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--line)}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}thead th{font-size:13px;color:var(--muted);font-weight:500}
 tr.baseline th{border-left:4px solid var(--ink)}.who{font-weight:600}.tests{font-size:13px;color:var(--muted)}
-td.outcome{font-weight:600;white-space:nowrap}td.ok,.ok{color:var(--ok)}td.bad,.bad{color:var(--bad)}td.warn,.warn{color:var(--warn)}.why{font-weight:400;font-size:12px;color:var(--muted);white-space:normal;max-width:260px}
+td.outcome{font-weight:600;white-space:nowrap}td.ok,.ok{color:var(--ok)}td.bad,.bad{color:var(--bad)}td.warn,.warn{color:var(--warn)}.why{font-weight:400;font-size:12px;color:var(--muted);white-space:normal;max-width:260px;border:0;background:none;padding:0;margin:4px 0 0}.why summary{font-weight:400;cursor:pointer}
 .where .field{font-weight:600}.where .kind{font-size:12px;background:var(--badbg);color:var(--bad);padding:1px 8px;border-radius:999px;margin-left:6px}.detail{font-size:14px;margin-top:4px}td.num{text-align:right;color:var(--muted)}
 .selected{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px;margin:16px 0}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}.pair figure{margin:0}.pair img{width:100%;height:auto;border:1px solid var(--line);border-radius:6px}.pair figcaption{font-size:13px;color:var(--muted);margin-top:6px}
@@ -137,7 +156,9 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 
 <h2>Comparison</h2>
 <p class="muted">${b.scenario ? "Same form, same goal, same contact details, and the same fixed non-name choices (date rule, first options, message). Only the name and its reading change between rows; the run log shows what was actually selected." : "Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows; see the run log."} Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
-<table><thead><tr><th>Name</th><th>Outcome</th><th>First measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody>${rows}</tbody></table>
+<table><thead><tr><th>Name format</th><th>Outcome</th><th>Name check: first measured problem</th><th>Actions</th><th>Evidence</th></tr></thead><tbody>${rows}</tbody></table>
+<p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
+${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ...d }))); return od.length ? `<details class="other"><summary>Other diagnostics (${od.length}, not name findings; kept in the data)</summary><ul>${od.map((d) => `<li><span class="muted">${esc(d.r.identity.fullName)} · step ${d.step.index} · ${esc(d.o.label ?? d.o.name)}</span>: ${esc(d.c.kind)}${d.c.detail ? ` <span lang="ja">${esc(d.c.detail)}</span>` : ""}${d.c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}<br><span class="muted">typed "${esc(d.o.requested)}", field kept "${esc(d.o.retained)}"${d.o.diagnostic ? "; uncertain: " + esc(d.o.diagnostic.note) : ""}</span></li>`).join("")}</ul></details>` : ""; })()}
 
 <h2>Evidence</h2>
 ${selectedHtml}
