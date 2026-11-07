@@ -45,7 +45,7 @@ Documented context, not nanori test results:
 
 ## Before you run it
 
-- Node 20 or newer, Google Chrome installed (Playwright drives the real Chrome channel), an Anthropic API key. Runs make paid API calls: roughly 10 to 20 model calls per name case for navigation (Claude Sonnet) plus one diagnosis call (Claude Opus).
+- Node 22.12 or newer (the dependencies require it; built and tested on Node 22), Google Chrome installed (Playwright drives the real Chrome channel), an Anthropic API key. Runs make paid API calls: roughly 10 to 20 model calls per name case for navigation (Claude Sonnet) plus one diagnosis call (Claude Opus).
 - Data flow: the browser runs on your machine, but each step sends a screenshot and the page's visible text and element list to the Claude API, and the diagnosis step sends the measured facts. Run artifacts (screenshots, report.json, report.html) are saved locally under `runs/`. Nothing is uploaded anywhere else.
 - Safety: nanori is built to stop at the review screen. Known final actions (送信, 確定, 申込, 予約する, Send, Submit, Register, Book now, Pay, and their accessible labels) are blocked in code (`src/guard.ts`, tested). That is a word list plus accessible-name matching, not a proof: on an unfamiliar site a control labelled "Next" could still submit, so treat the first run on any new site as something to watch, and prefer forms you own. The demonstrated runs did not complete a booking; the send button was never clicked.
 

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Test Japanese web forms with name-format test cases that conventional test data can miss.",
   "main": "index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "test": "vitest run",
     "build": "tsc",

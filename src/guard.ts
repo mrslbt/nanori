@@ -18,8 +18,8 @@ export function controlName(c: ControlLabel): string {
 export function isFinalAction(c: ControlLabel): boolean {
   const name = controlName(c);
   if (!name) return true; // an unnamed control (icon only, no label) is never clicked
-  // "確認画面へ" and "確認する" are review controls even though they contain 確; "予約を確定" is final.
-  if (REVIEW.test(name) && !FINAL.test(name.replace(/確認[^ ]*/g, ""))) return false;
+  // A final-action word anywhere in the name wins. "入力内容を確認して送信" is final even though it
+  // starts like a review control; "確認画面へ" and "確認する" are review controls (確認 is not 確定).
   return FINAL.test(name);
 }
 

@@ -20,6 +20,15 @@ describe("submission guard", () => {
     expect(isFinalAction({ text: "", ariaLabel: "Send" })).toBe(true);
     expect(isFinalAction({ text: "", title: "送信" })).toBe(true);
   });
+  it("a final-action word wins over review wording in the same label", () => {
+    expect(isFinalAction({ text: "入力内容を確認して送信" })).toBe(true);
+    expect(isFinalAction({ text: "確認する（送信）" })).toBe(true);
+    expect(isFinalAction({ text: "予約を確定" })).toBe(true);
+    expect(isFinalAction({ text: "Review and submit" })).toBe(true);
+    expect(isReviewAdvance({ text: "入力内容を確認して送信" })).toBe(false);
+    expect(isFinalAction({ text: "確認する" })).toBe(false);
+    expect(isFinalAction({ text: "入力内容を確認" })).toBe(false);
+  });
   it("never clicks a control with no name at all", () => {
     expect(isFinalAction({ text: "" })).toBe(true);
   });
