@@ -35,19 +35,24 @@ export function recogniseCheckpoint(m: PageModel, c: CheckpointContract = defaul
 }
 
 export type Preservation = { status: "exact" | "differs" | "unknown"; shown: string | null; note: string };
-/** Compare one typed name value with the labelled review row. Substring matches do not count. */
-export function checkNamePreserved(m: PageModel, typed: string, c: CheckpointContract = defaultContract): Preservation {
+/**
+ * Compare one typed name value with the labelled review rows. Exact means the row equals the typed value
+ * (after NFC and whitespace normalisation). The only other accepted form is an explicit field mapping:
+ * when the value was typed into one of several name fields (e.g. family and given typed separately),
+ * a row that equals those typed values joined, in either order, with nothing added or missing, is exact.
+ * An unordered subset, an extra word, a changed order of a single value, or a missing part is "differs".
+ */
+export function checkNamePreserved(m: PageModel, typed: string, c: CheckpointContract = defaultContract, siblings: string[] = []): Preservation {
   const rows = m.rows.filter((r) => c.nameRowLabel.test(r.label));
   if (!rows.length) return { status: "unknown", shown: null, note: "no labelled name row found on this screen" };
   const want = norm(typed);
+  const joined = new Set<string>();
+  for (const sib of siblings.map(norm).filter((x) => x && x !== want)) { joined.add(`${want} ${sib}`); joined.add(`${sib} ${want}`); joined.add(`${want}${sib}`); joined.add(`${sib}${want}`); }
   for (const r of rows) {
     const got = norm(r.value);
     if (got === want) return { status: "exact", shown: r.value, note: "" };
-    // A row may hold family and given name together, or name and reading; accept exact equality of a whitespace-separated part set.
-    const parts = got.split(" ");
-    const wantParts = want.split(" ");
-    if (wantParts.every((p) => parts.includes(p)) && wantParts.length > 0) return { status: "exact", shown: r.value, note: "matched as whole words inside the row" };
+    if (joined.has(got)) return { status: "exact", shown: r.value, note: "row equals this value joined with a separately typed name field" };
   }
-  const closest = rows[0];
+  const closest = rows.find((r) => norm(r.value).includes(want) || want.includes(norm(r.value))) ?? rows[0];
   return { status: "differs", shown: closest.value, note: `review row "${closest.label}" shows "${closest.value}"` };
 }

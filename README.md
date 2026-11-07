@@ -2,7 +2,7 @@
 
 **Your form works with your test data. Does it work with your customers' names?**
 
-nanori is a test tool for people who build or maintain Japanese web forms. Point it at a form and a goal. It drives a real Chrome, tries to reach the goal as a typical Japanese customer, then again with name-format test cases that Japanese test data never covers: Latin letters, long names with spaces, a single name with no surname, diacritics, a hyphenated surname. Where a test name is rejected, cut, or altered and the baseline was not, it reports the field, the exact input, what the field kept, the error the page showed, which published guidance the behaviour is inconsistent with, and a proposed repair. Fix a local copy, rerun, and the report shows before and after.
+nanori is a test tool for people who build or maintain Japanese web forms. Point it at a form and a goal. It drives a real Chrome, tries to reach the goal as a typical Japanese customer, then again with name-format test cases that conventional Japanese test data can miss: Latin letters, long names with spaces, a single name with no surname, diacritics, a hyphenated surname. Where a test name is rejected, cut, or altered and the baseline was not, it reports the field, the exact input, what the field kept, the error the page showed, which published guidance the behaviour is inconsistent with, and a proposed repair. Fix a local copy, rerun, and the report shows before and after.
 
 Built for Built with Claude: Japan 2026 (Nov 2 to 8), by a foreign resident of Tokyo whose name does not fit many Japanese forms.
 

@@ -1,0 +1,150 @@
+{
+  "reverifiedAt": "2026-11-07T09:24:32.232Z",
+  "logic": "src/checkpoint.ts at HEAD",
+  "results": [
+    {
+      "case": "baseline",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "必須お名前",
+          "value": ""
+        },
+        {
+          "label": "必須ふりがな",
+          "value": ""
+        },
+        {
+          "label": "お名前",
+          "value": "山田 太郎"
+        },
+        {
+          "label": "ふりがな",
+          "value": "やまだ たろう"
+        }
+      ]
+    },
+    {
+      "case": "latin-own",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "必須お名前",
+          "value": ""
+        },
+        {
+          "label": "必須ふりがな",
+          "value": ""
+        },
+        {
+          "label": "お名前",
+          "value": "Marsel Bait"
+        },
+        {
+          "label": "ふりがな",
+          "value": "まーせる ばいと"
+        }
+      ]
+    },
+    {
+      "case": "long-name-spaces",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "必須お名前",
+          "value": ""
+        },
+        {
+          "label": "必須ふりがな",
+          "value": ""
+        },
+        {
+          "label": "お名前",
+          "value": "Maria Clara Santos Dela Cruz"
+        },
+        {
+          "label": "ふりがな",
+          "value": "まりあ くらら さんとす でら くるす"
+        }
+      ]
+    },
+    {
+      "case": "single-name",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "必須お名前",
+          "value": ""
+        },
+        {
+          "label": "必須ふりがな",
+          "value": ""
+        },
+        {
+          "label": "お名前",
+          "value": "Sukarno"
+        },
+        {
+          "label": "ふりがな",
+          "value": "すかるの"
+        }
+      ]
+    },
+    {
+      "case": "diacritics",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "必須お名前",
+          "value": ""
+        },
+        {
+          "label": "必須ふりがな",
+          "value": ""
+        },
+        {
+          "label": "お名前",
+          "value": "Nguyễn Thị Hương"
+        },
+        {
+          "label": "ふりがな",
+          "value": "ぐえん てぃ ふおん"
+        }
+      ]
+    },
+    {
+      "case": "hyphen-compound",
+      "saved": "reached_checkpoint",
+      "recomputed": "reached_checkpoint",
+      "changed": false,
+      "rows": [
+        {
+          "label": "必須お名前",
+          "value": ""
+        },
+        {
+          "label": "必須ふりがな",
+          "value": ""
+        },
+        {
+          "label": "お名前",
+          "value": "Ana García-López"
+        },
+        {
+          "label": "ふりがな",
+          "value": "あな がるしあ ろぺす"
+        }
+      ]
+    }
+  ]
+}

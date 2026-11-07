@@ -90,8 +90,9 @@ export async function verifyCheckpoint(page: Page, steps: Step[], identity: Iden
   if (!recognised) return { verified: false, reason: "this screen was not recognised as a review screen (no review heading, or name inputs still present)", observations, model: saved };
   if (!typedNames.length) return { verified: false, reason: "no name value was typed, nothing to verify", observations, model: saved };
   let allExact = true;
+  const siblingsOf = (o: FieldObservation) => typedNames.filter((x) => x !== o).map((x) => x.requested);
   for (const o of typedNames) {
-    const p = checkNamePreserved(model, o.requested);
+    const p = checkNamePreserved(model, o.requested, undefined, siblingsOf(o));
     if (p.status === "exact") continue;
     allExact = false;
     observations.push({ ...o, ref: o.ref + "@checkpoint", label: (o.label ?? o.name ?? "") + " (review row)", retained: p.shown ?? "", validationMessage: "", ariaInvalid: false, visibleErrors: [], diagnostic: { kind: p.status === "differs" ? "checkpoint_truncated" : "checkpoint_not_verified", note: (p.status === "differs" ? "review row differs from the typed value: " : "could not verify: ") + p.note } });

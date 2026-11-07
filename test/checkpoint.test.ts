@@ -40,3 +40,24 @@ describe("reading rows", () => {
     expect(checkNamePreserved(m, "山田 太郎").status).toBe("exact");
   });
 });
+
+describe("no unordered subset counts as exact", () => {
+  const row = (v: string) => review([{ label: "お名前", value: v }]);
+  it("an extra separate word is not exact", () => {
+    expect(checkNamePreserved(row("Marsel Bait EXTRA"), "Marsel Bait").status).toBe("differs");
+  });
+  it("a changed order of a single typed value is not exact", () => {
+    expect(checkNamePreserved(row("Bait Marsel"), "Marsel Bait").status).toBe("differs");
+  });
+  it("a missing component is not exact", () => {
+    expect(checkNamePreserved(row("Marsel"), "Marsel Bait").status).toBe("differs");
+  });
+  it("a repeated component is not exact", () => {
+    expect(checkNamePreserved(row("Marsel Bait Bait"), "Marsel Bait").status).toBe("differs");
+  });
+  it("separately typed family and given names may appear joined in one row, either order, nothing else", () => {
+    expect(checkNamePreserved(row("山田 太郎"), "山田", undefined, ["太郎"]).status).toBe("exact");
+    expect(checkNamePreserved(row("太郎 山田"), "山田", undefined, ["太郎"]).status).toBe("exact");
+    expect(checkNamePreserved(row("山田 太郎 様"), "山田", undefined, ["太郎"]).status).toBe("differs");
+  });
+});
