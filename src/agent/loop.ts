@@ -94,6 +94,27 @@ async function observeInvalidFields(page: Page, steps: Step[], step: Step): Prom
   }
 }
 
+/**
+ * Scroll the measured field (by id/name) or the review row holding a text into the middle of the viewport and return
+ * where it ended up, as fractions of the viewport, so the report can crop the evidence around it instead of the centre.
+ */
+async function scrollToEvidence(page: Page, target: { id?: string | null; name?: string | null; text?: string | null }): Promise<{ x: number; y: number } | undefined> {
+  const f = await page.evaluate((k) => {
+    let el: Element | null = (k.id ? document.getElementById(k.id) : null) ?? (k.name ? document.querySelector(`[name="${CSS.escape(k.name)}"]`) : null);
+    if (!el && k.text) {
+      const want = k.text.replace(/[\s\u3000]+/g, " ").trim();
+      const all = Array.from(document.querySelectorAll<HTMLElement>("td, dd, span, div, p, li, th, dt")).filter((e) => (e.innerText ?? "").replace(/[\s\u3000]+/g, " ").includes(want));
+      el = all.sort((a, b) => a.innerText.length - b.innerText.length)[0] ?? null;
+    }
+    if (!el) return null;
+    (el as HTMLElement).scrollIntoView({ block: "center" });
+    const r = el.getBoundingClientRect();
+    return { x: Math.min(1, Math.max(0, (r.left + r.width / 2) / window.innerWidth)), y: Math.min(1, Math.max(0, (r.top + r.height / 2) / window.innerHeight)) };
+  }, target).catch(() => null);
+  if (f) await page.waitForTimeout(200);
+  return f ?? undefined;
+}
+
 export async function verifyCheckpoint(page: Page, steps: Step[], identity: Identity, startUrl: string): Promise<{ verified: boolean; changed?: boolean; reason: string; observations: FieldObservation[]; model?: Step["checkpointModel"] }> {
   const nameValues = new Set([identity.fullName, identity.familyName, identity.givenName, identity.kanaFull, identity.kanaFamily, identity.kanaGiven, toHiragana(identity.kanaFull), identity.kanaFamily && toHiragana(identity.kanaFamily), identity.kanaGiven && toHiragana(identity.kanaGiven)].filter((v): v is string => !!v).map(norm));
   const latest = new Map<string, FieldObservation>();
@@ -196,6 +217,14 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         stopReason = action.reason + (v.verified ? "" : ` (${v.changed ? "name changed" : "not verified"}: ${v.reason})`);
         step.checkpointModel = v.model;
         step.observations.push(...v.observations);
+        // Evidence: the review row that holds the name (changed or not), scrolled into view.
+        try {
+          const row = v.observations[0]?.retained || opts.identity.fullName;
+          step.focus = await scrollToEvidence(page, { text: row });
+          const after = path.join(opts.outDir, `step-${String(i).padStart(2, "0")}-after.jpg`);
+          await page.screenshot({ path: after, type: "jpeg", quality: 60 });
+          step.screenshotAfter = path.basename(after);
+        } catch { /* best effort */ }
         steps.push(step);
         messages.push({ role: "user", content: [{ type: "tool_result", tool_use_id: toolUse.id, content: "ok" }] });
         break;
@@ -209,8 +238,7 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
         if (step.pageErrors.length) await observeInvalidFields(page, steps, step).catch(() => {});
         try {
           const lastBad = [...steps, step].reverse().flatMap((s) => s.observations).find((o) => o.visibleErrors.length || o.ariaInvalid || o.validationMessage);
-          if (lastBad) await page.evaluate((k) => { const el = (k.id ? document.getElementById(k.id) : null) ?? (k.name ? document.querySelector(`[name="${CSS.escape(k.name)}"]`) : null); (el as HTMLElement | null)?.scrollIntoView({ block: "center" }); }, { id: lastBad.id, name: lastBad.name });
-          await page.waitForTimeout(200);
+          if (lastBad) step.focus = await scrollToEvidence(page, { id: lastBad.id, name: lastBad.name });
           const after = path.join(opts.outDir, `step-${String(i).padStart(2, "0")}-after.jpg`);
           await page.screenshot({ path: after, type: "jpeg", quality: 60 });
           step.screenshotAfter = path.basename(after);
@@ -276,10 +304,7 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
     // Evidence: a second screenshot AFTER the action settled. If a field now shows an error, scroll it into view first.
     try {
       const bad = step.observations.find((o) => o.visibleErrors.length || o.ariaInvalid || o.validationMessage);
-      if (bad) {
-        await page.evaluate((k) => { const el = (k.id ? document.getElementById(k.id) : null) ?? (k.name ? document.querySelector(`[name="${CSS.escape(k.name)}"]`) : null); (el as HTMLElement | null)?.scrollIntoView({ block: "center" }); }, { id: bad.id, name: bad.name });
-        await page.waitForTimeout(200);
-      }
+      if (bad) step.focus = await scrollToEvidence(page, { id: bad.id, name: bad.name });
       const after = path.join(opts.outDir, `step-${String(i).padStart(2, "0")}-after.jpg`);
       await page.screenshot({ path: after, type: "jpeg", quality: 60, fullPage: false });
       step.screenshotAfter = path.basename(after);

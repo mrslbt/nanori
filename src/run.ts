@@ -1,4 +1,5 @@
 import { launchChrome } from "./preflight.js";
+import { mergeFindings } from "./findings.js";
 import fs from "node:fs";
 import path from "node:path";
 import type { Identity, RunBundle, RunResult } from "./types.js";
@@ -51,7 +52,7 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
   await browser.close();
 
   log(`\nDiagnosing with ${process.env.NANORI_DIAG_MODEL ?? "claude-opus-5-5"}...`);
-  const findings = await diagnose(baselineRun, cases, opts.url, opts.goal);
+  const findings = mergeFindings(await diagnose(baselineRun, cases, opts.url, opts.goal));
   let before: RunBundle["before"];
   if (opts.comparedTo) {
     try {

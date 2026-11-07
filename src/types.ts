@@ -78,6 +78,8 @@ export interface Step {
   screenshot: string;
   /** Captured after the action settled, scrolled to the field with an error if any (the evidence). */
   screenshotAfter?: string;
+  /** Where the measured field (or review row) sits in screenshotAfter, as fractions of the viewport. Reports crop around it. */
+  focus?: { x: number; y: number };
   observations: FieldObservation[];
   pageErrors: string[];
   /** The review-screen model used for checkpoint verification (saved so the check can be recomputed offline). */
