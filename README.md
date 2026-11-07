@@ -2,13 +2,29 @@
 
 **Your form works with your test data. Does it work with your customers' names?**
 
-nanori is a test tool for people who build or maintain Japanese web forms. Point it at a form and a goal. It drives a real Chrome, tries to reach the goal with a kanji-name baseline, then again with name-format test cases that conventional Japanese test data can miss: Latin letters, long names with spaces, a single name with no surname, diacritics, a hyphenated surname. Where a test name is rejected, cut, or altered and the baseline was not, it reports the field, the exact input, what the field kept, the error the page showed, which published guidance the behaviour is inconsistent with, and a proposed repair. Fix a local copy, rerun, and the report shows before and after.
+nanori helps people building Japanese websites find forms that reject or change someone's name. Claude tests different name formats in a real browser. The report shows what was entered, what the form kept, and where the journey stopped.
 
-Built for Built with Claude: Japan 2026 (Nov 2 to 8), by a foreign resident of Tokyo whose name does not fit many Japanese forms.
+On one public Tokyo reservation form, five of six cases reached confirmation. A 28-character sample name was rejected. After a repair on a local reproduction, all six reached confirmation. The public website was unchanged.
 
-![nanori report: a public Tokyo dental reservation form, six name formats, one rejected](docs/report-preview.png)
+Built with Claude Code for Built with Claude: Japan 2026.
 
-Open a saved report without any API call: `runs/yotsuya-dental-3/report.html` (the public finding), `runs/yotsuya-local-before/report.html` and `runs/yotsuya-local-after/report.html` (the controlled repair on a local reproduction). The boundary probe evidence is in `runs/yotsuya-dental-1/diag/`.
+**[View sample results](https://mrslbt.github.io/nanori/runs/yotsuya-dental-3/report.html)** (recorded run, read-only) · **[Repair before / after](https://mrslbt.github.io/nanori/runs/yotsuya-local-after/report.html)** · **[Run locally](#quick-start-on-the-bundled-fixture-recommended-first-run)** · **[How Claude works](#how-claude-works-and-what-is-code)**
+
+![The rejected test name next to the form's error, and the baseline confirmation screen](docs/evidence-crop.png)
+
+*Detail from the recorded public run: the 28-character sample name kept in the field, the form's error beside it, and the kanji-name baseline on the confirmation screen. [Full report](https://mrslbt.github.io/nanori/runs/yotsuya-dental-3/report.html). Sample inputs, a local repair, a review screen reached, never a completed booking.*
+
+## Who it is for
+
+Developers, designers, and people building Japanese sites with AI, who want to know before release whether a form works for names that are not kanji-plus-kana.
+
+## What happens in a run
+
+1. A kanji-name baseline fills the form and reaches the review screen.
+2. The same form is run again with name-format test cases; only the name and its reading change.
+3. Measurements are code: what each field kept, what the page said, whether the review screen was reached and shows the name exactly.
+4. Claude writes the finding from those measurements and proposes a repair.
+5. You repair your own form (or a local reproduction), and the same cases rerun.
 
 ## What it found on a real form
 
@@ -75,7 +91,7 @@ node dist/cli.js scan scan/tokyo-forms.txt --headless
 node dist/cli.js cases
 ```
 
-## How a run works
+## How Claude works, and what is code
 
 1. Baseline: a Japanese name (kanji with its reading), Tokyo address, Japanese mobile, plain email. Claude (Sonnet) reads each page as an accessibility snapshot plus a screenshot, returns one action at a time through a strict `act` tool, and stops at the goal screen. It is built to stop at the review screen; known final actions are blocked in code (see Before you run it), and uncertain flows stop for review.
 2. Name cases: same form, same contact details, same fixed non-name choices. Only the name and its reading change. Reading fields get the script they ask for (hiragana for ふりがな, katakana for フリガナ); nanori never substitutes the other script to get past an error.
@@ -124,4 +140,4 @@ scripts/        boundary probe, rerender, hook
 - Provider-specific name rules (payment and identity verification flows) and downstream name preservation are future work, to be tested only in an authorised provider environment.
 - Alternate entry paths (documented workarounds) are reported, not attempted.
 
-MIT.
+MIT (see LICENSE). Screenshots under `runs/` are third-party page evidence; see EVIDENCE_NOTICE.md.
