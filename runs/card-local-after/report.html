@@ -56,7 +56,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
     <table class="ba"><thead><tr><th>Name format</th><th>Before (card-local-before, local reproduction, before repair)</th><th>After (this run, local reproduction, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
     <tr><th>山田 太郎</th><td class="ok">reached the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr><tr><th>Maria Clara Santos Dela Cruz</th><td class="bad">stopped before the review screen</td><td class="ok">reached the review screen</td><td>yes</td></tr>
     </tbody></table>
-    <p class="muted">Both columns are the same local reproduction, before and after the repair; the public finding is linked separately. Passing results prove these cases on the reproduction, not the live site. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>
+    <p class="muted">Both columns are the same local simulation, before and after the repair. There is no real site behind it. Passing results prove these cases on the simulation only. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>
 <details class="cmp"><summary>Comparison table for this run (all cases)</summary>
 <h2>Comparison</h2>
 <p class="muted">Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case. Non-name values on the confirmation screen matched the baseline's row for row in every case (measured). Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
@@ -73,7 +73,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
 </details>
 
 <h2>Evidence</h2>
-<p class="passed">Every case reached the confirmation screen on the repaired reproduction, with each name shown exactly in its review row. No name finding; no site error text was recorded.</p>
+<p class="passed">Every case reached the confirmation screen on the repaired simulation, with each name shown exactly in its review row. No name finding; no error text was recorded.</p>
 
 
 

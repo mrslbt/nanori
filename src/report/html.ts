@@ -183,7 +183,7 @@ export function renderHtml(input: RunBundle): string {
     <table class="ba"><thead><tr><th>Name format</th><th>Before (${esc(b.before.id)}, ${esc(b.before.target === "public" ? "public page" : "local reproduction, before repair")})</th><th>After (this run, local reproduction, repaired)</th><th>Name shown exactly in review row</th></tr></thead><tbody>
     ${all.map((r) => { const bo = b.before!.outcomes[r.identity.id]; const intact = !r.steps.flatMap((s) => s.observations).some((o) => o.diagnostic && !/not a name finding/.test(o.diagnostic.note)); return `<tr><th>${esc(r.identity.fullName)}</th><td class="${tone(bo ?? "not_determined")}">${esc(bo ? describe(bo) : "not run")}</td><td class="${tone(r.outcome)}">${esc(describe(r.outcome))}</td><td>${r.outcome === "reached_checkpoint" ? (intact ? "yes" : "see diagnostics") : "n/a"}</td></tr>`; }).join("")}
     </tbody></table>
-    <p class="muted">${b.before.target === "public" ? `"Before" is the saved public run; "after" is this run on the repaired local copy.` : `Both columns are the same local reproduction, before and after the repair; the public finding is linked separately.`} Passing results prove these cases on the reproduction, not the live site. "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>` : "";
+    <p class="muted">${b.before.target === "public" ? `"Before" is the saved public run; "after" is this run on the repaired local copy.` : b.simulation ? `Both columns are the same local simulation, before and after the repair. There is no real site behind it.` : `Both columns are the same local reproduction, before and after the repair${b.publicRun ? "; the public finding is linked separately" : ""}.`} ${b.simulation ? "Passing results prove these cases on the simulation only." : "Passing results prove these cases on the reproduction, not the live site."} "Exactly" means the review row's value equals the typed value after whitespace and Unicode normalisation. Genuinely invalid input must still be rejected; the local copy's banner says what was changed.</p>` : "";
 
   // Run details: the full action log, collapsed.
   const log = all.map((r) => `
@@ -254,7 +254,7 @@ ${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ..
 ${b.before ? `</details>` : ""}
 
 <h2>Evidence</h2>
-${b.findings.length ? selectedHtml : `<p class="passed">${esc(b.before ? "Every case reached the confirmation screen on the repaired reproduction, with each name shown exactly in its review row. No name finding; no site error text was recorded." : "No findings.")}</p>`}
+${b.findings.length ? selectedHtml : `<p class="passed">${esc(b.before ? `Every case reached the confirmation screen on the repaired ${b.simulation ? "simulation" : "reproduction"}, with each name shown exactly in its review row. No name finding; no error text was recorded.` : "No findings.")}</p>`}
 ${others ? `<h3 class="muted">Other findings</h3>${others}` : ""}
 ${b.publicRun ? `<p class="muted">The public finding this repair answers: <a href="../${esc(b.publicRun)}/report.html">${esc(b.publicRun)}/report.html</a>.</p>` : ""}
 ${b.probe ? `<p class="muted">Separate boundary probe (same page, fixed inputs, only the name length varied): ${esc(b.probe.summary)} <a href="${esc(b.probe.href)}" target="_blank">probe evidence</a>. The model-written cause above was captured before this probe and is left as recorded.</p>` : ""}
