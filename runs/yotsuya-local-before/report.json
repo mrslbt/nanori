@@ -11,7 +11,7 @@
     "choiceRule": "the first non-empty option in every select, and the first radio in every radio group",
     "treatment": "虫歯",
     "symptom": "歯が痛いです。",
-    "message": "nanori による自動入力テストです。送信はしません。",
+    "message": "nanoru による自動入力テストです。送信はしません。",
     "optionalFields": "fill optional email and address fields with the contact data above; leave other optional fields empty",
     "age": "35",
     "birthDate": "1990年1月1日"
@@ -2097,7 +2097,7 @@
       "observation": "The お名前 field kept the full 28-character name but was marked aria-invalid, and the site showed \"文字数が正しくありません。\" (the character count is incorrect), so the agent could not reach the confirmation screen. The Japanese-name baseline passed this step and reached the confirmation screen.",
       "relevance": "A person with a name of this shape, a multi-part Latin-script name with spaces, has a long full name that cannot be shortened without changing it. Such a person is an intended user of a form that collects a name.",
       "basis": "Rejecting the name on character count is inconsistent with p.27 item 4 of the guidance, which says to set a sufficient maximum length because foreign names need more characters. The guidance applies to Tokyo Metropolitan Government forms, so for this site it is a reference point, not a rule.",
-      "cause": "The rejection is reproduced from behaviour, not confirmed in source: the field has no maxlength or pattern attribute, so a script or server-side length check produced the error. The agent reported that the page states a 20-character limit, but nanori did not measure that limit.",
+      "cause": "The rejection is reproduced from behaviour, not confirmed in source: the field has no maxlength or pattern attribute, so a script or server-side length check produced the error. The agent reported that the page states a 20-character limit, but nanoru did not measure that limit.",
       "fix": "Raise the name length limit in the validation code that emits \"文字数が正しくありません。\" to a generous value such as 100 characters, and add a matching maxlength=\"100\" on input[name=flname]. Keep rejecting empty and over-limit values. This change is unverified against the live site.",
       "screenshot": "step-10.jpg",
       "id": "F1",

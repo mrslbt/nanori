@@ -9,7 +9,7 @@ import { checkField } from "./checks/index.js";
 import { toHiragana } from "./kana.js";
 
 /**
- * nanori scan: a name-field probe with no model in the loop.
+ * nanoru scan: a name-field probe with no model in the loop.
  * For each URL and each name case: load the page, find the name fields, fill them, trigger validation,
  * try the confirmation button (never a final submit), and record what each field did.
  * It answers "did the name fields reject or cut this input", nothing more.
@@ -77,12 +77,12 @@ const SUPPORT: Array<{ re: RegExp; type?: RegExp; value: (id: Identity) => strin
   { re: /(会社|法人|company|organization|学校名)/i, value: () => "テスト" },
   { re: /(件名|subject|title)/i, value: () => "テスト（自動入力のテストです。送信しません）" },
 ];
-const NOTE = "nanori による自動入力テストです。送信はしません。";
+const NOTE = "nanoru による自動入力テストです。送信はしません。";
 
 async function fillSupporting(page: Page, elements: ElementInfo[], skip: string[], id: Identity) {
   for (const e of elements) {
     if (skip.includes(e.ref)) continue;
-    const loc = page.locator(`[data-nanori-ref="${e.ref}"]`);
+    const loc = page.locator(`[data-nanoru-ref="${e.ref}"]`);
     const hay = [e.label, e.name, e.id, e.placeholder, e.type].filter(Boolean).join(" ");
     try {
       if (e.tag === "textarea") { await loc.fill(NOTE, { timeout: 2000 }); continue; }
@@ -115,7 +115,7 @@ async function probeOne(page: Page, url: string, id: Identity, outDir: string, i
       const v = valueFor(id, role, script);
       const key = { name: e.name, id: e.id };
       if (!v) continue;
-      const loc = page.locator(`[data-nanori-ref="${e.ref}"]`);
+      const loc = page.locator(`[data-nanoru-ref="${e.ref}"]`);
       try { await loc.fill(v, { timeout: 3000 }); await loc.dispatchEvent("blur").catch(() => {}); } catch (err: any) { base.fields.push({ ref: e.ref, key, role, script, label: e.label, requested: v, afterBlur: "fill failed", afterAdvance: null, error: String(err?.message ?? err).slice(0, 120), retained: "", maxlength: e.maxlength, pattern: e.pattern }); continue; }
       await page.waitForTimeout(150);
       const o = await observeField(page, e.ref, v, key);
@@ -130,7 +130,7 @@ async function probeOne(page: Page, url: string, id: Identity, outDir: string, i
     if (btn) {
       const beforeUrl = page.url();
       base.clicked = btn.text ?? "";
-      await page.locator(`[data-nanori-ref="${btn.ref}"]`).click({ timeout: 5000 }).catch(() => {});
+      await page.locator(`[data-nanoru-ref="${btn.ref}"]`).click({ timeout: 5000 }).catch(() => {});
       await page.waitForLoadState("domcontentloaded").catch(() => {});
       await page.waitForTimeout(800);
       // Advanced only if the URL changed or the page no longer has the name fields (by name/id, refs may be re-rendered).
@@ -242,12 +242,12 @@ export function renderScan(results: ProbeResult[]): string {
     }).join("");
     return `<tr><th><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></th><td class="cat">${CAT_LABEL[cats[u]]}</td>${cells}</tr>`;
   }).join("");
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>nanori scan</title>
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>nanoru scan</title>
 <style>body{font:14px/1.5 -apple-system,"Hiragino Sans",system-ui,sans-serif;margin:32px;color:#1b1f2a;background:#fbfaf7}
 table{border-collapse:collapse}th,td{border:1px solid #e6e2d8;padding:6px 10px;text-align:left;background:#fff}th{font-weight:500;max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 td.accepted{background:#e6f4ec;color:#1f7a4d}td.rejected,td.truncated,td.altered{background:#fbe9e7;color:#b3261e}td.unknown,td.no_name_fields,td.error,td.blocked{color:#6b7280}td.cat{color:#6b7280;white-space:nowrap}
 .verdict{font-size:20px;margin:8px 0 12px}.muted{color:#6b7280}ul{margin:0 0 16px}</style></head><body>
-<h1>nanori scan</h1>
+<h1>nanoru scan</h1>
 <div class="verdict">Flagged observations pending review: ${flaggedB + flaggedC} forms (${flaggedB} in confirmed comparable journeys, ${flaggedC} field-level only).</div>
 <ul class="muted">
 <li>${urls.length} forms attempted.</li>

@@ -17,4 +17,4 @@ runs/yotsuya-dental-1/*
 !runs/fixture-full/
 *.log
 .DS_Store
-.nanori-rerun.lock
+.nanoru-rerun.lock

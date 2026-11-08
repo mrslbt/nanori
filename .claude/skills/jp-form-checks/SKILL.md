@@ -1,11 +1,11 @@
 ---
 name: jp-form-checks
-description: How nanori's form checks work, how to read their results, and the GovTech Tokyo input-form guidance each check maps to. Load when writing findings or fixes for a nanori run.
+description: How nanoru's form checks work, how to read their results, and the GovTech Tokyo input-form guidance each check maps to. Load when writing findings or fixes for a nanoru run.
 ---
 
 # jp-form-checks
 
-nanori measures, then interprets. The checks in `src/checks/` are code and produce facts. This skill is how to turn facts into findings without overclaiming.
+nanoru measures, then interprets. The checks in `src/checks/` are code and produce facts. This skill is how to turn facts into findings without overclaiming.
 
 ## The checks (code, deterministic)
 

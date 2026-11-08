@@ -10,7 +10,7 @@
     "choiceRule": "the first non-empty option in every select, and the first radio in every radio group",
     "treatment": "虫歯",
     "symptom": "歯が痛いです。",
-    "message": "nanori による自動入力テストです。送信はしません。",
+    "message": "nanoru による自動入力テストです。送信はしません。",
     "optionalFields": "fill optional email and address fields with the contact data above; leave other optional fields empty",
     "age": "35",
     "birthDate": "1990年1月1日"
@@ -321,7 +321,7 @@
         "action": {
           "action": "fill",
           "ref": "n15",
-          "value": "nanori による自動入力テストです。送信はしません。",
+          "value": "nanoru による自動入力テストです。送信はしません。",
           "reason": "required message"
         },
         "ok": true,
@@ -332,8 +332,8 @@
             "label": null,
             "name": "message",
             "id": null,
-            "requested": "nanori による自動入力テストです。送信はしません。",
-            "retained": "nanori による自動入力テストです。送信はしません。",
+            "requested": "nanoru による自動入力テストです。送信はしません。",
+            "retained": "nanoru による自動入力テストです。送信はしません。",
             "maxlength": null,
             "pattern": null,
             "required": false,
@@ -464,7 +464,7 @@
             },
             {
               "label": "お問い合わせ内容",
-              "value": "nanori による自動入力テストです。送信はしません。"
+              "value": "nanoru による自動入力テストです。送信はしません。"
             }
           ],
           "cues": [
@@ -789,7 +789,7 @@
           "action": {
             "action": "fill",
             "ref": "n15",
-            "value": "nanori による自動入力テストです。送信はしません。",
+            "value": "nanoru による自動入力テストです。送信はしません。",
             "reason": "message"
           },
           "ok": true,
@@ -800,8 +800,8 @@
               "label": null,
               "name": "message",
               "id": null,
-              "requested": "nanori による自動入力テストです。送信はしません。",
-              "retained": "nanori による自動入力テストです。送信はしません。",
+              "requested": "nanoru による自動入力テストです。送信はしません。",
+              "retained": "nanoru による自動入力テストです。送信はしません。",
               "maxlength": null,
               "pattern": null,
               "required": false,
@@ -969,7 +969,7 @@
               },
               {
                 "label": "お問い合わせ内容",
-                "value": "nanori による自動入力テストです。送信はしません。"
+                "value": "nanoru による自動入力テストです。送信はしません。"
               }
             ],
             "cues": [
@@ -1000,7 +1000,7 @@
       "classification": "site_defect",
       "guidance": "analogy",
       "guidanceRef": "GovTech Tokyo Input Form Guidance v1.1, p.27 item 3 (accept Latin letters), by analogy",
-      "observation": "The confirmation screen's 氏名 row displayed the surname as \"Nguy&#7877;n\" instead of \"Nguyễn\", while the baseline's row showed 山田 太郎 correctly. This is nanori's own measurement comparing the typed value with the review row text; the site showed no error message.",
+      "observation": "The confirmation screen's 氏名 row displayed the surname as \"Nguy&#7877;n\" instead of \"Nguyễn\", while the baseline's row showed 山田 太郎 correctly. This is nanoru's own measurement comparing the typed value with the review row text; the site showed no error message.",
       "relevance": "A person with a name of this shape, such as a Vietnamese name with diacritics, would see their name corrupted on the review screen before sending. The record the site keeps may carry the same corruption.",
       "basis": "Page 27 item 3 asks name fields to accept Latin letters; it does not explicitly address diacritics or how a name is displayed, so the corrupted display is only inconsistent with this guidance by analogy. The guidance is for Tokyo Metropolitan Government forms and is not law.",
       "cause": "Reproduced from the displayed text, not confirmed in source: the name appears to be double-escaped, with numeric character references such as &#7877; escaped again so they show literally. One possible trigger is a non-UTF-8 form encoding that makes the browser send characters outside the charset as references, which the server then escapes again.",

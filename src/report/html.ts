@@ -73,7 +73,7 @@ export function renderHtml(input: RunBundle): string {
     const p = firstProblem(r);
     const shot = evidenceShot(r, p?.step);
     const where = p
-      ? `<div class="where"><span class="field">${esc(p.field)}</span> <span class="kind">${esc(p.kind)}</span>${p.detail ? `<div class="detail" ${p.source === "site" ? 'lang="ja"' : ""}>${esc(p.detail)}${p.source === "nanori" ? ' <span class="muted">(nanori measurement)</span>' : ""}</div>` : ""}${shot ? `<div class="detail"><a href="${esc(shot)}" target="_blank">Screenshot, step ${p.step.index}</a></div>` : ""}</div>`
+      ? `<div class="where"><span class="field">${esc(p.field)}</span> <span class="kind">${esc(p.kind)}</span>${p.detail ? `<div class="detail" ${p.source === "site" ? 'lang="ja"' : ""}>${esc(p.detail)}${p.source === "nanoru" ? ' <span class="muted">(nanoru measurement)</span>' : ""}</div>` : ""}${shot ? `<div class="detail"><a href="${esc(shot)}" target="_blank">Screenshot, step ${p.step.index}</a></div>` : ""}</div>`
       : `<span class="muted">No measured problem.</span>${shot ? ` <a class="muted" href="${esc(shot)}" target="_blank">Final screen</a>` : ""}`;
     // The agent's note: first sentence inline, the rest behind a toggle.
     const [noteHead, ...noteRest] = r.stopReason.split(/(?<=[.。])\s+/);
@@ -109,7 +109,7 @@ export function renderHtml(input: RunBundle): string {
 
   // Repair brief: a self-contained block the developer can paste into Claude Code or an issue.
   const brief = selected ? [
-    `nanori repair brief`,
+    `nanoru repair brief`,
     `Run: ${b.id} (${b.target === "local_reproduction" ? copyKind + (b.repairState ? ", " + b.repairState + " repair" : "") : "public page, nothing submitted"}), recorded ${b.createdAt}`,
     `Form: ${b.url}`,
     `Goal given to the agent: ${b.goal}`,
@@ -139,9 +139,9 @@ export function renderHtml(input: RunBundle): string {
     `- Keep the required-field checks and every behaviour that already works. Genuinely invalid input must still be rejected.`,
     `- Do not change the test cases to fit the form.`,
     ``,
-    `Confirm the fix (run from the nanori folder, with the fixed form being served):`,
+    `Confirm the fix (run from the nanoru folder, with the fixed form being served):`,
     `node dist/cli.js rerun ${b.id} --target <URL of the fixed form>`,
-    ...(b.target === "local_reproduction" ? [] : [`Optional: if you first ran nanori against an unrepaired local copy of this form, add --before <that run id> so the before column shows the local copy instead of this public run.`]),
+    ...(b.target === "local_reproduction" ? [] : [`Optional: if you first ran nanoru against an unrepaired local copy of this form, add --before <that run id> so the before column shows the local copy instead of this public run.`]),
     `Then open the new runs/<id>/report.html and read the before/after table.`,
     ...(b.simulation ? [``, `Note: ${b.simulation}`] : []),
   ].join("\n") : "";
@@ -191,14 +191,14 @@ export function renderHtml(input: RunBundle): string {
   // Run details: the full action log, collapsed.
   const log = all.map((r) => `
     <details><summary>${esc(r.identity.fullName)}: ${r.steps.length} actions, ${esc(describe(r.outcome))}</summary>
-    <ol class="log">${r.steps.map((s) => { const bad = s.observations.some((o) => checkField(o).kind !== "accepted"); return `<li class="${bad ? "bad" : ""}"><span class="act">${esc(s.action.action)}</span> ${esc(s.action.ref ?? "")} ${s.action.value ? `<code>${esc(s.action.value)}</code>` : ""} <span class="muted">${esc(s.action.reason)}</span> <a href="${esc(r.identity.id)}/${esc(s.screenshot)}" target="_blank" aria-label="Step ${s.index}, screenshot before">before</a>${s.screenshotAfter ? ` · <a href="${esc(r.identity.id)}/${esc(s.screenshotAfter)}" target="_blank" aria-label="Step ${s.index}, screenshot after">after</a>` : ""}${s.observations.length ? `<ul>${s.observations.map((o) => { const c = checkField(o); return `<li><span class="muted">${esc(o.label ?? o.name)}</span>: ${esc(c.kind)}${c.detail ? ` <span lang="ja">${esc(c.detail)}</span>` : ""}${c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}</li>`; }).join("")}</ul>` : ""}</li>`; }).join("")}</ol></details>`).join("");
+    <ol class="log">${r.steps.map((s) => { const bad = s.observations.some((o) => checkField(o).kind !== "accepted"); return `<li class="${bad ? "bad" : ""}"><span class="act">${esc(s.action.action)}</span> ${esc(s.action.ref ?? "")} ${s.action.value ? `<code>${esc(s.action.value)}</code>` : ""} <span class="muted">${esc(s.action.reason)}</span> <a href="${esc(r.identity.id)}/${esc(s.screenshot)}" target="_blank" aria-label="Step ${s.index}, screenshot before">before</a>${s.screenshotAfter ? ` · <a href="${esc(r.identity.id)}/${esc(s.screenshotAfter)}" target="_blank" aria-label="Step ${s.index}, screenshot after">after</a>` : ""}${s.observations.length ? `<ul>${s.observations.map((o) => { const c = checkField(o); return `<li><span class="muted">${esc(o.label ?? o.name)}</span>: ${esc(c.kind)}${c.detail ? ` <span lang="ja">${esc(c.detail)}</span>` : ""}${c.source === "nanoru" ? " <em>(nanoru measurement)</em>" : ""}</li>`; }).join("")}</ul>` : ""}</li>`; }).join("")}</ol></details>`).join("");
 
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>nanori report: ${esc(b.id)}</title>
+<html lang="en"><head><meta charset="utf-8"><title>nanoru report: ${esc(b.id)}</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script>try{var t=localStorage.getItem("nanori-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script>try{var t=localStorage.getItem("nanoru-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <style>
 :root{--bg:#fbfaf8;--ink:#17191d;--text:#2b2e34;--muted:#6b6e75;--rule:#e2dfd8;--ok:#1a6b43;--bad:#b8291b;--warn:#8a5a00;--code:#f0eee9;--diff:#f9e3df;--white:#fff;--btn:#17191d;--btntext:#fff;
 --sans:"IBM Plex Sans JP","Hiragino Sans","Noto Sans JP",sans-serif;--mono:"IBM Plex Mono",Menlo,monospace;color-scheme:light}
@@ -242,7 +242,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
  table.ba{display:block;overflow-x:auto;white-space:nowrap}}
 </style></head><body><main>
 <header class="top">
-  <div class="brandrow"><a class="brand" href="https://github.com/mrslbt/nanori" title="nanori on GitHub"><img src="${LOGO_DATA_URI}" alt="nanori" width="${LOGO_WIDTH}" height="${LOGO_HEIGHT}"></a><button type="button" id="theme" aria-label="Switch colour theme">Dark mode</button></div>
+  <div class="brandrow"><a class="brand" href="https://github.com/mrslbt/nanoru" title="nanoru on GitHub"><img src="${LOGO_DATA_URI}" alt="nanoru" width="${LOGO_WIDTH}" height="${LOGO_HEIGHT}"></a><button type="button" id="theme" aria-label="Switch colour theme">Dark mode</button></div>
   <div class="meta"><div class="url">${esc(b.url)}</div><div>Goal: ${esc(b.goal)}</div><div>Run ${esc(b.id)}, ${esc(b.createdAt.replace("T", " ").replace(/\.\d+Z$/, " UTC"))}</div><div><strong>${esc(scope)}</strong></div>${b.simulation ? `<div class="sim">${esc(b.simulation)}</div>` : ""}</div>
 </header>
 <section class="verdict v-${vtone}"><h1>${esc(hl.head)}</h1>${hl.support ? `<p>${esc(hl.support)}${b.findings.length ? ` <a href="#finding">See the evidence.</a>` : ""}</p>` : ""}</section>
@@ -253,7 +253,7 @@ ${b.before ? `<details class="cmp"><summary>Comparison table for this run (all c
 <p class="muted">${b.scenario ? "Same form, same goal, same contact details; the agent was told to make the same fixed non-name choices (date rule, first options, message) in every case." : "Same form, same goal, same contact details. Non-name choices (options, message) were left to the agent in this run and may differ between rows."} ${esc(inputsNote)} Names other than the baseline are name-format test cases, not verified identities. Recorded run, not live.</p>
 <table class="cmp"><thead><tr><th>Name format</th><th>Outcome</th><th>What the form did to the name</th></tr></thead><tbody>${rows}</tbody></table>
 <p class="muted">Examples test name formats. Except for the creator's name, they are sample inputs, not research participants.</p>
-${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ...d }))); return od.length ? `<details class="other"><summary>Other diagnostics (${od.length}, not about names)</summary><ul>${od.map((d) => `<li><span class="muted">${esc(d.r.identity.fullName)} · step ${d.step.index} · ${esc(d.o.label ?? d.o.name)}</span>: ${esc(d.c.kind)}${d.c.detail ? ` <span lang="ja">${esc(d.c.detail)}</span>` : ""}${d.c.source === "nanori" ? " <em>(nanori measurement)</em>" : ""}<br><span class="muted">typed "${esc(d.o.requested)}", field kept "${esc(d.o.retained)}"${d.o.diagnostic ? "; uncertain: " + esc(d.o.diagnostic.note) : ""}</span></li>`).join("")}</ul></details>` : ""; })()}
+${(() => { const od = all.flatMap((r) => otherDiagnostics(r).map((d) => ({ r, ...d }))); return od.length ? `<details class="other"><summary>Other diagnostics (${od.length}, not about names)</summary><ul>${od.map((d) => `<li><span class="muted">${esc(d.r.identity.fullName)} · step ${d.step.index} · ${esc(d.o.label ?? d.o.name)}</span>: ${esc(d.c.kind)}${d.c.detail ? ` <span lang="ja">${esc(d.c.detail)}</span>` : ""}${d.c.source === "nanoru" ? " <em>(nanoru measurement)</em>" : ""}<br><span class="muted">typed "${esc(d.o.requested)}", field kept "${esc(d.o.retained)}"${d.o.diagnostic ? "; uncertain: " + esc(d.o.diagnostic.note) : ""}</span></li>`).join("")}</ul></details>` : ""; })()}
 
 ${b.before ? `</details>` : ""}
 
@@ -266,12 +266,12 @@ ${b.probe ? `<p class="muted">Separate boundary probe (same page, fixed inputs, 
 <h2>Run details</h2>
 ${log}
 
-<footer>Measurements (retained value, validation message, aria-invalid, visible error text, checkpoint rendering) are made by code. Classifications marked "proposed" were written by Claude from those measurements and have not been reviewed by a person. Guidance cited: GovTech Tokyo Input Form Guidance ver 1.1 (March 2026), scoped to Tokyo Metropolitan Government forms; for other sites we say only "inconsistent with this guidance". nanori does not attempt alternate entry paths; where a page documents one, it is reported as documented but untested. Nothing was submitted.</footer>
+<footer>Measurements (retained value, validation message, aria-invalid, visible error text, checkpoint rendering) are made by code. Classifications marked "proposed" were written by Claude from those measurements and have not been reviewed by a person. Guidance cited: GovTech Tokyo Input Form Guidance ver 1.1 (March 2026), scoped to Tokyo Metropolitan Government forms; for other sites we say only "inconsistent with this guidance". nanoru does not attempt alternate entry paths; where a page documents one, it is reported as documented but untested. Nothing was submitted.</footer>
 </main>
 <script>
 (function(){var btn=document.getElementById("theme"),root=document.documentElement;function cur(){var a=root.getAttribute("data-theme");return a||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}
 function label(){btn.textContent=cur()==="dark"?"Light mode":"Dark mode"}label();
-btn.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";root.setAttribute("data-theme",n);try{localStorage.setItem("nanori-theme",n)}catch(e){}label()})})();
+btn.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";root.setAttribute("data-theme",n);try{localStorage.setItem("nanoru-theme",n)}catch(e){}label()})})();
 (function(){var b=document.getElementById("copy-brief"),t=document.getElementById("brief-text");if(!b||!t)return;
 b.addEventListener("click",function(){var done=function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy repair brief";b.classList.remove("done")},2000)};
 var fail=function(){t.closest("details").open=true;t.focus();t.select();b.textContent="Copy the text below"};

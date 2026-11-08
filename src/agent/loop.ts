@@ -49,7 +49,7 @@ function systemPrompt(identity: Identity, goal: string): string {
   const name = identity.familyName && identity.givenName
     ? `family name "${identity.familyName}", given name "${identity.givenName}"`
     : `a single name "${identity.fullName}" with no family name`;
-  return `You are nanori, a form-testing agent. You drive a real browser one action at a time to reach a goal on a Japanese website, filling the form as the person described below. You are testing whether the form accepts this person's name. You never submit anything for real.
+  return `You are nanoru, a form-testing agent. You drive a real browser one action at a time to reach a goal on a Japanese website, filling the form as the person described below. You are testing whether the form accepts this person's name. You never submit anything for real.
 
 Goal: ${goal}
 Stop when the goal screen is visible (usually a review or confirmation screen that shows the entered values) and call act with action "done". Do not click any button that would finally submit, confirm, pay or send. If the only way forward is such a button, call "done" with reason "safe checkpoint reached".
@@ -146,7 +146,7 @@ export async function verifyCheckpoint(page: Page, steps: Step[], identity: Iden
 
 export async function runLoop(context: BrowserContext, opts: LoopOptions): Promise<RunResult> {
   const client = new Anthropic();
-  const model = opts.model ?? process.env.NANORI_NAV_MODEL ?? "claude-sonnet-5-5";
+  const model = opts.model ?? process.env.NANORU_NAV_MODEL ?? "claude-sonnet-5-5";
   const maxSteps = opts.maxSteps ?? 40;
   const log = opts.log ?? (() => {});
   const startedAt = new Date().toISOString();
@@ -249,7 +249,7 @@ export async function runLoop(context: BrowserContext, opts: LoopOptions): Promi
       }
       const el = elements.find((e) => e.ref === action.ref);
       if (!el) throw new Error(`unknown ref ${action.ref}`);
-      const locator = page.locator(`[data-nanori-ref="${action.ref}"]`);
+      const locator = page.locator(`[data-nanoru-ref="${action.ref}"]`);
       if (action.action === "fill") {
         // Errors already showing before the fill (from an earlier submit) are stale, not a reaction to this value.
         const before = await observeField(page, action.ref!, action.value ?? "", { name: el.name, id: el.id });

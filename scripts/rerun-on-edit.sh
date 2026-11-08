@@ -12,13 +12,13 @@ esac
 case "$file" in
   *report.html|*report.json|*/runs/*) exit 0 ;;
 esac
-[ -n "${NANORI_HOOK_RUNNING:-}" ] && exit 0
-lock=".nanori-rerun.lock"
+[ -n "${NANORU_HOOK_RUNNING:-}" ] && exit 0
+lock=".nanoru-rerun.lock"
 if [ -f "$lock" ] && [ $(( $(date +%s) - $(stat -f %m "$lock") )) -lt 20 ]; then exit 0; fi
 touch "$lock"
-run_id="$(cat .nanori-last-run 2>/dev/null || true)"
-target="$(cat .nanori-local-target 2>/dev/null || true)"
-before="$(cat .nanori-before 2>/dev/null || true)"
-[ -z "$run_id" ] || [ -z "$target" ] && { echo "nanori hook: set .nanori-last-run and .nanori-local-target first"; exit 0; }
-echo "nanori hook: $file changed under local/, rerunning $run_id against $target"
-NANORI_HOOK_RUNNING=1 node dist/cli.js rerun "$run_id" --target "$target" ${before:+--before "$before"} --headless 2>&1 | tail -12
+run_id="$(cat .nanoru-last-run 2>/dev/null || true)"
+target="$(cat .nanoru-local-target 2>/dev/null || true)"
+before="$(cat .nanoru-before 2>/dev/null || true)"
+[ -z "$run_id" ] || [ -z "$target" ] && { echo "nanoru hook: set .nanoru-last-run and .nanoru-local-target first"; exit 0; }
+echo "nanoru hook: $file changed under local/, rerunning $run_id against $target"
+NANORU_HOOK_RUNNING=1 node dist/cli.js rerun "$run_id" --target "$target" ${before:+--before "$before"} --headless 2>&1 | tail -12

@@ -20,7 +20,7 @@
     "choiceRule": "the first non-empty option in every select, and the first radio in every radio group",
     "treatment": "虫歯",
     "symptom": "歯が痛いです。",
-    "message": "nanori による自動入力テストです。送信はしません。",
+    "message": "nanoru による自動入力テストです。送信はしません。",
     "optionalFields": "fill optional email and address fields with the contact data above; leave other optional fields empty",
     "age": "35",
     "birthDate": "1990年1月1日"

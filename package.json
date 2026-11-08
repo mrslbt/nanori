@@ -1,5 +1,5 @@
 {
-  "name": "nanori",
+  "name": "nanoru",
   "version": "0.1.0",
   "description": "Test Japanese web forms with name-format test cases that conventional test data can miss.",
   "main": "index.js",
@@ -17,7 +17,7 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "nanori": "./dist/cli.js"
+    "nanoru": "./dist/cli.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

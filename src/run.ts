@@ -29,14 +29,16 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
   const runsDir = opts.runsDir ?? path.resolve("runs");
   const id = opts.runId ?? new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
   const dir = path.join(runsDir, id);
-  if (fs.existsSync(dir)) throw new SetupError(`runs/${id} already exists. Choose another --run-id, or move that folder away first; nanori never overwrites recorded evidence.`);
+  if (fs.existsSync(dir)) throw new SetupError(`runs/${id} already exists. Choose another --run-id, or move that folder away first; nanoru never overwrites recorded evidence.`);
   fs.mkdirSync(dir, { recursive: true });
   const selected: Identity[] = opts.cases?.length ? battery.filter((b) => opts.cases!.includes(b.id)) : battery;
 
   const browser = await launchChrome(opts.headless ?? false);
   const one = async (identity: Identity): Promise<RunResult> => {
     log(`\n▶ ${identity.id}: ${identity.fullName}`);
-    const context = await browser.newContext({ locale: "ja-JP" });
+    // NANORU_RECORD_DIR: save a video of each case's browser session there (demo footage; off by default).
+    const rec = process.env.NANORU_RECORD_DIR;
+    const context = await browser.newContext({ locale: "ja-JP", ...(rec ? { viewport: { width: 1920, height: 1080 }, recordVideo: { dir: path.join(rec, identity.id), size: { width: 1920, height: 1080 } } } : {}) });
     try {
       return await runLoop(context, { url: opts.url, goal: opts.goal, identity, outDir: path.join(dir, identity.id), maxSteps: opts.maxSteps, log });
     } finally {
@@ -54,7 +56,7 @@ export async function runAll(opts: RunOptions): Promise<{ bundle: RunBundle; dir
   }
   await browser.close();
 
-  log(`\nDiagnosing with ${process.env.NANORI_DIAG_MODEL ?? "claude-opus-5-5"}...`);
+  log(`\nDiagnosing with ${process.env.NANORU_DIAG_MODEL ?? "claude-opus-5-5"}...`);
   const findings = mergeFindings(await diagnose(baselineRun, cases, opts.url, opts.goal));
   let before: RunBundle["before"];
   if (opts.comparedTo) {

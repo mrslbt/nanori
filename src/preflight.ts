@@ -6,7 +6,7 @@ export class SetupError extends Error {}
 /** Checks that run before any browser or model call: Node version, API key, and that the target answers. */
 export async function preflight(opts: { url?: string; needsKey: boolean }): Promise<void> {
   const [major, minor] = process.versions.node.split(".").map(Number);
-  if (major < 22 || (major === 22 && minor < 12)) throw new SetupError(`nanori needs Node 22.12 or newer; this is Node ${process.versions.node}.`);
+  if (major < 22 || (major === 22 && minor < 12)) throw new SetupError(`nanoru needs Node 22.12 or newer; this is Node ${process.versions.node}.`);
   if (opts.needsKey) {
     const key = process.env.ANTHROPIC_API_KEY ?? "";
     if (!key || key === "sk-ant-...") throw new SetupError("No API key. Copy .env.example to .env and put your ANTHROPIC_API_KEY in it (the file is gitignored).");

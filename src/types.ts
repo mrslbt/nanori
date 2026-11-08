@@ -54,7 +54,7 @@ export interface FieldObservation {
   validationMessage: string;
   ariaInvalid: boolean;
   visibleErrors: string[];
-  /** nanori's own measurement note (never text the website displayed). */
+  /** nanoru's own measurement note (never text the website displayed). */
   diagnostic?: { kind: "checkpoint_truncated" | "checkpoint_escaped" | "checkpoint_missing" | "checkpoint_not_verified"; note: string };
 }
 
@@ -88,7 +88,7 @@ export interface Step {
 
 /**
  * reached_checkpoint: the goal screen was verified (the typed values are shown on it).
- * reached_with_workaround: not implemented yet; nanori does not attempt alternate entry paths. Kept so reports can say so.
+ * reached_with_workaround: not implemented yet; nanoru does not attempt alternate entry paths. Kept so reports can say so.
  * stopped_before_checkpoint: a measured rejection or the agent gave up at a named field.
  * reached_name_changed: the review screen was recognised, but a typed name value is shown changed in its review row (measured by code).
  * not_determined: step budget, no progress, agent error, or a safe stop that could not be verified as the goal.

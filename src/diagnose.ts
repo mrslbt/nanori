@@ -34,7 +34,7 @@ export function measure(run: RunResult) {
  */
 export async function diagnose(baseline: RunResult, cases: RunResult[], url: string, goal: string): Promise<Finding[]> {
   const client = new Anthropic();
-  const model = process.env.NANORI_DIAG_MODEL ?? "claude-opus-5-5";
+  const model = process.env.NANORU_DIAG_MODEL ?? "claude-opus-5-5";
   const skill = loadSkill();
   const baselineFacts = measure(baseline);
   const payload = cases.map((r) => ({
@@ -46,7 +46,7 @@ export async function diagnose(baseline: RunResult, cases: RunResult[], url: str
     agentErrors: r.steps.filter((s) => !s.ok).map((s) => ({ step: s.index, error: s.error })),
   }));
 
-  const prompt = `You are writing findings for a nanori run.
+  const prompt = `You are writing findings for a nanoru run.
 
 Site: ${url}
 Goal: ${goal}
@@ -63,10 +63,10 @@ Rules for classification:
 - site_defect: a rejection, truncation or alteration of this person's name that the baseline did not suffer, where the retained value or error text shows the site's rule acted on the name itself. If the pattern attribute in the source rejects the string, say so as the cause (observed in source). If no pattern is visible, say the cause is reproduced from behaviour, not confirmed in source.
 - agent_limit: the agent typed the wrong thing, used the wrong field, or failed to navigate. Never blame the site for these.
 - inconclusive: rejected, but the page documents an accepted way to enter this name (instructions, example, alternative field) that the agent did not try, or the baseline also failed, or the evidence is ambiguous, or the only evidence is the agent's own description with no measured fact. A required reading (furigana) field is NOT a defect by itself. A rejected reading is a defect only if the reading was in the script the field asks for (hiragana for ふりがな/ひらがな fields, katakana for フリガナ/カタカナ fields) and no documented alternative exists.
-- Facts whose "source" is "nanori" are nanori's own checkpoint measurements (prefix match, HTML entities, not found), not text the website displayed. Say so. A "not_verified" fact is never a defect.
+- Facts whose "source" is "nanoru" are nanoru's own checkpoint measurements (prefix match, HTML entities, not found), not text the website displayed. Say so. A "not_verified" fact is never a defect.
 - Exception: an "altered" fact whose note says the review row shows the name as HTML entities means the confirmation screen itself displayed the name corrupted (for example &#7877; instead of ễ) while the baseline's row was shown correctly. The person would see their name wrong before sending. Classify that as site_defect, say the cause is double escaping reproduced from the displayed text, not confirmed in source, and cite guidance only as "analogy" or "none".
 - Names in the battery are name-format test cases, not verified legal identities. Say "a person with a name of this shape", never "her legal name".
-- nanori does not attempt alternate entry paths. If the page documents one, say it is documented but untested.
+- nanoru does not attempt alternate entry paths. If the page documents one, say it is documented but untested.
 - no_issue: nothing happened.
 Guidance relation: "applicable" only when the guidance text you quote directly covers the behaviour; "analogy" when it is close but scoped differently; "none" otherwise. Say "inconsistent with the guidance", never "violates" or "required by law".
 Keep the original Japanese error text verbatim in errorText. Write observation, relevance, basis, cause and fix in plain English, two sentences max each. The fix is a proposed change described from the observed browser behaviour (for example: raise the length limit that produces this error; stop requiring a separate given name; accept this script), not a patch: you have not seen the application's source, so do not assume plain HTML, a client-side attribute, or any framework, and say that the real validation may live in components, a schema, or server rules. It must keep genuinely invalid input rejected.

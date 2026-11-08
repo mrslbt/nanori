@@ -2628,7 +2628,7 @@
       "classification": "inconclusive",
       "guidance": "none",
       "guidanceRef": "no matching recommendation",
-      "observation": "nanori's own checkpoint measurement matched only the prefix 2026年11月 of the requested date 2026年11月20日 on the confirmation screen. This is a nanori diagnostic (prefix match), not text the website displayed as an error, and the name Sukarno was shown in full.",
+      "observation": "nanoru's own checkpoint measurement matched only the prefix 2026年11月 of the requested date 2026年11月20日 on the confirmation screen. This is a nanoru diagnostic (prefix match), not text the website displayed as an error, and the name Sukarno was shown in full.",
       "relevance": "This field is a reservation date, not a name field, so it says nothing about how the site handles a person with a single name. The single-name case otherwise reached the confirmation screen with the name intact.",
       "basis": "The name guidance on p.27 does not cover date fields, so there is no matching recommendation.",
       "cause": "Unclear: the confirmation row may split or format the date differently, or the day may really be dropped. The evidence is ambiguous until the review row in step-17.jpg is checked by hand.",

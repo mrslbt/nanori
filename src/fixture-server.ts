@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(here, "..", process.env.NANORI_FIXTURE_DIR ?? "fixtures/clinic");
-const port = Number(process.env.NANORI_FIXTURE_PORT ?? 4310);
+const root = path.resolve(here, "..", process.env.NANORU_FIXTURE_DIR ?? "fixtures/clinic");
+const port = Number(process.env.NANORU_FIXTURE_PORT ?? 4310);
 const types: Record<string, string> = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript" };
 
 export function startFixtureServer(dir = root, p = port) {

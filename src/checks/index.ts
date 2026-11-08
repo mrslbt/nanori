@@ -13,14 +13,14 @@ export interface CheckResult {
     | "not_verified"
     | "accepted";
   detail: string;
-  /** "site": the detail is text the website displayed. "nanori": the detail is nanori's own measurement note. */
-  source?: "site" | "nanori";
+  /** "site": the detail is text the website displayed. "nanoru": the detail is nanoru's own measurement note. */
+  source?: "site" | "nanoru";
 }
 
 export function checkField(o: FieldObservation): CheckResult {
   if (o.diagnostic) {
     const map = { checkpoint_truncated: "truncated", checkpoint_escaped: "altered", checkpoint_missing: "not_verified", checkpoint_not_verified: "not_verified" } as const;
-    return { kind: map[o.diagnostic.kind], detail: o.diagnostic.note, source: "nanori" };
+    return { kind: map[o.diagnostic.kind], detail: o.diagnostic.note, source: "nanoru" };
   }
   const rejected = o.ariaInvalid || o.validationMessage.trim().length > 0 || o.visibleErrors.length > 0;
   if (rejected) {

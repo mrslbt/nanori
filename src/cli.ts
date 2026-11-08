@@ -11,7 +11,7 @@ import { preflight, exitOnSetupError, SetupError } from "./preflight.js";
 import { rerunOptions } from "./rerun.js";
 
 const program = new Command();
-program.name("nanori").description("Test a Japanese web form with name-format test cases that conventional test data can miss.").version("0.1.0");
+program.name("nanoru").description("Test a Japanese web form with name-format test cases that conventional test data can miss.").version("0.1.0");
 
 program.command("run")
   .argument("<url>", "form URL")

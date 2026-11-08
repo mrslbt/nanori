@@ -37,7 +37,7 @@ export async function snapshotElements(page: Page): Promise<ElementInfo[]> {
       if ((el as HTMLInputElement).type === "hidden") continue;
       i += 1;
       const ref = `n${i}`;
-      el.setAttribute("data-nanori-ref", ref);
+      el.setAttribute("data-nanoru-ref", ref);
       const tag = el.tagName.toLowerCase();
       const info: any = {
         ref,
@@ -69,7 +69,7 @@ export async function snapshotElements(page: Page): Promise<ElementInfo[]> {
 export async function observeField(page: Page, ref: string, requested: string, key?: { name: string | null; id: string | null }): Promise<FieldObservation> {
   return page.evaluate(
     ({ ref, requested, key }) => {
-      let el = document.querySelector<HTMLInputElement>(`[data-nanori-ref="${ref}"]`);
+      let el = document.querySelector<HTMLInputElement>(`[data-nanoru-ref="${ref}"]`);
       if (!el && key?.id) el = document.getElementById(key.id) as HTMLInputElement | null;
       if (!el && key?.name) el = document.querySelector<HTMLInputElement>(`[name="${CSS.escape(key.name)}"]`);
       if (!el) {
