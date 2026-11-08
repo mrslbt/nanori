@@ -8,7 +8,7 @@ On one public Tokyo reservation form, five of six cases reached confirmation. A 
 
 Built with Claude Code for Built with Claude: Japan 2026.
 
-**[View sample results](https://mrslbt.github.io/nanoru/runs/yotsuya-dental-3/report.html)** (recorded run, read-only) · **[Repair before / after](https://mrslbt.github.io/nanoru/runs/yotsuya-local-after/report.html)** · **[Run locally](#quick-start-on-the-bundled-fixture-recommended-first-run)** · **[How Claude works](#how-claude-works-and-what-is-code)**
+**[Watch the demo (2:52)](https://youtu.be/WZfs41wEyu8)** · **[View sample results](https://mrslbt.github.io/nanoru/runs/yotsuya-dental-3/report.html)** (recorded run, read-only) · **[Repair before / after](https://mrslbt.github.io/nanoru/runs/yotsuya-local-after/report.html)** · **[Run locally](#quick-start-on-the-bundled-fixture-recommended-first-run)** · **[How Claude works](#how-claude-works-and-what-is-code)**
 
 ![The rejected test name next to the form's error, and the baseline confirmation screen](docs/evidence-crop.png)
 
