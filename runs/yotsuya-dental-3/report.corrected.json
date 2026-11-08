@@ -4198,5 +4198,5 @@
     "summary": "20 characters accepted, 21 rejected, for the tested strings; the server implementation was not inspected.",
     "href": "../yotsuya-dental-1/diag/diag-length.json"
   },
-  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-07T17:40:48.840Z"
+  "exportNote": "report.corrected.json: evidence references point at post-action screenshots; original capture history is in report.json. Rendered 2026-11-08T04:44:54.671Z"
 }

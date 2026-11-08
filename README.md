@@ -1,4 +1,4 @@
-# nanori
+<h1><picture><source media="(prefers-color-scheme: dark)" srcset="docs/brand/nanori-logo-readme-dark.png"><img src="docs/brand/nanori-logo-readme.png" alt="nanori" width="280" height="108"></picture></h1>
 
 **Your form works with your test data. Does it work with your customers' names?**
 

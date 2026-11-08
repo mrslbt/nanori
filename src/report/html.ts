@@ -5,6 +5,7 @@ import { verdict, describe, headline, tally } from "../verdict.js";
 import { checkField } from "../checks/index.js";
 import { mergeFindings } from "../findings.js";
 import { nonNameRows, compareRows } from "../compare.js";
+import { LOGO_DATA_URI, LOGO_WIDTH, LOGO_HEIGHT } from "./logo.js";
 
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 
@@ -207,7 +208,8 @@ export function renderHtml(input: RunBundle): string {
 main{max-width:1040px;margin:0 auto;padding:36px 28px 72px}
 a{color:var(--ink);text-underline-offset:3px;text-decoration-thickness:1px}
 .top{padding-bottom:20px;border-bottom:1px solid var(--rule)}
-.sim{color:var(--ink);margin-top:6px;max-width:80ch}.brandrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}.brand{font-weight:600;font-size:18px;color:var(--ink)}
+.sim{color:var(--ink);margin-top:6px;max-width:80ch}.brandrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.brand{display:block;line-height:0}.brand img{display:block;width:140px;height:auto;max-width:60vw}
+:root[data-theme="dark"] .brand img{filter:invert(1)}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand img{filter:invert(1)}}
 #theme{font:14px var(--sans);color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}#theme:hover{color:var(--ink)}.meta{font-size:14px;color:var(--muted);line-height:1.6}.meta .url{overflow-wrap:anywhere}.meta strong{color:var(--text);font-weight:600}
 .verdict{margin:40px 0 8px}.verdict h1{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:-.015em;margin:0;color:var(--ink);text-wrap:balance}.verdict.v-bad h1{color:var(--bad)}.verdict.v-ok h1{color:var(--ok)}.verdict.v-warn h1{color:var(--warn)}
 .verdict p{font-size:17px;margin:10px 0 0;max-width:70ch}
@@ -240,7 +242,7 @@ footer{margin-top:64px;padding-top:16px;border-top:1px solid var(--rule);color:v
  table.ba{display:block;overflow-x:auto;white-space:nowrap}}
 </style></head><body><main>
 <header class="top">
-  <div class="brandrow"><div class="brand">nanori</div><button type="button" id="theme" aria-label="Switch colour theme">Dark mode</button></div>
+  <div class="brandrow"><a class="brand" href="https://github.com/mrslbt/nanori" title="nanori on GitHub"><img src="${LOGO_DATA_URI}" alt="nanori" width="${LOGO_WIDTH}" height="${LOGO_HEIGHT}"></a><button type="button" id="theme" aria-label="Switch colour theme">Dark mode</button></div>
   <div class="meta"><div class="url">${esc(b.url)}</div><div>Goal: ${esc(b.goal)}</div><div>Run ${esc(b.id)}, ${esc(b.createdAt.replace("T", " ").replace(/\.\d+Z$/, " UTC"))}</div><div><strong>${esc(scope)}</strong></div>${b.simulation ? `<div class="sim">${esc(b.simulation)}</div>` : ""}</div>
 </header>
 <section class="verdict v-${vtone}"><h1>${esc(hl.head)}</h1>${hl.support ? `<p>${esc(hl.support)}${b.findings.length ? ` <a href="#finding">See the evidence.</a>` : ""}</p>` : ""}</section>
